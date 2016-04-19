@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="TmobLabs\Tappz\API\Data\IndexInterface"
+                type="TmobLabs\Tappz\Model\Data\Index" />
+    <preference for="TmobLabs\Tappz\API\IndexRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Index\IndexRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\ProductInterface"
+                type="TmobLabs\Tappz\Model\Data\Product" />
+    <preference for="TmobLabs\Tappz\API\ProductRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Product\ProductRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\CategoryInterface"
+                type="TmobLabs\Tappz\Model\Data\Category" />
+    <preference for="TmobLabs\Tappz\API\CategoryRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Category\CategoryRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\ProfileInterface"
+                type="TmobLabs\Tappz\Model\Data\Profile" />
+    <preference for="TmobLabs\Tappz\API\ProfileRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Profile\ProfileRepository" />
+    <preference for="Magento\Directory\Helper\RequestHandler" type="TmobLabs\Tappz\Helper\RequestHandler" />
+    <preference for="TmobLabs\Tappz\API\Data\LocationInterface"
+                type="TmobLabs\Tappz\Model\Data\Location" />
+    <preference for="TmobLabs\Tappz\API\LocationRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Location\LocationRepository" />
+</config>
