@@ -12,15 +12,15 @@ class Fblogin extends Action {
     protected $jsonResult;
     private $profileRepository;
 
-    public function __construct(Context $context, JSON $json, ProfileRepositoryInterface $profileRepository ) {
+    public function __construct(Context $context, JSON $json, ProfileRepositoryInterface $profileRepository) {
         parent::__construct($context);
-         $this->jsonResult = $json->create();
-      
+        $this->jsonResult = $json->create();
+
         $this->profileRepository = $profileRepository;
     }
 
-    public function execute() {   
-       $result = $this->profileRepository->fblogin();
+    public function execute() {
+        $result = $this->profileRepository->fblogin();
         $this->jsonResult->setData($result);
         return $this->jsonResult;
     }

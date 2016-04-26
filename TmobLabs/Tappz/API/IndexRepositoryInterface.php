@@ -1,8 +1,8 @@
 <?php
+
 namespace TmobLabs\Tappz\API;
 
+interface IndexRepositoryInterface {
 
-interface IndexRepositoryInterface 
-{
-      public function getIndex();      
+    public function getIndex();
 }

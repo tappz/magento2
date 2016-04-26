@@ -98,7 +98,9 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
     }
 
     public function getInStock() {
-        return $this->product->getQuantityAndStockStatus()["is_in_stock"];
+
+        $result = isset($this->product->getQuantityAndStockStatus()["is_in_stock"])?$this->product->getQuantityAndStockStatus()["is_in_stock"]:false;
+        return $result;
     }
 
     public function getIsShipmentFree() {
@@ -148,7 +150,8 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
     }
 
     public function getUnit() {
-        return $this->product->getQuantityAndStockStatus()["is_in_stock"];
+         $result = isset($this->product->getQuantityAndStockStatus()["is_in_stock"])?$this->product->getQuantityAndStockStatus()["is_in_stock"]:false;
+        return $result;
     }
 
     public function getIsFavorite() {

@@ -27,4 +27,12 @@
                 type="TmobLabs\Tappz\Model\Data\Location" />
     <preference for="TmobLabs\Tappz\API\LocationRepositoryInterface"
                 type="TmobLabs\Tappz\Model\Location\LocationRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\AddressInterface"
+                type="TmobLabs\Tappz\Model\Data\Address" />
+    <preference for="TmobLabs\Tappz\API\AddressRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Address\AddressRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\BasketInterface"
+                   type="TmobLabs\Tappz\Model\Data\Basket" />
+    <preference for="TmobLabs\Tappz\API\BasketRepositoryInterface"
+                type="TmobLabs\Tappz\Model\Basket\BasketRepository" />
 </config>

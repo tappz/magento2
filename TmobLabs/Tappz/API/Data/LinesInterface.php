@@ -2,7 +2,7 @@
 
 namespace TmobLabs\Tappz\API\Data;
 use Magento\Framework\Api\CustomAttributesDataInterface;
-interface BasketInterface extends CustomAttributesDataInterface
+interface LinesInterface extends CustomAttributesDataInterface
 {
     /**
      * @return string

@@ -128,7 +128,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
         $customer->setData("email", $customerData["email"]);
         $customer->setData("phone", $customerData["phone"]);
         if (isset($customerData['isSubscribed']))
-            $customer->setIsSubscribed($customerData['isSubscribed'] === 'true' ? true : false);
+        $customer->setIsSubscribed($customerData['isSubscribed'] === 'true' ? true : false);
         $customer->save();
         return $this->getProfileByUserId($customer->getId());
     }

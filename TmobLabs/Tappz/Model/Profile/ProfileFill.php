@@ -81,7 +81,6 @@ class ProfileFill extends Profile {
     protected function fillRegisterCustomerData($data) {
       
         return [
-          
             'firstname' => $data->firstName,
             'lastname' => $data->lastName,
             'password' => $data->password,

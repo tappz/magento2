@@ -1,7 +1,7 @@
 <?php
 namespace TmobLabs\Tappz\API\Data;
 use Magento\Framework\Api\CustomAttributesDataInterface;
-interface CategoryInterface extends CustomAttributesDataInterface
+interface AgreementInterface extends CustomAttributesDataInterface
 {
     /**
      * @return string

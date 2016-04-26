@@ -28,20 +28,33 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper {
         fclose($resource);
         return $result;
     }
+
     public function getAuthorizationFull() {
         $authorization = $_SERVER['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ? $authorization : '';
-      
+
         return $header;
     }
+
     public function getAuthorization() {
         $authorization = $_SERVER['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ? $authorization : '';
         $auth = @end(@explode(' ', $header));
         return $auth;
     }
-    public function convertJson($data){
-           return json_decode($data);
+
+    public function convertJson($data) {
+
+        return json_decode($data);
+    }
+
+    public function changeKey($array, $oldKey, $newKey) {
+        if (!array_key_exists($oldKey, $array))
+            return $array;
+        $keys = array_keys($array);
+        $keys[array_search($oldKey, $keys)] = $newKey;
+
+        return array_combine($keys, $array);
     }
 
 }
