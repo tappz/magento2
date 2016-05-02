@@ -18,7 +18,7 @@ class ProductSearch extends Action
       $this->productRepository= $productRepository;
     }
     public function execute()
-    {    
+    {
         $params =  ($this->getRequest()->getParams());
         $result = $this->productRepository->getProductSearch($params);
         $this->jsonResult->setData($result);

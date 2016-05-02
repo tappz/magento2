@@ -15,6 +15,7 @@ class AddressRepository implements AddressRepositoryInterface {
     }
 
     public function createAddress() {
+
         $result = $this->addressCollector->createAddress();
         return $result;
     }
@@ -26,6 +27,10 @@ class AddressRepository implements AddressRepositoryInterface {
 
     public function deleteAddress() {
         $result = $this->addressCollector->deleteAddress();
+        return $result;
+    }
+    public function getAddress($addressId){
+        $result = $this->addressCollector->getAddressById($addressId);
         return $result;
     }
 

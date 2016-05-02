@@ -19,10 +19,11 @@ class MergeBasket extends Action {
     }
 
     public function execute() {
-    
-      
-        $result = array ();
-        $this->basketRepository->merge();
+
+
+
+
+        $result = $this->basketRepository->merge();
         $this->jsonResult->setData($result);
         return $this->jsonResult;
     }

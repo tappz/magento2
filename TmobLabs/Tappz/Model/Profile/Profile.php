@@ -9,7 +9,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface {
 
     protected $profile;
     protected $address;
-
+    protected $userAgreement;
     public function getId() {
         return $this->profile->getID();
     }
@@ -43,7 +43,6 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface {
     public function getErrorCode() {
         return null;
     }
-
     public function getFirstName() {
         return $this->profile->getFirstname() . ($this->profile->getMiddleName() ? (' ' . $this->profile->getMiddleName()) : '');
     }
@@ -96,9 +95,12 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface {
     }
 
     public function getUserAgreement() {
-        return "Set your user Agreement Text Here ";
+        return $this->userAgreement;
     }
-
+    public function setUserAgreement($userAgreement) {
+        $this->userAgreement = $userAgreement;
+        return $this;
+    }
     public function giftCheques() {
         return array();
     }
@@ -113,93 +115,6 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface {
         return $this;
     }
 
-    public function getAddressId() {
-        return $this->address->getID();
-    }
 
-    public function getAddressName() {
-        return $this->address->getName();
-    }
-
-    public function getAddressCustomerName() {
-        return $this->address->getFirstname();
-    }
-
-    public function getAddressCustomerSurname() {
-        return $this->address->getLastname();
-    }
-
-    public function getAddressCustomerEmail() {
-        return $this->profile->getEmail();
-    }
-
-    public function getAddressLine() {
-        return implode($this->address->getStreet());
-    }
-
-    public function getAddressCountry() {
-        return $this->address->getCountryId();
-    }
-
-    public function getAddressCountryCode() {
-        return $this->address->getCountryId();
-    }
-
-    public function getAddressState() {
-        return "";
-    }
-
-    public function getAddressStateCity() {
-        return $this->address->getCity();
-    }
-
-    public function getAddressStateCode() {
-        return $this->address->getRegion();
-    }
-
-    public function getAddressStateDistrict() {
-        return "";
-    }
-
-    public function getAddressDistrictCode() {
-        return "";
-    }
-
-    public function getAddressTown() {
-        return "";
-    }
-
-    public function getAddressTownCode() {
-        return "";
-    }
-
-    public function getAddressCompanyTitle() {
-        return $this->address->getCompany();
-    }
-
-    public function getAddressCorporate() {
-        return $this->address->getCompany();
-    }
-
-    public function getTaxNo() {
-        return "";
-    }
-
-    public function getAddressPhoneNumber() {
-        return $this->address->getPhoneNumber();
-      
-    }
-
-    public function getIdentityNo() {
-        return "";
-    }
-
-    public function getZipCode() {
-        return $this->address->getPostcode();
-    }
-
-    public function getUsCheckoutCity() {
-        return "";
-    }
 
 }

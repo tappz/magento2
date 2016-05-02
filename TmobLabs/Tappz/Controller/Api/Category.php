@@ -18,7 +18,7 @@ class Category extends Action
       $this->categoryRepository= $categoryRepository;
     }
     public function execute()
-    {    
+    {
         $params =  ($this->getRequest()->getParams());
         $categoryId = key($params);
         $result = $this->categoryRepository->getByCategoryById($categoryId);     

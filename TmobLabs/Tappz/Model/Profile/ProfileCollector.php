@@ -5,20 +5,25 @@ namespace TmobLabs\Tappz\Model\Profile;
 use TmobLabs\Tappz\API\Data\ProfileInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
-
+use \Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig ;
+use TmobLabs\Tappz\Model\Address\AddressRepository as AddressRepository;
 class ProfileCollector extends ProfileFill implements ProfileInterface {
 
     protected $helper;
     protected $customerUrl;
     protected $objectManager;
-
+    protected $_scopeConfig;
+    protected  $addressRepository;
     public function __construct(
-    StoreManagerInterface $storeManager, RequestHandler $requestHandler, \Magento\Customer\Model\Url $customerUrl
+    StoreManagerInterface $storeManager, RequestHandler $requestHandler, \Magento\Customer\Model\Url $customerUrl,ScopeConfig $scopeConfig,AddressRepository $addressRepository
     ) {
         parent::__construct($storeManager);
         $this->helper = $requestHandler;
         $this->customerUrl = $customerUrl;
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_scopeConfig = $scopeConfig;
+        $this->addressRepository = $addressRepository;
+
     }
 
     public function login() {
@@ -38,7 +43,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
         $this->setIsSubscribe((bool) $subscriber->getId());
         $shipping["shipping"] = array();
         foreach ($customer->getAddresses() as $address) {
-            $shipping['shipping'][] = $this->getCustomerAddressById($address->getID());
+            $shipping['shipping'][] = $this->addressRepository->getAddress($address->getID());
         }
         $this->setAddresses($shipping);
         $accessToken = $this->helper->getAuthorizationFull() . " " . $customer->getID();
@@ -68,7 +73,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
                 $this->setIsSubscribe((bool) $subscriber->getId());
                 $shipping["shipping"] = array();
                 foreach ($customer->getAddresses() as $address) {
-                    $shipping['shipping'][] = $this->getCustomerAddressById($address->getID());
+                    $shipping['shipping'][] = $this->addressRepository->getAddress($address->getID());
                 }
                 $this->setAddresses($shipping);
                 $accessToken = $this->helper->getAuthorizationFull() . " " . $customer->getID();
@@ -82,6 +87,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
 
     public function getProfile() {
         $userid = $this->helper->convertJson($this->helper->getAuthorization());
+
         return $this->getProfileByUserId($userid);
     }
 
@@ -106,7 +112,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
         $this->setIsSubscribe((bool) $subscriber->getId());
         $shipping["shipping"] = array();
         foreach ($customer->getAddresses() as $address) {
-            $shipping['shipping'][] = $this->getCustomerAddressById($address->getID());
+            $shipping['shipping'][] = $this->addressRepository->getAddress($address->getID());
         }
         $this->setAddresses($shipping);
         $accessToken = $this->helper->getAuthorizationFull() . " " . $customer->getID();
@@ -133,7 +139,14 @@ class ProfileCollector extends ProfileFill implements ProfileInterface {
         return $this->getProfileByUserId($customer->getId());
     }
 
+    public function userAgreement()
+    {
 
+
+         $this->setUserAgreement($this->_scopeConfig->getValue('tappzagreement/useragreement/agreement', \Magento\Store\Model\ScopeInterface::SCOPE_STORE));
+         return $this->fillUserAgreement();
+
+    }
 
     public function getCustomerAddressById($addressId) {
         $this->address = $this->objectManager->get('Magento\Customer\Model\Address')->load($addressId);

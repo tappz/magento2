@@ -21,7 +21,7 @@ class PasswordRecovery extends Action
     public function execute()
     {    
         $params =  ($this->getRequest()->getParams());
-        
+
         $result = $this->profileRepository->getUserAgreement();
         $this->jsonResult->setData($result);
          return $this->jsonResult;

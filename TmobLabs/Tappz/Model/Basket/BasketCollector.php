@@ -21,14 +21,22 @@ class BasketCollector extends BasketFill {
         $this->store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface');
         $this->productRepository = $productRepository;
         $this->addressRepository = $addressRepository;
+
+
+
     }
 
     public function merge() {
-
+        $result = $this->helper->convertJson($this->helper->getHeaderJson());
+        $anonymousBasketId = "";
+        if(!empty($result))
+        $anonymousBasketId = $result->basketId;
         $userId = $this->helper->getAuthorization();
         $store = $this->store->getStore();
-        $result = $this->helper->convertJson($this->helper->getHeaderJson());
-        $anonymousBasketId = $result->basketId;
+        if($anonymousBasketId == "null" || empty($anonymousBasketId)){
+            return $this->getUserBasket();
+        }
+
         $anonymousQuote = $this->objectManager
                 ->get('Magento\Quote\Model\Quote')
                 ->setStore($store)
@@ -48,9 +56,41 @@ class BasketCollector extends BasketFill {
         }
         $quote = $quote->merge($anonymousQuote);
         $quote = $quote->collectTotals()->save();
+
         return $this->getBasketById($quote->getId());
     }
+    public function setAddress($quoteId){
+        $result = $this->helper->convertJson($this->helper->getHeaderJson());
+        $shippingAddressId = $result->shippingAddress->id;
+        $billingAddressId = $result->billingAddress->id;
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
+            ->get('Magento\Quote\Model\Quote')
+            ->setStore($store)
+            ->load($quoteId);
 
+        if (!is_null($billingAddressId) ) {
+            $userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($billingAddressId);
+
+            $address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
+
+            $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store)->load($userAddress->getCustomer()->getId());
+
+            $quote->setBillingAddress($address)
+                ->getShippingAddress()
+                ->setCollectShippingRates(true);
+        }
+        if (!is_null($shippingAddressId) ) {
+            $userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($shippingAddressId);
+            $address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
+            $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store)->load($userAddress->getCustomer()->getId());
+
+            $quote->setShippingAddress($address);
+        }
+        $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
+        return $this->getBasketById($quote->getId());
+
+    }
     public function getLines($basketId) {
         $updateList = $this->helper->convertJson($this->helper->getHeaderJson());
         $store = $this->store->getStore();
@@ -89,15 +129,20 @@ class BasketCollector extends BasketFill {
 
     public function getUserBasket() {
         $userId = $this->helper->getAuthorization();
+
         $store = $this->store->getStore();
         $quoteObject = $this->objectManager->get('Magento\Quote\Model\Quote')->setStore($store);
-        $customer = $this->objectManager
+
+        if (is_numeric($userId)) {
+            $customer = $this->objectManager
                 ->get('Magento\Customer\Model\Customer')
                 ->setStore($store)
                 ->load($userId);
-        if (is_numeric($userId)) {
             $quote = $quoteObject->loadByCustomer($customer);
+        }else{
+            $quote = $quoteObject->save();
         }
+
         if (is_null($quote->getId())) {
 
             try {
@@ -109,10 +154,13 @@ class BasketCollector extends BasketFill {
                 $this->_fault('invalid_data', $e->getMessage());
             }
         }
+
         return $this->setBasketByQuote($quote);
     }
 
     public function setBasketByQuote($quote) {
+
+        $payment = $this->getPaymentByBasket($quote);
 
         $this->setBasket((object) (array()));
         $this->setId($quote->getId());
@@ -123,7 +171,7 @@ class BasketCollector extends BasketFill {
         $this->setShippingTotal($this->getShippingTotalByBasket($quote));
         $this->setDiscountTotal($this->getDiscountTotalByBasket($quote));
         $this->setPaymentOptions($this->getPaymentMethodsByBasket($quote));
-        $this->setPayment($this->getPaymentByBasket($quote));
+        $this->setPayment($payment);
         $this->setItemsPriceTotal($this->getItemPriceTotalByBasket($quote));
         $this->setSubTotal($this->getItemSubTotalByBasket($quote));
         $this->setBeforeTaxTotal($this->getBeforeTaxTotalByBasket($quote));
@@ -140,7 +188,7 @@ class BasketCollector extends BasketFill {
         $this->setEstimatedSupplyDate($this->getEstimatedSupplyDateByBasket());
         $this->setIsGiftWrappingEnabled(false);
         $this->setGiftWrapping(null);
-        $this->setExpirationTime(null);
+        $this->setExpirationTime(0);
         $this->setErrorCode(null);
         $this->setMessage(null);
         $this->setUserFriendly(false);
@@ -167,19 +215,19 @@ class BasketCollector extends BasketFill {
         return $supplyDate;
     }
 
-    public function getPaymentFeeByBasket($fee = null) {
+    public function getPaymentFeeByBasket($fee = 0) {
         return $fee;
     }
 
-    public function getRewardPointsByBasket($points = null) {
+    public function getRewardPointsByBasket($points = 0) {
         return $points;
     }
 
-    public function getUsedPointsBasket($points = null) {
+    public function getUsedPointsBasket($points = 0) {
         return $points;
     }
 
-    public function getUsedPointsAmountByBasket($pointsAmount = null) {
+    public function getUsedPointsAmountByBasket($pointsAmount = 0) {
         return $pointsAmount;
     }
 
@@ -192,7 +240,9 @@ class BasketCollector extends BasketFill {
     }
 
     public function getSpentGiftChequeByBasket($quote) {
-        return $quote->getData('gift_cards_amount');
+        $giftCardsAmounts = $quote->getData('gift_cards_amount');
+        return $giftCardsAmounts== null ? 0: $giftCardsAmounts;
+
     }
 
     public function getGiftChequesByBasket($cheques = array()) {
@@ -204,37 +254,40 @@ class BasketCollector extends BasketFill {
     }
 
     public function getTotalByBasket($quote) {
-        return $quote->getData('grand_total');
+        $grandTotal = $quote->getData('grand_total');
+        return $grandTotal== null ? 0: $grandTotal;
     }
 
     public function getTaxTotalByBasket($quote) {
-        return null;
+        return 0;
     }
 
     public function getBeforeTaxTotalByBasket($quote) {
-        return null;
+        return 0;
     }
 
     public function getItemPriceTotalByBasket($quote) {
-        return $quote->getData('base_subtotal');
+        $baseTotal = $quote->getData('base_subtotal');
+        return $baseTotal== null ? 0: $baseTotal;
     }
 
     public function getItemSubTotalByBasket($quote) {
-        return ( $quote->getData('subtotal'));
+
+        $subTotal = $quote->getData('subtotal');
+        return $subTotal== null ? 0: $subTotal;
     }
 
     public function getPaymentMethodsByBasket($quote) {
-        $result = array();
-        return $result;
+        return (object)array();
     }
 
     public function getPaymentByBasket($quote) {
-        $result = array();
-        return $result;
+
+        return null;
     }
 
     public function getDeliveryByBasket($quote) {
-        return array();
+        return (object)array();
         $quoteBillingAddress = $quote->getBillingAddress();
 
         if ($quoteBillingAddress)
@@ -254,21 +307,27 @@ class BasketCollector extends BasketFill {
 
     public function getDiscountTotalByBasket($quote) {
         $quoteShippingAddress = $quote->getShippingAddress();
-        return $quoteShippingAddress->getData('discount_amount');
+        $result =  $quoteShippingAddress->getData('discount_amount');
+        return $result== null ? 0: $result;
     }
 
     public function getShippingTotalByBasket($quote) {
         $quoteShippingAddress = $quote->getShippingAddress();
-        return $quoteShippingAddress->getData('discount_amount');
+         $result =  $quoteShippingAddress->getData('discount_amount');
+        return $result== null ? 0: $result;
     }
 
     public function getShippingMethodByBasket($quote) {
         $shippingMethods = array();
         $quoteShippingAddress = $quote->getShippingAddress();
         if (isset($quoteShippingAddress)) {
+
             $quoteShippingAddress->collectShippingRates()->save();
+
             $groupedRates = $quoteShippingAddress->getGroupedAllShippingRates();
+
             foreach ($groupedRates as $carrierCode => $rates) {
+
                 foreach ($rates as $rate) {
                     $rateItem = array();
                     $rateItem['id'] = $rate->getData('code');
@@ -293,11 +352,11 @@ class BasketCollector extends BasketFill {
             $this->setQuantity($item->getData('qty'));
             $this->setPlacedPrice($item->getData('price'));
             $this->setPlacedPriceTotal($item->getData('row_total'));
-            $this->setExtendedPrice("");
-            $this->setExtendedPriceValue("");
-            $this->setExtendedPriceTotal("");
-            $this->setExtendedPriceTotalValue("");
-            $this->setStatus("");
+            $this->setExtendedPrice(0);
+            $this->setExtendedPriceValue(0);
+            $this->setExtendedPriceTotal(0);
+            $this->setExtendedPriceTotalValue(0);
+            $this->setStatus(0);
             $this->setStrikeoutPrice($this->getProduct()['strikeoutPrice']);
             $this->setAverageDeliveryDays("");
             $this->setVariants($this->getProduct()['variants']);

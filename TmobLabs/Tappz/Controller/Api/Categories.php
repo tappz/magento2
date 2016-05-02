@@ -18,7 +18,7 @@ class Categories extends Action
       $this->categoryRepository= $categoryRepository;
     }
     public function execute()
-    {    
+    {
          $result = $this->categoryRepository->getCategories();
         $this->jsonResult->setData($result);
         return $this->jsonResult;

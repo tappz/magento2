@@ -19,8 +19,8 @@ class UserAgreement extends Action
       $this->profileRepository= $profileRepository;
     }
     public function execute()
-    {    
-        
+    {
+
         $result = $this->profileRepository->getUserAgreement();
         $this->jsonResult->setData($result);
          return $this->jsonResult;

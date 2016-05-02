@@ -15,7 +15,7 @@ class ProfileRepository implements ProfileRepositoryInterface {
     }
 
     public function getUserAgreement() {
-        $result = $this->profileCollector->fillUserAgreement();
+        $result = $this->profileCollector->userAgreement();
         return $result;
     }
 

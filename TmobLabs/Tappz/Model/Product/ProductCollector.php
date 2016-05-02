@@ -15,7 +15,6 @@ class ProductCollector extends ProductFill  implements ProductInterface{
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
-        
         return $this->fillProduct();
     }
 

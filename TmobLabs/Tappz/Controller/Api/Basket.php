@@ -19,6 +19,7 @@ class Basket extends Action {
     }
 
     public function execute() {
+
         $params = ($this->getRequest()->getParams());
 
         $result = array ();
@@ -30,6 +31,7 @@ class Basket extends Action {
             $key = key($params);
             $param = ucfirst($params[key($params)]);
             $method = "get$param";
+
             if (method_exists($this->basketRepository, $method) ) {
                 $result = $this->basketRepository->{$method}($key);
             }

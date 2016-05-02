@@ -1,11 +1,11 @@
 <?php
 
-namespace TmobLabs\Tappz\Model\Location;
+namespace TmobLabs\Tappz\Model\Order;
 
-use TmobLabs\Tappz\API\Data\LocationInterface;
+use TmobLabs\Tappz\API\Data\OrderInterface;
 use Magento\Store\Model\StoreManagerInterface as StoreManagerInterface;
 
-class LocationCollector extends LocationFill implements LocationInterface {
+class OrderCollector extends OrderFill implements OrderInterface {
 
     protected $objectManager;
 

@@ -23,8 +23,10 @@ class Addresses extends Action {
 
     public function execute() {
         $method = $this->helper->getRequestMethod();
+
         switch ($method) {
             case "POST":
+
                 $result = $this->addressRepository->createAddress();
                 break;
             case "PUT":

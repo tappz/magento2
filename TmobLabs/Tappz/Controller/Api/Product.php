@@ -18,9 +18,9 @@ class Product extends Action
       $this->productRepository= $productRepository;
     }
     public function execute()
-    {    
+    {
         $params =  ($this->getRequest()->getParams());
-        
+        $result = array();
         if(count($params) > 0 && $params[key($params)] == "related" ){
                $productId = key($params);
                $result = $this->productRepository->getRelatedProduct($productId);

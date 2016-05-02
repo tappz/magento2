@@ -22,7 +22,7 @@ class Profile extends Action {
     }
 
     public function execute() {
-        
+
         $method = $this->helper->getRequestMethod();
         switch ($method) {
             case "GET":

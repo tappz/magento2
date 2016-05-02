@@ -28,7 +28,11 @@ class BasketRepository implements BasketRepositoryInterface {
         $result = $this->basketCollector->getLines($quoteId);
         return $result;
     }
- public function merge() {
+    public function getAddress($quoteId = null) {
+        $result = $this->basketCollector->setAddress($quoteId);
+        return $result;
+    }
+    public function merge() {
         $result = $this->basketCollector->merge();
         return $result;
     }
