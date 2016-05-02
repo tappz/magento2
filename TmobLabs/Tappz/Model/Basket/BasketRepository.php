@@ -23,6 +23,10 @@ class BasketRepository implements BasketRepositoryInterface {
         $result = $this->basketCollector->getUserBasket();
         return $result;
     }
+    public function getPayment($quoteId){
+        $result = $this->basketCollector->getBasketPayment($quoteId);
+        return $result;
+    }
 
     public function getLines($quoteId = null) {
         $result = $this->basketCollector->getLines($quoteId);

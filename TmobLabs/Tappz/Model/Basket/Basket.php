@@ -8,7 +8,7 @@ use Magento\Framework\Api\AbstractExtensibleObject;
 class Basket extends AbstractExtensibleObject implements BasketInterface {
 
     protected $basket;
-
+    protected $payment;
     public function getBasket() {
         return $this->product;
     }
@@ -428,6 +428,210 @@ class Basket extends AbstractExtensibleObject implements BasketInterface {
     public function setVariants($data) {
         $this->basket->variants = $data;
         return $this;
+    }
+
+    /****/
+    public function setMethodType($data) {
+        $this->payment->methodType = $data;
+        return $this;
+    }
+    public function setType($data) {
+        $this->payment->type = $data;
+        return $this;
+    }
+    public function setDisplayName($data) {
+        $this->payment->displayName = $data;
+        return $this;
+    }
+    public function setBankCode($data) {
+        $this->payment->bankCode = $data;
+        return $this;
+    }
+    public function setInstallment($data) {
+    $this->payment->installment = $data;
+    return $this;
+    }
+    public function setAccountNumber($data) {
+        $this->payment->accountNumber = $data;
+        return $this;
+    }
+    public function setBranch($data) {
+        $this->payment->branch = $data;
+        return $this;
+    }
+    public function setIban($data) {
+        $this->payment->iban = $data;
+        return $this;
+    }
+    public function setCreditCard($data) {
+        $this->payment->creditCard = $data;
+        return $this;
+    }
+    public function setCreditCardOwner($data) {
+        $this->basket->creditCard->owner = $data;
+        return $this;
+    }
+
+    public function setCreditCardNumber($data) {
+        $this->basket->creditCard->number = $data;
+        return $this;
+    }
+
+    public function setCreditCardMonth($data) {
+        $this->basket->creditCard->month = $data;
+        return $this;
+    }
+    public function setCreditCardYear($data) {
+        $this->basket->creditCard->year = $data;
+        return $this;
+    }
+    public function setCreditCardCvv($data) {
+        $this->basket->creditCard->ccv= $data;
+        return $this;
+    }
+    public function setCreditCardCvvType($data) {
+        $this->basket->creditCard->ccvType= $data;
+        return $this;
+    }
+    public function setCashOnDelivery($data) {
+        $this->basket->cashOnDelivery = $data;
+        return $this;
+    }
+    public function setCashOnDeliveryType($data) {
+        $this->basket->cashOnDelivery->type =  $data;
+        return $this;
+    }
+    public function setCashOnDeliveryDisplayName($data) {
+        $this->basket->cashOnDelivery->displayName = $data;
+        return $this;
+    }
+    public function setCashOnDeliveryAdditionalFee($data) {
+        $this->basket->cashOnDelivery->additionalFee = $data;
+        return $this;
+    }
+    public function setCashOnDeliveryDescription($data) {
+        $this->basket->cashOnDelivery->description = $data;
+        return $this;
+    }
+    public function setCashOnDeliveryIsSMSVerification($data) {
+        $this->basket->cashOnDelivery->isSMSVerification = $data;
+        return $this;
+    }
+    public function setCashOnDeliverySMSCode($data) {
+        $this->basket->cashOnDelivery->SMSCode = $data;
+        return $this;
+    }
+    public function setCashOnDeliveryPhoneNumber($data) {
+        $this->basket->cashOnDelivery->phoneNumber = $data;
+        return $this;
+    }
+
+    public function setClientId($data) {
+        $this->basket->cashOnDelivery->phoneNumber = $data;
+        return $this;
+
+    }
+    public function getMethodType() {
+        return $this->payment->methodType ;
+
+    }
+    public function getType() {
+        return $this->payment->type ;
+
+    }
+    public function getDisplayName() {
+        return $this->payment->displayName ;
+
+    }
+    public function getBankCode() {
+        return $this->payment->bankCode ;
+
+    }
+    public function getInstallment() {
+        return $this->payment->installment ;
+
+    }
+    public function getAccountNumber() {
+        return $this->payment->accountNumber ;
+
+    }
+    public function getBranch() {
+        return $this->payment->branch ;
+
+    }
+    public function getIban() {
+        return $this->payment->iban ;
+
+    }
+    public function getCreditCard() {
+        return $this->payment->creditCard ;
+
+    }
+    public function getCreditCardOwner() {
+        return $this->basket->creditCard->owner ;
+
+    }
+
+    public function getCreditCardNumber() {
+        return $this->payment->creditCard->number ;
+
+    }
+
+    public function getCreditCardMonth() {
+        return $this->payment->creditCard->month ;
+
+    }
+    public function getCreditCardYear() {
+        return $this->payment->creditCard->year ;
+
+    }
+    public function getCreditCardCvv() {
+        return $this->payment->creditCard->ccv;
+
+    }
+    public function getCreditCardCvvType() {
+        return $this->payment->creditCard->ccvType;
+
+    }
+    public function getCashOnDelivery() {
+        return $this->payment->cashOnDelivery ;
+
+    }
+    public function getCashOnDeliveryType() {
+        return $this->payment->cashOnDelivery->type  ;
+
+    }
+    public function getCashOnDeliveryDisplayName() {
+        return $this->payment->cashOnDelivery->displayName ;
+
+    }
+    public function getCashOnDeliveryAdditionalFee() {
+        return $this->payment->cashOnDelivery->additionalFee ;
+
+    }
+    public function getCashOnDeliveryDescription() {
+        return $this->payment->cashOnDelivery->description ;
+
+    }
+    public function getCashOnDeliveryIsSMSVerification() {
+        return $this->payment->cashOnDelivery->isSMSVerification ;
+
+    }
+    public function getCashOnDeliverySMSCode() {
+        return $this->payment->cashOnDelivery->SMSCode ;
+
+    }
+    public function getCashOnDeliveryPhoneNumber() {
+        return $this->payment->cashOnDelivery->phoneNumber ;
+
+    }
+
+    public function getPaypal() {
+        return $this->payment->paypal ;
+
+    }
+    public function getClientId() {
+        return $this->payment->payment->clienId ;
     }
 
 }
