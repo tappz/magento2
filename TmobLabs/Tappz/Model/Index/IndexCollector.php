@@ -3,7 +3,7 @@
 namespace TmobLabs\Tappz\Model\Index;
 
 use TmobLabs\Tappz\Model\Category\CategoryRepository as CategoryRepository;
-use TmobLabs\Tappz\Model\Product\ProductRepository as ProductRepository;
+use TmobLabs\Tappz\Model\Product\ProductCollector;
 use TmobLabs\Tappz\API\Data\IndexInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -13,14 +13,14 @@ class IndexCollector extends IndexFill implements IndexInterface {
 
     private $_categoryFactory;
     public $categoryRepository;
-    public $productRepository;
+    public $productCollector;
 
     public function __construct(
-    StoreManagerInterface $storeManager, CategoryRepository $categoryRepository, ProductRepository $productRepository, CategoryFactory $categoryFactory
+    StoreManagerInterface $storeManager, CategoryRepository $categoryRepository, ProductCollector $productCollector, CategoryFactory $categoryFactory
     ) {
         parent::__construct($storeManager);
         $this->categoryRepository = $categoryRepository;
-        $this->productRepository = $productRepository;
+        $this->productCollector = $productCollector;
         $this->_categoryFactory = $categoryFactory;
     }
 
@@ -34,12 +34,11 @@ class IndexCollector extends IndexFill implements IndexInterface {
             $image = null;
             $collection = $this->getCategoryProducts($id);
             foreach ($collection as $_product) {
-                $items[] = $this->productRepository->getById($_product->getId());
+                $items[] = $this->productCollector->getProduct($_product->getId());
             }
             if(count($items)>0 ){
                 $groups[] = $this->fillGroups($name, $image, $items);
             }
-            
         }
         $this->setGroups( $groups);
         $action = $this->fillActions();

@@ -1,8 +1,7 @@
 <?php
 
 namespace TmobLabs\Tappz\API\Data;
-use Magento\Framework\Api\CustomAttributesDataInterface;
-interface LinesInterface extends CustomAttributesDataInterface
+interface LinesInterface
 {
     /**
      * @return string
@@ -13,47 +12,47 @@ interface LinesInterface extends CustomAttributesDataInterface
      */
     public function getProduct();
     /**
-     * @return string 
+     * @return string
      */
       public function getQuantity();
         /**
-     * @return string 
+     * @return string
      */
       public function getPlacedPrice();
         /**
-     * @return string 
+     * @return string
      */
       public function getPlacedPriceTotal();
         /**
-     * @return string 
+     * @return string
      */
       public function getExtendedPrice();
         /**
-     * @return string 
+     * @return string
      */
       public function getExtendedPriceValue();
            /**
-     * @return string 
+     * @return string
      */
       public function getExtendedPriceTotal();
            /**
-     * @return string 
+     * @return string
      */
       public function getExtendedPriceTotalValue();
            /**
-     * @return string 
+     * @return string
      */
       public function getStrikeoutPrice();
            /**
-     * @return string 
+     * @return string
      */
       public function getStatus();
            /**
-     * @return string 
+     * @return string
      */
       public function getAverageDeliveryDays();
       /**
-       * @return string 
+       * @return string
        */
       public function variants();
 }

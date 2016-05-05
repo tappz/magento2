@@ -31,14 +31,15 @@
                 type="TmobLabs\Tappz\Model\Data\Address" />
     <preference for="TmobLabs\Tappz\API\AddressRepositoryInterface"
                 type="TmobLabs\Tappz\Model\Address\AddressRepository" />
-
     <preference for="TmobLabs\Tappz\API\Data\BasketInterface"
                    type="TmobLabs\Tappz\Model\Data\Basket" />
     <preference for="TmobLabs\Tappz\API\BasketRepositoryInterface"
                 type="TmobLabs\Tappz\Model\Basket\BasketRepository" />
-
     <preference for="TmobLabs\Tappz\API\Data\OrderInterface"
                 type="TmobLabs\Tappz\Model\Data\Order" />
     <preference for="TmobLabs\Tappz\API\OrderRepositoryInterface"
                 type="TmobLabs\Tappz\Model\Order\OrderRepository" />
+    <preference for="TmobLabs\Tappz\API\Data\PurchaseInterface"
+                type="TmobLabs\Tappz\Model\Data\Purchase" />
+
 </config>

@@ -4,7 +4,21 @@
         <tab id="tappz_tab" translate="label" >
             <label>T-appz</label>
         </tab>
-        <section id="tappzpaypal" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappztoken" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Tappz Token Generator </label>
+            <tab>tappz_tab</tab>
+            <resource>TmobLabs_Tappz::config</resource>
+            <group id="tappzusernmamethod" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="tappzusername" translate="label" type="text" sortOrder="10" showInDefault="1" >
+                    <label>Tappz User Name</label>
+                </field>
+                <field id="tappzsecretkey" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Tappz  User Token Key </label>
+                </field>
+
+            </group>
+        </section>
+        <section id="tappzpaypal" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Paypal </label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
@@ -21,7 +35,7 @@
                 </field>
             </group>
         </section>
-        <section id="tappzstripe" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzstripe" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Stripe </label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
@@ -38,7 +52,7 @@
                 </field>
             </group>
         </section>
-        <section id="tappzcustomer" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzcustomer" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Customer Attributes  </label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
@@ -61,7 +75,7 @@
                 </field>
             </group>
         </section>
-        <section id="tappzaddress" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzaddress" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Address Attributes  </label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
@@ -152,7 +166,7 @@
                 </field>
         </group>
         </section>
-        <section id="tappzpayment" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzpayment" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Credit Cards  </label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
@@ -163,7 +177,7 @@
                 </field>
             </group>
         </section>
-        <section id="tappzagreement" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzagreement" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>User Agreement</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>

@@ -43,6 +43,7 @@ class ProductFill extends Product {
             "ErrorCode" => $this->getErrorCode(),
             "Message" => $this->getMessage(),
         ];
+
     }
     public function fillProductSearch($totalResultCount, $pageNumber, $pageSize ,$products ,$filters =array() ,$sortList =  array() ,$categories=  array()) {
 

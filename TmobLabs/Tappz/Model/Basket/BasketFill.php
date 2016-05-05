@@ -67,6 +67,15 @@ class BasketFill extends Basket {
             "variants" => $this->getVariants(),
         ];
     }
+    public function fillContract(){
+        return [
+            'contract' => $this->getContractData(),
+            'shippingContract' => $this->getShippingContract(),
+            "ErrorCode" => $this->getErrorCode(),
+            "Message" => $this->getMessage(),
+            "UserFriendly" => $this->getUserFriendly(),
+        ];
+    }
 
     public function fillDiscounts() {
         return [

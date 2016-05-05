@@ -61,7 +61,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
     public function getActions() {
          $actions = $this->fillActions();
          return !empty($actions->type)? $actions : null;
-              
+
     }
 
     public function getFeatures() {
@@ -108,16 +108,9 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
     }
 
     public function getPicture() {
-        $result = $this->product->getImageUrl();
-        if (!isset($result)) {
-            $images = $this->product->getMediaGalleryImages();
-            $response = array();
-            foreach ($images as $image) {
-                $response[] = $image->getUrl();
-            }
-            $result = count($response[0]) && !empty($response[0]) > 0 ? $response[0] : "";
-        }
-        return $result;
+        $baseUrl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        $result = $this->product->getImage();
+        return $baseUrl."catalog/product".$result;
     }
 
     public function getPictures() {
@@ -128,7 +121,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
             if (count($images) > 0) {
                 foreach ($images as $image) {
                     $result[]['url'] = $image->getUrl();
-                  
+
                 }
             } else {
                 $result[0]['url'] = $this->product->getImageUrl($this->product);
@@ -163,7 +156,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
     }
 
     public function getBackInStockSubSelectedVariant() {
-       
+
         return array();
     }
 
@@ -229,7 +222,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface {
                   "rangeEnd" => "string",
                   "FilterType" => "string",
                   "items" =>[
-                      
+
                   ]
            ];
     }

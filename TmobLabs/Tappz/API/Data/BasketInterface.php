@@ -2,14 +2,15 @@
 
 namespace TmobLabs\Tappz\API\Data;
 
-use Magento\Framework\Api\CustomAttributesDataInterface;
 
-interface BasketInterface extends CustomAttributesDataInterface {
+interface BasketInterface  {
 
     public function getId();
 
     public function getLines($quoteID);
+
     public function getLine();
+
     public function getShippingMethods();
 
     public function getDelivery();

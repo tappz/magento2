@@ -9,6 +9,8 @@ class Basket extends AbstractExtensibleObject implements BasketInterface {
 
     protected $basket;
     protected $payment;
+    protected $contract;
+    protected $purchase;
     public function getBasket() {
         return $this->product;
     }
@@ -633,5 +635,27 @@ class Basket extends AbstractExtensibleObject implements BasketInterface {
     public function getClientId() {
         return $this->payment->payment->clienId ;
     }
+    public function getContract(){
+        return $this->contract ;
+    }
+    public function getContractData(){
+        return $this->contract->data ;
+    }
+    public function getShippingContract(){
+        return $this->contract->shippingContract ;
+    }
+    public function setContract($data){
+        $result = $this->contract = (object)array() ;
 
+        return $result;
+    }
+    public function setContractData($data){
+        $result = $this->contract->data = $data ;
+        return $result;
+    }
+    public function setShippingContract($data){
+
+        $result = $this->contract->shippingContract = $data;
+        return $result;
+    }
 }

@@ -1,8 +1,7 @@
 <?php
 namespace TmobLabs\Tappz\API\Data;
 
-use Magento\Framework\Api\CustomAttributesDataInterface;
-interface IndexInterface extends CustomAttributesDataInterface{
+interface IndexInterface {
     /**
      *  Return array 
      */

@@ -14,11 +14,12 @@ class ProductCollector extends ProductFill  implements ProductInterface{
     public function getProduct($productId) {
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+        $product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+        $this->setProduct($product);
         return $this->fillProduct();
     }
 
-   
+
     public function getProductBySku($barcode) {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $productId = $objectManager->get('Magento\Catalog\Model\Product')->getIdBySku($barcode);

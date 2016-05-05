@@ -96,13 +96,8 @@ class Index extends AbstractExtensibleObject implements IndexInterface {
             'categoryId' => $categoryId
         ];
     }
- 
-    private function setCategories(CategoryRepository $categories){
-           $this->categories = $categories->getCategories();
-           return $this; 
-    }
-    private function getCategories(){
-           return $this->categories ;
-          
+    public function setAction($data){
+        $this->adsAction = $data;
+        return $this;
     }
 }

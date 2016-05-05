@@ -1,9 +1,7 @@
 <?php
-
 namespace TmobLabs\Tappz\API\Data;
 
-use Magento\Framework\Api\CustomAttributesDataInterface;
-interface ProfileInterface extends CustomAttributesDataInterface
+interface ProfileInterface
 {
       /**
      * @return string
