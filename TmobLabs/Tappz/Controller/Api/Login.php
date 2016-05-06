@@ -7,26 +7,28 @@ use Magento\Framework\App\Action\Context as Context;
 use Magento\Framework\Controller\Result\JsonFactory as JSON;
 use TmobLabs\Tappz\API\ProfileRepositoryInterface;
 
-class Login extends Action {
+class Login extends Action
+{
 
-    protected $jsonResult;
-    private $profileRepository;
+	protected $jsonResult;
+	private $profileRepository;
 
-    public function __construct(Context $context, JSON $json, ProfileRepositoryInterface $profileRepository) {
-        parent::__construct($context);
-        $this->jsonResult = $json->create();
+	public function __construct(Context $context, JSON $json, ProfileRepositoryInterface $profileRepository)
+	{
+		parent::__construct($context);
+		$this->jsonResult = $json->create();
 
-        $this->profileRepository = $profileRepository;
-    }
+		$this->profileRepository = $profileRepository;
+	}
 
-    public function execute() {
+	public function execute()
+	{
 
 
+		$result = $this->profileRepository->login();
 
-        $result = $this->profileRepository->login();
-
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
-    }
+		$this->jsonResult->setData($result);
+		return $this->jsonResult;
+	}
 
 }

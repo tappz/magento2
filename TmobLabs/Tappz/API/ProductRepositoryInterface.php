@@ -2,13 +2,14 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface ProductRepositoryInterface {
+interface ProductRepositoryInterface
+{
 
-    public function getById($productId);
+	public function getById($productId);
 
-    public function getByBarcode($productId);
+	public function getByBarcode($productId);
 
-    public function getProductSearch($params);
+	public function getProductSearch($params);
 
-    public function getRelatedProduct($productId);
+	public function getRelatedProduct($productId);
 }

@@ -2,26 +2,26 @@
 
 namespace TmobLabs\Tappz\Model\Index;
 
-use TmobLabs\Tappz\Model\Index\Index;
+class IndexFill extends Index
+{
 
-class IndexFill extends Index {
+	protected $_storeManager;
 
-    protected $_storeManager;
+	public function __construct(
+		\Magento\Store\Model\StoreManagerInterface $storeManager
+	) {
+		$this->_storeManager = $storeManager;
+	}
 
-    public function __construct(
-    \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
-        $this->_storeManager = $storeManager;
-    }
-
-    public function fillIndex() {
-        return [
-            'groups' => $this->getGroups(),
-            'ads' => $this->getAds(),
-            'ErrorCode' => $this->getErrorCode(),
-            'Message' => $this->getMessage(),
-            'UserFriendly' => $this->getUserFriendly(),
-        ];
-    }
+	public function fillIndex()
+	{
+		return [
+			'groups' => $this->getGroups(),
+			'ads' => $this->getAds(),
+			'ErrorCode' => $this->getErrorCode(),
+			'Message' => $this->getMessage(),
+			'UserFriendly' => $this->getUserFriendly(),
+		];
+	}
 
 }

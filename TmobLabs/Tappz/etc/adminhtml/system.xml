@@ -1,189 +1,204 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="tappz_tab" translate="label" >
+        <tab id="tappz_tab" translate="label">
             <label>T-appz</label>
         </tab>
-        <section id="tappztoken" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Tappz Token Generator </label>
+        <section id="tappztoken" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Tappz Token Generator</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzusernmamethod" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="tappzusername" translate="label" type="text" sortOrder="10" showInDefault="1" >
+            <group id="tappzusernmamethod" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="tappzusername" translate="label" type="text" sortOrder="10" showInDefault="1">
                     <label>Tappz User Name</label>
                 </field>
                 <field id="tappzsecretkey" translate="label" type="text" sortOrder="20" showInDefault="1">
-                    <label>Tappz  User Token Key </label>
+                    <label>Tappz User Token Key</label>
                 </field>
 
             </group>
         </section>
-        <section id="tappzpaypal" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Paypal </label>
+        <section id="tappzpaypal" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Paypal</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzpaypalmethod" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="paypalClientId" translate="label" type="text" sortOrder="20" showInDefault="1" >
-                    <label>Paypal  Client Id</label>
+            <group id="tappzpaypalmethod" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="paypalClientId" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Paypal Client Id</label>
                 </field>
                 <field id="paypalSecretKey" translate="label" type="text" sortOrder="20" showInDefault="1">
-                    <label>Paypal  Secret Key </label>
+                    <label>Paypal Secret Key</label>
                 </field>
-                <field id="paypalSandbox" translate="label" type="select" sortOrder="20" showInDefault="1" >
-                    <label>Sandbox </label>
+                <field id="paypalSandbox" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Sandbox</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
         </section>
-        <section id="tappzstripe" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Stripe </label>
+        <section id="tappzstripe" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Stripe</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzstripemethod" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="stripetestsecret" translate="label" type="text" sortOrder="20" showInDefault="1" >
-                    <label>Stripe   Secret  </label>
+            <group id="tappzstripemethod" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="stripetestsecret" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Stripe Secret</label>
                 </field>
                 <field id="stripesecret" translate="label" type="text" sortOrder="20" showInDefault="1">
-                    <label>Stripe Test  Secret  </label>
+                    <label>Stripe Test Secret</label>
                 </field>
-                <field id="stripetest" translate="label" type="select" sortOrder="20" showInDefault="1" >
-                    <label>Stripe Test </label>
+                <field id="stripetest" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Stripe Test</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
         </section>
-        <section id="tappzcustomer" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Customer Attributes  </label>
+        <section id="tappzcustomer" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Customer Attributes</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzcustomerform" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="tappzcustomerbirthdate" translate="label" type="select" sortOrder="5" showInDefault="1" >
-                    <label>Birthdate Attribute  </label>
+            <group id="tappzcustomerform" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="tappzcustomerbirthdate" translate="label" type="select" sortOrder="5" showInDefault="1">
+                    <label>Birthdate Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Customer</source_model>
                 </field>
-                <field id="tappzcustomerphone" translate="label" type="select" sortOrder="10" showInDefault="1" >
+                <field id="tappzcustomerphone" translate="label" type="select" sortOrder="10" showInDefault="1">
                     <label>Phone Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Customer</source_model>
                 </field>
-                <field id="tappzcustomeremail" translate="label" type="select" sortOrder="15" showInDefault="1" >
-                    <label>Email Attribute  </label>
+                <field id="tappzcustomeremail" translate="label" type="select" sortOrder="15" showInDefault="1">
+                    <label>Email Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Customer</source_model>
                 </field>
-                <field id="tappzcustomergender" translate="label" type="select" sortOrder="20" showInDefault="1" >
-                    <label>Gender Attribute </label>
+                <field id="tappzcustomergender" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Gender Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Customer</source_model>
                 </field>
             </group>
         </section>
-        <section id="tappzaddress" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Address Attributes  </label>
+        <section id="tappzaddress" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Address Attributes</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzaddressesform" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-            <field id="tappzaddressname" translate="label" type="select" sortOrder="10" showInDefault="1" >
-                <label>Address Name  </label>
-                <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
-            </field>
-            <field id="tappzaddressfirstname" translate="label" type="select" sortOrder="15" showInDefault="1" >
-                    <label>First Name Attribute  </label>
-                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
-            </field>
-             <field id="tappzaddresslastname" translate="label" type="select" sortOrder="20" showInDefault="1" >
-                    <label>Last Name Attribute</label>
-                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
-             </field>
-                <field id="tappzaddressemail" translate="label" type="select" sortOrder="25" showInDefault="1" >
-                    <label>Email Attribute </label>
+            <group id="tappzaddressesform" translate="label" type="text" sortOrder="5" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="tappzaddressname" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Address Name</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressstreet" translate="label" type="select" sortOrder="30" showInDefault="1" >
+                <field id="tappzaddressfirstname" translate="label" type="select" sortOrder="15" showInDefault="1">
+                    <label>First Name Attribute</label>
+                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
+                </field>
+                <field id="tappzaddresslastname" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Last Name Attribute</label>
+                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
+                </field>
+                <field id="tappzaddressemail" translate="label" type="select" sortOrder="25" showInDefault="1">
+                    <label>Email Attribute</label>
+                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
+                </field>
+                <field id="tappzaddressstreet" translate="label" type="select" sortOrder="30" showInDefault="1">
                     <label>Street Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscountry" translate="label" type="select" sortOrder="35" showInDefault="1" >
+                <field id="tappzaddresscountry" translate="label" type="select" sortOrder="35" showInDefault="1">
                     <label>Country Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressregion" translate="label" type="select" sortOrder="40" showInDefault="1" >
+                <field id="tappzaddressregion" translate="label" type="select" sortOrder="40" showInDefault="1">
                     <label>State/Province Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressregionid" translate="label" type="select" sortOrder="45" showInDefault="1" >
+                <field id="tappzaddressregionid" translate="label" type="select" sortOrder="45" showInDefault="1">
                     <label>State/Province Id Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscity" translate="label" type="select" sortOrder="50" showInDefault="1" >
-                    <label>City  Attribute</label>
+                <field id="tappzaddresscity" translate="label" type="select" sortOrder="50" showInDefault="1">
+                    <label>City Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscityid" translate="label" type="select" sortOrder="55" showInDefault="1" >
-                    <label>City  ID Attribute</label>
+                <field id="tappzaddresscityid" translate="label" type="select" sortOrder="55" showInDefault="1">
+                    <label>City ID Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressdistrict" translate="label" type="select" sortOrder="50" showInDefault="1" >
-                    <label>District  Attribute</label>
+                <field id="tappzaddressdistrict" translate="label" type="select" sortOrder="50" showInDefault="1">
+                    <label>District Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressdistrictid" translate="label" type="select" sortOrder="55" showInDefault="1" >
-                    <label>District  ID Attribute</label>
+                <field id="tappzaddressdistrictid" translate="label" type="select" sortOrder="55" showInDefault="1">
+                    <label>District ID Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresstown" translate="label" type="select" sortOrder="60" showInDefault="1" >
-                    <label>Town Attribute </label>
+                <field id="tappzaddresstown" translate="label" type="select" sortOrder="60" showInDefault="1">
+                    <label>Town Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresstownid" translate="label" type="select" sortOrder="65" showInDefault="1" >
+                <field id="tappzaddresstownid" translate="label" type="select" sortOrder="65" showInDefault="1">
                     <label>Town Id Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressiscompany" translate="label" type="select" sortOrder="70" showInDefault="1" >
+                <field id="tappzaddressiscompany" translate="label" type="select" sortOrder="70" showInDefault="1">
                     <label>Is Company Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscompany" translate="label" type="select" sortOrder="75" showInDefault="1" >
+                <field id="tappzaddresscompany" translate="label" type="select" sortOrder="75" showInDefault="1">
                     <label>Company Name Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappztaxdepartmentattribute" translate="label" type="select" sortOrder="80" showInDefault="1" >
+                <field id="tappztaxdepartmentattribute" translate="label" type="select" sortOrder="80"
+                       showInDefault="1">
                     <label>Tax Department Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzvatno" translate="label" type="select" sortOrder="85" showInDefault="1" >
+                <field id="tappzvatno" translate="label" type="select" sortOrder="85" showInDefault="1">
                     <label>Tax No Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzphone" translate="label" type="select" sortOrder="90" showInDefault="1" >
-                    <label>Phone Attribute </label>
+                <field id="tappzphone" translate="label" type="select" sortOrder="90" showInDefault="1">
+                    <label>Phone Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzidno" translate="label" type="select" sortOrder="95" showInDefault="1" >
+                <field id="tappzidno" translate="label" type="select" sortOrder="95" showInDefault="1">
                     <label>Identity Number Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzpostcode" translate="label" type="select" sortOrder="100" showInDefault="1" >
+                <field id="tappzpostcode" translate="label" type="select" sortOrder="100" showInDefault="1">
                     <label>Postal Code Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-        </group>
+            </group>
         </section>
-        <section id="tappzpayment" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Credit Cards  </label>
+        <section id="tappzpayment" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Credit Cards</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzcreditcard" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="tappzcreditcardmethod" translate="label" type="select" sortOrder="20" showInDefault="1" >
-                    <label>Payment Methods  </label>
+            <group id="tappzcreditcard" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <field id="tappzcreditcardmethod" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Payment Methods</label>
                     <source_model>TmobLabs\Tappz\Model\System\Payment</source_model>
                 </field>
             </group>
         </section>
-        <section id="tappzagreement" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tappzagreement" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
             <label>User Agreement</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="useragreement" translate="label" type="text" sortOrder="10" showInDefault="1"  >
+            <group id="useragreement" translate="label" type="text" sortOrder="10" showInDefault="1">
                 <label>User Agreement</label>
-                <field id="agreement" translate="label" type="textarea" sortOrder="50" showInDefault="1"  >
+                <field id="agreement" translate="label" type="textarea" sortOrder="50" showInDefault="1">
                 </field>
             </group>
         </section>

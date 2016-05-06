@@ -2,7 +2,8 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface OrderRepositoryInterface {
+interface OrderRepositoryInterface
+{
 
 
 }

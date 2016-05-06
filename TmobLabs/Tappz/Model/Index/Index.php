@@ -2,102 +2,122 @@
 
 namespace TmobLabs\Tappz\Model\Index;
 
-use TmobLabs\Tappz\API\Data\IndexInterface;
 use Magento\Framework\Api\AbstractExtensibleObject;
-use TmobLabs\Tappz\Model\Category\CategoryRepository as  CategoryRepository;
-class Index extends AbstractExtensibleObject implements IndexInterface {
+use TmobLabs\Tappz\API\Data\IndexInterface;
 
-    protected $index;
-    protected $items;
-    protected $ads;
-    protected $adsAction;
-    protected $groups;
-    protected $categories;
+class Index extends AbstractExtensibleObject implements IndexInterface
+{
 
-    public function setGroups($groups) {
-       $this->groups = $groups;
-        return $this;
-    }
+	protected $index;
+	protected $items;
+	protected $ads;
+	protected $adsAction;
+	protected $groups;
+	protected $categories;
 
-    public function getGroups() {
-        return $this->groups;
-    }
+	public function setGroups($groups)
+	{
+		$this->groups = $groups;
+		return $this;
+	}
 
-    public function getMessage() {
-        return null;
-    }
+	public function getGroups()
+	{
+		return $this->groups;
+	}
 
-    public function getUserFriendly() {
-        return false;
-    }
+	public function getMessage()
+	{
+		return null;
+	}
 
-    public function getErrorCode() {
-        return null;
-    }
+	public function getUserFriendly()
+	{
+		return false;
+	}
 
-    public function getIndex() {
-        return $this->index;
-    }
+	public function getErrorCode()
+	{
+		return null;
+	}
 
-    public function getItems() {
-        return$this->items;
-    }
+	public function getIndex()
+	{
+		return $this->index;
+	}
 
-    public function getAds() {
-        return $this->ads;
-    }
+	public function getItems()
+	{
+		return $this->items;
+	}
 
-    public function getAdsAction() {
-        return $this->adsAction;
-    }
+	public function getAds()
+	{
+		return $this->ads;
+	}
 
-    public function setIndex($index) {
-        $this->index = $index;
-        return $this;
-    }
+	public function getAdsAction()
+	{
+		return $this->adsAction;
+	}
 
-    public function setItems($item) {
-        $this->items = $item;
-        return $this;
-    }
+	public function setIndex($index)
+	{
+		$this->index = $index;
+		return $this;
+	}
 
-    public function setAds($ads) {
-        $this->ads = $ads;
-        return $this;
-    }
+	public function setItems($item)
+	{
+		$this->items = $item;
+		return $this;
+	}
 
-    public function setAdsAction($adsAction) {
-        $this->adsAction = $adsAction;
-        return $this;
-    }
-   public function fillGroups($displayName = "", $image = "", $items = array()) {
-        return [
-            'displayName' => $displayName,
-            'image' => $image,
-            'items' => $items
-        ];
-    }
+	public function setAds($ads)
+	{
+		$this->ads = $ads;
+		return $this;
+	}
 
-    public function fillAds($displayName = "", $image = "", $action = array()) {
-        return [
-            'displayName' => $displayName,
-            'image' => $image,
-            'action' => $action
-        ];
-    }
+	public function setAdsAction($adsAction)
+	{
+		$this->adsAction = $adsAction;
+		return $this;
+	}
 
-    public function fillActions($type = "", $image = "", $text = "", $productId = "", $href = "", $categoryId = "") {
-        return [
-            'type' => $type,
-            'image' => $image,
-            'text' => $text,
-            'productId' => $productId,
-            'href' => $href,
-            'categoryId' => $categoryId
-        ];
-    }
-    public function setAction($data){
-        $this->adsAction = $data;
-        return $this;
-    }
+	public function fillGroups($displayName = "", $image = "", $items = array())
+	{
+		return [
+			'displayName' => $displayName,
+			'image' => $image,
+			'items' => $items
+		];
+	}
+
+	public function fillAds($displayName = "", $image = "", $action = array())
+	{
+		return [
+			'displayName' => $displayName,
+			'image' => $image,
+			'action' => $action
+		];
+	}
+
+	public function fillActions($type = "", $image = "", $text = "", $productId = "", $href = "", $categoryId = "")
+	{
+		return [
+			'type' => $type,
+			'image' => $image,
+			'text' => $text,
+			'productId' => $productId,
+			'href' => $href,
+			'categoryId' => $categoryId
+		];
+	}
+
+	public function setAction($data)
+	{
+		$this->adsAction = $data;
+		return $this;
+	}
 }

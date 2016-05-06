@@ -7,25 +7,26 @@ use Magento\Framework\App\Action\Context as Context;
 use Magento\Framework\Controller\Result\JsonFactory as JSON;
 use TmobLabs\Tappz\API\BasketRepositoryInterface;
 
-class MergeBasket extends Action {
+class MergeBasket extends Action
+{
 
-    protected $jsonResult;
-    private $basketRepository;
+	protected $jsonResult;
+	private $basketRepository;
 
-    public function __construct(Context $context, JSON $json, BasketRepositoryInterface $basketRepository) {
-        parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->basketRepository = $basketRepository;
-    }
+	public function __construct(Context $context, JSON $json, BasketRepositoryInterface $basketRepository)
+	{
+		parent::__construct($context);
+		$this->jsonResult = $json->create();
+		$this->basketRepository = $basketRepository;
+	}
 
-    public function execute() {
+	public function execute()
+	{
 
 
-
-
-        $result = $this->basketRepository->merge();
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
-    }
+		$result = $this->basketRepository->merge();
+		$this->jsonResult->setData($result);
+		return $this->jsonResult;
+	}
 
 }

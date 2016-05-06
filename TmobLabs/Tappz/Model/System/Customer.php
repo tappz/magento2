@@ -1,13 +1,16 @@
 <?php
-namespace  TmobLabs\Tappz\Model\System;
+namespace TmobLabs\Tappz\Model\System;
 
-class Customer implements \Magento\Framework\Option\ArrayInterface {
+class Customer implements \Magento\Framework\Option\ArrayInterface
+{
 
 	private $storeHelper;
+
 	public function __construct(\Magento\Payment\Helper\Data $storeHelper)
 	{
 		$this->storeHelper = $storeHelper;
 	}
+
 	public function toOptionArray()
 	{
 
@@ -18,7 +21,10 @@ class Customer implements \Magento\Framework\Option\ArrayInterface {
 		$attributes = $objectManager->get('Magento\Customer\Model\Customer')->getAttributes();
 		foreach ($attributes as $attribute) {
 			if ($attribute->getIsVisible()) {
-				$options[] = array('value' => $attribute->getAttributeCode(), 'label' => $attribute->getFrontendLabel());
+				$options[] = array(
+					'value' => $attribute->getAttributeCode(),
+					'label' => $attribute->getFrontendLabel()
+				);
 			}
 		}
 

@@ -2,9 +2,10 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface CategoryRepositoryInterface {
+interface CategoryRepositoryInterface
+{
 
-    public function getCategories();
+	public function getCategories();
 
-    public function getByCategoryById($productId);
+	public function getByCategoryById($productId);
 }

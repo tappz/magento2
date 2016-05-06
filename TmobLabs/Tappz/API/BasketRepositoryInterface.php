@@ -2,6 +2,7 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface BasketRepositoryInterface {
- 
+interface BasketRepositoryInterface
+{
+
 }

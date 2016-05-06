@@ -7,23 +7,26 @@ use Magento\Framework\App\Action\Context as Context;
 use Magento\Framework\Controller\Result\JsonFactory as JSON;
 use TmobLabs\Tappz\API\LocationRepositoryInterface as LocationRepositoryInterface;
 
-class Districts extends Action {
+class Districts extends Action
+{
 
-    protected $jsonResult;
-    private $locationRepository;
+	protected $jsonResult;
+	private $locationRepository;
 
-    public function __construct(Context $context, JSON $json, LocationRepositoryInterface $locationRepository) {
-        parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->locationRepository = $locationRepository;
-    }
+	public function __construct(Context $context, JSON $json, LocationRepositoryInterface $locationRepository)
+	{
+		parent::__construct($context);
+		$this->jsonResult = $json->create();
+		$this->locationRepository = $locationRepository;
+	}
 
-    public function execute() {
-        $params = ($this->getRequest()->getParams());
-        $cityId = key($params);
-        $result = $this->locationRepository->getDistricts($cityId);
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
-    }
+	public function execute()
+	{
+		$params = ($this->getRequest()->getParams());
+		$cityId = key($params);
+		$result = $this->locationRepository->getDistricts($cityId);
+		$this->jsonResult->setData($result);
+		return $this->jsonResult;
+	}
 
 }

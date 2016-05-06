@@ -2,15 +2,16 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface LocationRepositoryInterface {
+interface LocationRepositoryInterface
+{
 
-    public function getCountries();
+	public function getCountries();
 
-    public function getStates($countryId);
+	public function getStates($countryId);
 
-    public function getCities($countryId);
+	public function getCities($countryId);
 
-    public function getDistricts($citdyId);
+	public function getDistricts($citdyId);
 
-    public function getTowns($districtId);
+	public function getTowns($districtId);
 }

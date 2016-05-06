@@ -3,63 +3,64 @@
 namespace TmobLabs\Tappz\API\Data;
 
 
-interface BasketInterface  {
+interface BasketInterface
+{
 
-    public function getId();
+	public function getId();
 
-    public function getLines($quoteID);
+	public function getLines($quoteID);
 
-    public function getLine();
+	public function getLine();
 
-    public function getShippingMethods();
+	public function getShippingMethods();
 
-    public function getDelivery();
+	public function getDelivery();
 
-    public function getPaymentOptions();
+	public function getPaymentOptions();
 
-    public function getPayment();
+	public function getPayment();
 
-    public function getCurrency();
+	public function getCurrency();
 
-    public function getItemsPriceTotal();
+	public function getItemsPriceTotal();
 
-    public function getSubTotal();
+	public function getSubTotal();
 
-    public function getBeforeTaxTotal();
+	public function getBeforeTaxTotal();
 
-    public function getTaxTotal();
+	public function getTaxTotal();
 
-    public function getShippingTotal();
+	public function getShippingTotal();
 
-    public function getTotal();
+	public function getTotal();
 
-    public function getErrors();
+	public function getErrors();
 
-    public function getGiftCheques();
+	public function getGiftCheques();
 
-    public function getSpentGiftChequeTotal();
+	public function getSpentGiftChequeTotal();
 
-    public function getDiscounts();
+	public function getDiscounts();
 
-    public function getUsedPoints();
+	public function getUsedPoints();
 
-    public function getUsedPointsAmount();
+	public function getUsedPointsAmount();
 
-    public function getRewardPoints();
+	public function getRewardPoints();
 
-    public function getPaymentFee();
+	public function getPaymentFee();
 
-    public function getEstimatedSupplyDate();
+	public function getEstimatedSupplyDate();
 
-    public function getIsGiftWrappingEnabled();
+	public function getIsGiftWrappingEnabled();
 
-    public function getGiftWrapping();
+	public function getGiftWrapping();
 
-    public function getExpirationTime();
+	public function getExpirationTime();
 
-    public function getErrorCode();
+	public function getErrorCode();
 
-    public function getMessage();
+	public function getMessage();
 
-    public function getUserFriendly();
+	public function getUserFriendly();
 }

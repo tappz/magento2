@@ -2,119 +2,148 @@
 
 namespace TmobLabs\Tappz\Model\Profile;
 
-use TmobLabs\Tappz\API\Data\ProfileInterface;
 use Magento\Framework\Api\AbstractExtensibleObject;
+use TmobLabs\Tappz\API\Data\ProfileInterface;
 
-class Profile extends AbstractExtensibleObject implements ProfileInterface {
+class Profile extends AbstractExtensibleObject implements ProfileInterface
+{
 
-    protected $profile;
-    protected $address;
-    protected $userAgreement;
-    public function getId() {
-        return $this->profile->getID();
-    }
+	protected $profile;
+	protected $address;
+	protected $userAgreement;
 
-    public function getAccessToken() {
-        return $this->profile->accessToken;
-    }
+	public function getId()
+	{
+		return $this->profile->getID();
+	}
 
-    public function getFullName() {
-        return $this->profile->getName();
-    }
+	public function getAccessToken()
+	{
+		return $this->profile->accessToken;
+	}
 
-    public function getAccept() {
+	public function getFullName()
+	{
+		return $this->profile->getName();
+	}
 
-        return !$this->profile->isConfirmationRequired();
-    }
+	public function getAccept()
+	{
 
-    public function getAddresses() {
-        return $this->profile->addresses;
-    }
+		return !$this->profile->isConfirmationRequired();
+	}
 
-    public function setAddresses($addresses) {
-         $this->profile->addresses= $addresses;
-         return $this;
-    }
+	public function getAddresses()
+	{
+		return $this->profile->addresses;
+	}
 
-    public function getEmail() {
-        return $this->profile->getEmail();
-    }
+	public function setAddresses($addresses)
+	{
+		$this->profile->addresses = $addresses;
+		return $this;
+	}
 
-    public function getErrorCode() {
-        return null;
-    }
-    public function getFirstName() {
-        return $this->profile->getFirstname() . ($this->profile->getMiddleName() ? (' ' . $this->profile->getMiddleName()) : '');
-    }
+	public function getEmail()
+	{
+		return $this->profile->getEmail();
+	}
 
-    public function getGender() {
-       
-         return  $this->profile->getData("gender");
-    }
+	public function getErrorCode()
+	{
+		return null;
+	}
 
-    public function getIsSMSSubscribe() {
-        return false;
-    }
+	public function getFirstName()
+	{
+		return $this->profile->getFirstname() . ($this->profile->getMiddleName() ? (' ' . $this->profile->getMiddleName()) : '');
+	}
 
-    public function getIsSubscribe() {
+	public function getGender()
+	{
 
-        return $this->profile->subscribe;
-    }
+		return $this->profile->getData("gender");
+	}
 
-    public function setIsSubscribe($subscribe) {
-        $this->profile->subscribe = $subscribe;
-        return $this;
-    }
+	public function getIsSMSSubscribe()
+	{
+		return false;
+	}
 
-    public function getLastName() {
-        return $this->profile->getLastname();
-    }
+	public function getIsSubscribe()
+	{
 
-    public function getMessage() {
-        return null; 
-    }
+		return $this->profile->subscribe;
+	}
 
-    public function getPassword() {
-        return "";
-    }
+	public function setIsSubscribe($subscribe)
+	{
+		$this->profile->subscribe = $subscribe;
+		return $this;
+	}
 
-    public function getPhone() {
-        return $this->profile->getPhone();
-    }
+	public function getLastName()
+	{
+		return $this->profile->getLastname();
+	}
 
-    public function getPoints() {
-        return 0;
-    }
+	public function getMessage()
+	{
+		return null;
+	}
 
-    public function getUserFriendly() {
-        return false;
-    }
+	public function getPassword()
+	{
+		return "";
+	}
 
-    public function getbirthDate() {
-        return "";
-    }
+	public function getPhone()
+	{
+		return $this->profile->getPhone();
+	}
 
-    public function getUserAgreement() {
-        return $this->userAgreement;
-    }
-    public function setUserAgreement($userAgreement) {
-        $this->userAgreement = $userAgreement;
-        return $this;
-    }
-    public function giftCheques() {
-        return array();
-    }
+	public function getPoints()
+	{
+		return 0;
+	}
 
-    public function setProfile($profile) {
-        $this->profile = $profile;
-        return $this;
-    }
+	public function getUserFriendly()
+	{
+		return false;
+	}
 
-    public function setAccessToken($token = null) {
-        $this->profile->accessToken = $token;
-        return $this;
-    }
+	public function getbirthDate()
+	{
+		return "";
+	}
 
+	public function getUserAgreement()
+	{
+		return $this->userAgreement;
+	}
+
+	public function setUserAgreement($userAgreement)
+	{
+		$this->userAgreement = $userAgreement;
+		return $this;
+	}
+
+	public function giftCheques()
+	{
+		return array();
+	}
+
+	public function setProfile($profile)
+	{
+		$this->profile = $profile;
+		return $this;
+	}
+
+	public function setAccessToken($token = null)
+	{
+		$this->profile->accessToken = $token;
+		return $this;
+	}
 
 
 }

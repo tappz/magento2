@@ -2,11 +2,12 @@
 
 namespace TmobLabs\Tappz\API;
 
-interface AddressRepositoryInterface {
+interface AddressRepositoryInterface
+{
 
-    public function createAddress();
+	public function createAddress();
 
-    public function editAddress();
+	public function editAddress();
 
-    public function deleteAddress();
+	public function deleteAddress();
 }

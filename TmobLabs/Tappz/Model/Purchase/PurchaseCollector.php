@@ -25,7 +25,7 @@ class PurchaseCollector extends PurchaseFill
 
 	public function getPurchase($quoteId, $method)
 	{
-	exit;
+		exit;
 		switch ($method) {
 			case "card":
 				exit;
@@ -74,7 +74,7 @@ class PurchaseCollector extends PurchaseFill
 	{
 		exit;
 		$quote = $this->basketRepository->getBasketQuoteById($quoteId);
-		$quoteManagement =  $this->objectManager
+		$quoteManagement = $this->objectManager
 			->get('\Magento\Quote\Model\QuoteManagement');
 
 		$order = $quoteManagement->submit($quote);
