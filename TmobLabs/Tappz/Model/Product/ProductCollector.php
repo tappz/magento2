@@ -45,9 +45,9 @@ class ProductCollector extends ProductFill  implements ProductInterface{
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $productCollection = $objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Collection');
         if (!isset($params['pagesize']) || empty($params['pagesize']) || intval($params['pagesize']) < 1) {
-            $pageSize = 20;
+            $pageSize = 6;
         } else {
-            $pageSize = $params['pagesize'];
+            $pageSize = (int)$params['pagesize'];
         }
         if (!isset($params['pageNumber']) || empty($params['pageNumber']) || intval($params['pageNumber']) < 1) {
             $pageNumber = 1;
@@ -58,12 +58,13 @@ class ProductCollector extends ProductFill  implements ProductInterface{
             $productCollection->addAttributeToFilter("name", ['like' => "%" . $params['phrase'] . "%"]);
         if (isset($params['category']) && !empty($params['category']))
             $productCollection->addCategoriesFilter(['eq' => $params['category']]);
+
         $productCollection->setPage($pageNumber, $pageSize);
         $products = array();
         foreach ($productCollection as $product) {
             $products[] = $this->getProduct($product->getID());
         }
-        $totalResultCount = sizeof($products);
+        $totalResultCount = ($productCollection->getSize());
         $result = $this->fillProductSearch($totalResultCount, $pageNumber, $pageSize, $products);
         return $result;
     }

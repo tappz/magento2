@@ -25,10 +25,11 @@ class PurchaseCollector extends PurchaseFill
 
 	public function getPurchase($quoteId, $method)
 	{
-
+	exit;
 		switch ($method) {
 			case "card":
-				$result = $this->purchaseCashOnDelivery($quoteId);
+				exit;
+				$result = $this->purchaseCreditCards($quoteId);
 				break;
 			case "threeD":
 				$result = $this->purchaseThreeD($quoteId);
@@ -54,23 +55,24 @@ class PurchaseCollector extends PurchaseFill
 
 	}
 
-	public function purchaseCreditCards()
+	public function purchaseCreditCards($quoteId)
 	{
 
 	}
 
-	public function purchaseThreeD()
+	public function purchaseThreeD($quoteId)
 	{
 
 	}
 
-	public function purchaseMoneyTransfer()
+	public function purchaseMoneyTransfer($quoteId)
 	{
 
 	}
 
 	public function purchaseCashOnDelivery($quoteId)
 	{
+		exit;
 		$quote = $this->basketRepository->getBasketQuoteById($quoteId);
 		$quoteManagement =  $this->objectManager
 			->get('\Magento\Quote\Model\QuoteManagement');

@@ -20,9 +20,11 @@ class ProductSearch extends Action
     public function execute()
     {
         $params =  ($this->getRequest()->getParams());
+       // $urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+        //$currentUrl =$urlInterface->getCurrentUrl();
         $result = $this->productRepository->getProductSearch($params);
         $this->jsonResult->setData($result);
-                        return $this->jsonResult;
+        return $this->jsonResult;
        
     }    
 }

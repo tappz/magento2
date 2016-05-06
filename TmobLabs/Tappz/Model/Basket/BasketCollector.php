@@ -120,8 +120,6 @@ class BasketCollector extends BasketFill {
     }
     public function getLines($basketId) {
         $updateList = $this->helper->convertJson($this->helper->getHeaderJson());
-        error_log($this->helper->getHeaderJson(),3,"/var/www/html/magento/var/log/request.log");
-
         $store = $this->store->getStore();
         $quote = $this->objectManager
                 ->get('Magento\Quote\Model\Quote')
