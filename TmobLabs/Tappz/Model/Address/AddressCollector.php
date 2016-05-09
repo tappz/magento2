@@ -87,13 +87,16 @@ class AddressCollector extends AddressFill implements AddressInterface
 
 	public function addressBeforeSave($addressResponse, $address)
 	{
-
+		if(empty($addressResponse->cityCode)){
+			$addressResponse->cityCode = $addressResponse->city;
+		}
 		$address->setData($this->getAddressAttr("tappzaddressname"), $addressResponse->addressName);
 		$address->setData($this->getAddressAttr("tappzaddressfirstname"), $addressResponse->name);
 		$address->setData($this->getAddressAttr("tappzaddresslastname"), $addressResponse->surname);
 		$address->setData($this->getAddressAttr("tappzaddressemail"), $addressResponse->email);
 		$address->setData($this->getAddressAttr("tappzaddressstreet"), $addressResponse->addressLine);
-		$address->setData($this->getAddressAttr("tappzaddresscountry"), $addressResponse->countryCode);
+		$address->setData($this->getAddressAttr("tappzaddresscountry"), $addressResponse->country);
+		$address->setData($this->getAddressAttr("tappzaddresscountryid"), $addressResponse->countryCode);
 		$address->setData($this->getAddressAttr("tappzaddressregion"), $addressResponse->state);
 		$address->setData($this->getAddressAttr("tappzaddressregionid"), $addressResponse->stateCode);
 		$address->setData($this->getAddressAttr("tappzaddresscity"), $addressResponse->city);
@@ -122,13 +125,13 @@ class AddressCollector extends AddressFill implements AddressInterface
 		$this->setAddressCustomerEmail($address->getData($this->getAddressAttr("tappzaddressemail")));
 		$this->setLine($address->getData($this->getAddressAttr("tappzaddressstreet")));
 		$this->setCountry($address->getData($this->getAddressAttr("tappzaddresscountry")));
-		$this->setCountryCode($address->getData($this->getAddressAttr("tappzaddressregion")));
-		$this->setState($address->getData($this->getAddressAttr("tappzaddressregionid")));
-		$this->setStateCode($address->getData($this->getAddressAttr("tappzaddresscity")));
-		$this->setCity($address->getData($this->getAddressAttr("tappzaddresscityid")));
-		$this->setCityCode($address->getData($this->getAddressAttr("tappzaddressdistrict")));
-		$this->setDistrict($address->getData($this->getAddressAttr("tappzaddressdistrictid")));
-		$this->setDistrictCode($address->getData($this->getAddressAttr("tappzaddresstown")));
+		$this->setCountryCode($address->getData($this->getAddressAttr("tappzaddresscountryid")));
+		$this->setState($address->getData($this->getAddressAttr("tappzaddressregion")));
+		$this->setStateCode($address->getData($this->getAddressAttr("tappzaddressregionid")));
+		$this->setCity($address->getData($this->getAddressAttr("tappzaddresscity")));
+		$this->setCityCode($address->getData($this->getAddressAttr("tappzaddresscityid")));
+		$this->setDistrict($address->getData($this->getAddressAttr("tappzaddressdistrict")));
+		$this->setDistrictCode($address->getData($this->getAddressAttr("tappzaddressdistrictid")));
 		$this->setTown($address->getData($this->getAddressAttr("tappzaddresstown")));
 		$this->setTownCode($address->getData($this->getAddressAttr("tappzaddresstownid")));
 		$this->setCorporate(false);

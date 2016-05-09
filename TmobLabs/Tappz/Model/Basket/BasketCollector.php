@@ -78,34 +78,31 @@ class BasketCollector extends BasketFill
 
 	public function setAddress($quoteId)
 	{
+
 		$userId = $this->helper->getAuthorization();
 		$result = $this->helper->convertJson($this->helper->getHeaderJson());
 		$shippingAddressId = isset($result->shippingAddress->id) ? $result->shippingAddress->id : null;
 		$billingAddressId = isset($result->billingAddress->id) ? $result->billingAddress->id : null;
-		$shippingMethodId = isset($result->shippingMethod->id) ? $result->shippingMethod->id : null;
+		$shippingMethodId = isset($result->shippingMethod[0]->id) ? $result->shippingMethod[0]->id : null;
+
 		$store = $this->store->getStore();
 		$quote = $this->objectManager
 			->get('Magento\Quote\Model\Quote')
 			->setStore($store)
 			->load($quoteId);
 		if (!is_null($billingAddressId)) {
-
 			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($billingAddressId);
-
 			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
-
 			$quote->setBillingAddress($address);
 		}
-
 		if (!is_null($shippingAddressId)) {
 			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($shippingAddressId);
 			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
-
 			$quote->setShippingAddress($address)
 				->setCollectShippingRates(true);
-
 		}
 		if (!is_null($shippingMethodId)) {
+
 			$quoteShippingAddress = $quote->getShippingAddress();
 			$rate = $quoteShippingAddress->collectShippingRates()->getShippingRateByCode($shippingMethodId);
 			if (!$rate) {
@@ -115,9 +112,15 @@ class BasketCollector extends BasketFill
 			}
 			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($shippingAddressId);
 			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
-
+			$rate = $this->objectManager->get('Magento\Quote\Model\Quote\Address\Rate');
+			$rate->setCode($shippingMethodId);
 			$quote->setShippingAddress($address)->setShippingMethod($shippingAddressId)
 				->setCollectShippingRates(true);
+
+			$quote->getShippingAddress()->setShippingMethod($shippingMethodId);
+			$quote->getShippingAddress()->getShippingMethod();
+
+
 
 		}
 		$quote->setTotalsCollectedFlag(false)->collectTotals()->save();
@@ -211,7 +214,8 @@ class BasketCollector extends BasketFill
 
 		$this->setBasket((object)(array()));
 		$this->setId($quote->getId());
-		$this->setShippingMethods($this->getShippingMethodByBasket($quote));
+		$this->setShippingMethods($this->getShippingsMethodByBasket());
+		$this->setShippingMethod($this->getShippingByBasket($quote));
 		$this->setCurrency($this->store->getStore()->getCurrentCurrency()->getCode());
 		$this->setLine($this->getLinesByBasket($quote));
 		$this->setDelivery($this->getDeliveryByBasket($quote));
@@ -596,10 +600,10 @@ class BasketCollector extends BasketFill
 		$quoteShippingAddress = $quote->getShippingAddress();
 
 		if ($quoteBillingAddress) {
-			$delivery['billingAddress'] = $this->addressRepository->getAddress($quoteBillingAddress->getData('customer_address_id'));
+			$delivery['billingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getID());
 		}
 		if ($quoteShippingAddress) {
-			$delivery['shippingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getData('customer_address_id'));
+			$delivery['shippingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getID());
 			$method = $quoteShippingAddress->getData('shipping_method');
 			if (!empty($method)) {
 				$delivery['shippingMethod'][0]['id'] = $quoteShippingAddress->getData('shipping_method');
@@ -633,7 +637,25 @@ class BasketCollector extends BasketFill
 		return $result == null ? 0 : $result;
 	}
 
-	public function getShippingMethodByBasket($quote)
+	public function getShippingByBasket($quote)
+	{
+		$shipping = array();
+		$quoteShippingAddress = $quote->getShippingAddress();
+		if ($quoteShippingAddress) {
+			$method = $quoteShippingAddress->getData('shipping_method');
+			if (!empty($method)) {
+				$shipping[0]['id'] = $quoteShippingAddress->getData('shipping_method');
+				$shipping[0]['displayName'] = $quoteShippingAddress->getData('shipping_description');
+				$shipping[0]['trackingAddress'] = null;
+				$shipping[0]['price'] = $quoteShippingAddress->getData('shipping_incl_tax');
+				$shipping[0]['priceForYou'] = null;
+				$shipping[0]['shippingMethodType'] = $quoteShippingAddress->getData('shipping_method');
+				$shipping[0]['imageUrl'] = null;
+			}
+		}
+		return $shipping;
+	}
+	public function getShippingsMethodByBasket()
 	{
 
 		$carriers = $this->carrierConfig->getActiveCarriers();

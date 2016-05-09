@@ -185,6 +185,10 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
 		return $this->basket->shippingMethods;
 	}
 
+	public function getShippingMethod()
+	{
+		return $this->basket->shippingMethod;
+	}
 	public function getShippingTotal()
 	{
 		return $this->basket->shippingTotal;
@@ -424,7 +428,13 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
 		$this->basket->shippingMethods = $data;
 		return $this;
 	}
+	public function setShippingMethod($data)
+	{
 
+		$this->basket->shippingMethod = $data;
+
+		return $this;
+	}
 	public function setShippingTotal($data)
 	{
 		$this->basket->shippingTotal = $data;

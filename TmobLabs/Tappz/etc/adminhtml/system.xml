@@ -111,68 +111,73 @@
                     <label>Street Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscountry" translate="label" type="select" sortOrder="35" showInDefault="1">
-                    <label>Country Attribute</label>
+                <field id="tappzaddresscountryid" translate="label" type="select" sortOrder="35" showInDefault="1">
+                    <label>Country Attribute </label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressregion" translate="label" type="select" sortOrder="40" showInDefault="1">
+                <field id="tappzaddresscountry" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Country Id Attribute</label>
+                    <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
+                </field>
+
+                <field id="tappzaddressregion" translate="label" type="select" sortOrder="45" showInDefault="1">
                     <label>State/Province Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressregionid" translate="label" type="select" sortOrder="45" showInDefault="1">
+                <field id="tappzaddressregionid" translate="label" type="select" sortOrder="50" showInDefault="1">
                     <label>State/Province Id Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscity" translate="label" type="select" sortOrder="50" showInDefault="1">
+                <field id="tappzaddresscity" translate="label" type="select" sortOrder="55" showInDefault="1">
                     <label>City Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscityid" translate="label" type="select" sortOrder="55" showInDefault="1">
+                <field id="tappzaddresscityid" translate="label" type="select" sortOrder="60" showInDefault="1">
                     <label>City ID Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressdistrict" translate="label" type="select" sortOrder="50" showInDefault="1">
+                <field id="tappzaddressdistrict" translate="label" type="select" sortOrder="65" showInDefault="1">
                     <label>District Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressdistrictid" translate="label" type="select" sortOrder="55" showInDefault="1">
+                <field id="tappzaddressdistrictid" translate="label" type="select" sortOrder="70" showInDefault="1">
                     <label>District ID Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresstown" translate="label" type="select" sortOrder="60" showInDefault="1">
+                <field id="tappzaddresstown" translate="label" type="select" sortOrder="75" showInDefault="1">
                     <label>Town Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresstownid" translate="label" type="select" sortOrder="65" showInDefault="1">
+                <field id="tappzaddresstownid" translate="label" type="select" sortOrder="80" showInDefault="1">
                     <label>Town Id Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddressiscompany" translate="label" type="select" sortOrder="70" showInDefault="1">
+                <field id="tappzaddressiscompany" translate="label" type="select" sortOrder="85" showInDefault="1">
                     <label>Is Company Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzaddresscompany" translate="label" type="select" sortOrder="75" showInDefault="1">
+                <field id="tappzaddresscompany" translate="label" type="select" sortOrder="90" showInDefault="1">
                     <label>Company Name Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappztaxdepartmentattribute" translate="label" type="select" sortOrder="80"
+                <field id="tappztaxdepartmentattribute" translate="label" type="select" sortOrder="95"
                        showInDefault="1">
                     <label>Tax Department Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzvatno" translate="label" type="select" sortOrder="85" showInDefault="1">
+                <field id="tappzvatno" translate="label" type="select" sortOrder="100" showInDefault="1">
                     <label>Tax No Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzphone" translate="label" type="select" sortOrder="90" showInDefault="1">
+                <field id="tappzphone" translate="label" type="select" sortOrder="105" showInDefault="1">
                     <label>Phone Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzidno" translate="label" type="select" sortOrder="95" showInDefault="1">
+                <field id="tappzidno" translate="label" type="select" sortOrder="110" showInDefault="1">
                     <label>Identity Number Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>
-                <field id="tappzpostcode" translate="label" type="select" sortOrder="100" showInDefault="1">
+                <field id="tappzpostcode" translate="label" type="select" sortOrder="115" showInDefault="1">
                     <label>Postal Code Attribute</label>
                     <source_model>TmobLabs\Tappz\Model\System\Address</source_model>
                 </field>

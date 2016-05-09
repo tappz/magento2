@@ -20,6 +20,7 @@ class BasketFill extends Basket
 			'id' => $this->getId(),
 			'lines' => $this->getLine(),
 			'shippingMethods' => $this->getShippingMethods(),
+			'shippingMethod' => $this->getShippingMethod(),
 			'delivery' => $this->getDelivery(),
 			"currency" => $this->getCurrency(),
 			"shippingTotal" => $this->getShippingTotal(),
