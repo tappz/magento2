@@ -103,7 +103,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
 				$result[] = $group;
 			}
 		}
-		return $result;
+		return array();
 	}
 
 	public function getInStock()

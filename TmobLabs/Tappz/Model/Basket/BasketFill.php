@@ -56,7 +56,7 @@ class BasketFill extends Basket
 		return [
 			'productId' => $this->getProductId(),
 			'product' => $this->getProduct(),
-			'quantity' => $this->getQuantity(),
+			'quantity' =>empty($this->getQuantity())?0:$this->getQuantity(),
 			'placedPrice' => $this->getPlacedPrice(),
 			"placedPriceTotal" => $this->getPlacedPriceTotal(),
 			"extendedPrice" => $this->getExtendedPrice(),

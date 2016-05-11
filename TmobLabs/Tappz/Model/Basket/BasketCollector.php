@@ -2,6 +2,7 @@
 
 namespace TmobLabs\Tappz\Model\Basket;
 
+use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
 use Magento\Shipping\Model\Config as CarrierConfig;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
@@ -19,7 +20,7 @@ class BasketCollector extends BasketFill
 	protected $configBasket;
 	protected $shippingMethodConfig;
 	protected $carrierConfig;
-
+	private $_addressRepository;
 	public function __construct(
 		RequestHandler $requestHandler,
 		ProductRepository $productRepository,
@@ -27,7 +28,9 @@ class BasketCollector extends BasketFill
 		\Magento\Payment\Model\MethodList $methodList,
 		ScopeConfig $configBasket,
 		\Magento\Shipping\Model\Config $shippingMethodConfig,
-		CarrierConfig $carrierConfig
+		CarrierConfig $carrierConfig,
+		AddressRepositoryInterface $_addressRepository
+
 	) {
 		$this->helper = $requestHandler;
 		$this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -38,6 +41,8 @@ class BasketCollector extends BasketFill
 		$this->configBasket = $configBasket;
 		$this->shippingMethodConfig = $shippingMethodConfig;
 		$this->carrierConfig = $carrierConfig;
+		$this->_addressRepository = $_addressRepository;
+
 	}
 
 	public function merge()
@@ -78,7 +83,6 @@ class BasketCollector extends BasketFill
 
 	public function setAddress($quoteId)
 	{
-
 		$userId = $this->helper->getAuthorization();
 		$result = $this->helper->convertJson($this->helper->getHeaderJson());
 		$shippingAddressId = isset($result->shippingAddress->id) ? $result->shippingAddress->id : null;
@@ -90,19 +94,26 @@ class BasketCollector extends BasketFill
 			->get('Magento\Quote\Model\Quote')
 			->setStore($store)
 			->load($quoteId);
+
 		if (!is_null($billingAddressId)) {
 			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($billingAddressId);
 			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
-			$quote->setBillingAddress($address);
+			$billingAddress = $this->_addressRepository->getById($billingAddressId);
+			$this->objectManager->get('Magento\Quote\Model\Quote\Address')->importCustomerAddressData($billingAddress);
+			$quote->setBillingAddress($address)
+				->setCollectShippingRates(true);
 		}
 		if (!is_null($shippingAddressId)) {
 			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($shippingAddressId);
 			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
+			$shippingAddres = $this->_addressRepository->getById($shippingAddressId);
+
+			$this->objectManager->get('Magento\Quote\Model\Quote\Address')->importCustomerAddressData($shippingAddres);
 			$quote->setShippingAddress($address)
 				->setCollectShippingRates(true);
+			$quote->getShippingAddress()->setCollectShippingRates(true);
 		}
 		if (!is_null($shippingMethodId)) {
-
 			$quoteShippingAddress = $quote->getShippingAddress();
 			$rate = $quoteShippingAddress->collectShippingRates()->getShippingRateByCode($shippingMethodId);
 			if (!$rate) {
@@ -110,21 +121,13 @@ class BasketCollector extends BasketFill
 				 * @todo dzgok set here dynamic error
 				 */
 			}
-			$userAddress = $this->objectManager->get('Magento\Customer\Model\Address')->load($shippingAddressId);
-			$address = $this->objectManager->get('Magento\Quote\Model\Quote\Address')->setCustomerAddressData($userAddress);
 			$rate = $this->objectManager->get('Magento\Quote\Model\Quote\Address\Rate');
-			$rate->setCode($shippingMethodId);
-			$quote->setShippingAddress($address)->setShippingMethod($shippingAddressId)
-				->setCollectShippingRates(true);
-
+			$rate->setCode($shippingMethodId)->getPrice(1);
 			$quote->getShippingAddress()->setShippingMethod($shippingMethodId);
-			$quote->getShippingAddress()->getShippingMethod();
-
-
-
+			$quote->setShippingMethod($shippingMethodId);
 		}
-		$quote->setTotalsCollectedFlag(false)->collectTotals()->save();
-		return $this->getBasketById($quote->getId());
+		$quote->collectTotals()->save();
+		return $this->getBasketById($quoteId);
 
 	}
 
@@ -179,10 +182,8 @@ class BasketCollector extends BasketFill
 	public function getUserBasket()
 	{
 		$userId = $this->helper->getAuthorization();
-
 		$store = $this->store->getStore();
 		$quoteObject = $this->objectManager->get('Magento\Quote\Model\Quote')->setStore($store);
-
 		if (is_numeric($userId)) {
 			$customer = $this->objectManager
 				->get('Magento\Customer\Model\Customer')
@@ -192,9 +193,7 @@ class BasketCollector extends BasketFill
 		} else {
 			$quote = $quoteObject->save();
 		}
-
 		if (is_null($quote->getId())) {
-
 			try {
 				if (isset($userId) && $userId !== '') {
 					$quote = $quoteObject->setCustomerId($userId);
@@ -204,14 +203,11 @@ class BasketCollector extends BasketFill
 				$this->_fault('invalid_data', $e->getMessage());
 			}
 		}
-
 		return $this->setBasketByQuote($quote);
 	}
 
 	public function setBasketByQuote($quote)
 	{
-
-
 		$this->setBasket((object)(array()));
 		$this->setId($quote->getId());
 		$this->setShippingMethods($this->getShippingsMethodByBasket());
@@ -419,10 +415,11 @@ class BasketCollector extends BasketFill
 	{
 		$result = null;
 		$payment = $quote->getPayment();
+		$paymentData = array();
 		if (isset($payment)) {
-			$paymentData = array();
 			$paymentData['cashOnDelivery'] = null;
 			$paymentData['creditCard'] = null;
+			$paymentData['threeDUrl'] = null;
 			$method = $payment->getData('method');
 			if (empty($method)) {
 				return $result;
@@ -432,7 +429,7 @@ class BasketCollector extends BasketFill
 				$paymentData['type'] = $method;
 				$paymentData['displayName'] = 'Check / Money Order';
 				$paymentData['bankCode'] = null;
-				$paymentData['installment'] = null;
+				$paymentData['installment'] = 0;
 				$paymentData['accountNumber'] = '123456'; // TODO
 				$paymentData['branch'] = '321'; // TODO
 				$paymentData['iban'] = 'TR12 3456 7890 1234 5678 9012 00';
@@ -442,7 +439,7 @@ class BasketCollector extends BasketFill
 					$paymentData['type'] = $payment->getData('cc_type');
 					$paymentData['displayName'] = 'Credit Card';
 					$paymentData['bankCode'] = null;
-					$paymentData['installment'] = null;
+					$paymentData['installment'] = 0;
 					$paymentData['accountNumber'] = '**** **** **** ' . $payment->getData('cc_last4');
 					$paymentData['branch'] = null;
 					$paymentData['iban'] = null;
@@ -459,7 +456,7 @@ class BasketCollector extends BasketFill
 						$paymentData['type'] = $method;
 						$paymentData['displayName'] = 'Cash on Delivery';
 						$paymentData['bankCode'] = null;
-						$paymentData['installment'] = null;
+						$paymentData['installment'] = 0;
 						$paymentData['accountNumber'] = null;
 						$paymentData['branch'] = null;
 						$paymentData['iban'] = null;
@@ -507,6 +504,7 @@ class BasketCollector extends BasketFill
 
 		$result = $this->helper->convertJson($this->helper->getHeaderJson());
 		$store = $this->store->getStore();
+
 		$quote = $this->objectManager
 			->get('Magento\Quote\Model\Quote')
 			->setStore($store)
@@ -514,7 +512,7 @@ class BasketCollector extends BasketFill
 		$paymentMethod = "";
 		switch ($result->methodType) {
 			case "CreditCards":
-
+				$paymentMethod = "cards";
 				break;
 			case "CashOnDelivery":
 				$paymentMethod = "cashondelivery";
@@ -532,49 +530,8 @@ class BasketCollector extends BasketFill
 				break;
 		}
 
-		if ($quote->isVirtual()) {
-			if (is_null($quote->getBillingAddress()->getId())) {
-				$this->_fault('invalid_data', 'billing_address_is_not_set');
-			}
-			$quote->getBillingAddress()->setPaymentMethod(
-				isset($paymentData['method']) ? $paymentData['method'] : null
-			);
-		} else {
-			if (is_null($quote->getShippingAddress()->getId())) {
-				$this->_fault('invalid_data', 'shipping_address_is_not_set');
-			}
-			$quote->getShippingAddress()->setPaymentMethod(
-				isset($paymentData['method']) ? $paymentData['method'] : null
-			);
-		}
-		if (!$quote->isVirtual() && $quote->getShippingAddress()) {
-			$quote->getShippingAddress()->setCollectShippingRates(true);
-		}
-		if (!$quote->isVirtual() && $quote->getShippingAddress()) {
-			$quote->getShippingAddress()->setCollectShippingRates(true);
-		}
-
-		$total = number_format($quote->getBaseSubtotal(), 2);
-		$methods = Mage::helper('payment')->getStoreMethods($quote->getStoreId(), $quote);
-		foreach ($methods as $method) {
-			if ($method->getCode() == $paymentData['method']) {
-				/** @var $method Mage_Payment_Model_Method_Abstract */
-				if (!($this->_canUsePaymentMethod($method, $quote)
-					&& ($total != 0
-						|| $method->getCode() == 'free'
-						|| ($quote->hasRecurringItems() && $method->canManageRecurringProfiles())))
-				) {
-					$this->_fault('invalid_data', "method_not_allowed");
-				}
-			}
-		}
 		try {
-			$payment = $quote->getPayment();
-			$payment->importData($paymentData);
-			$quote = $quote->setIsActive(true)
-				->setTotalsCollectedFlag(false)
-				->collectTotals()
-				->save();
+			$quote->getPayment()->setMethod($paymentMethod);
 		} catch (Mage_Core_Exception $e) {
 			$this->_fault('invalid_data', $e->getMessage());
 		}
@@ -585,9 +542,7 @@ class BasketCollector extends BasketFill
 			->setTotalsCollectedFlag(false)
 			->collectTotals()
 			->save();
-
-
-		return $this->setBasketByQuote($quote);
+		return $this->getBasketById($quote->getID());
 	}
 
 	/**
@@ -600,10 +555,11 @@ class BasketCollector extends BasketFill
 		$quoteShippingAddress = $quote->getShippingAddress();
 
 		if ($quoteBillingAddress) {
-			$delivery['billingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getID());
+			$delivery['billingAddress'] = $this->addressRepository->getAddress($quoteBillingAddress->getData('customer_address_id'));
+
 		}
 		if ($quoteShippingAddress) {
-			$delivery['shippingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getID());
+			$delivery['shippingAddress'] = $this->addressRepository->getAddress($quoteShippingAddress->getData('customer_address_id'));
 			$method = $quoteShippingAddress->getData('shipping_method');
 			if (!empty($method)) {
 				$delivery['shippingMethod'][0]['id'] = $quoteShippingAddress->getData('shipping_method');
@@ -615,7 +571,6 @@ class BasketCollector extends BasketFill
 				$delivery['shippingMethod'][0]['imageUrl'] = null;
 			}
 		}
-
 		if (is_null($delivery['shippingAddress']['id'])) {
 			$delivery = (object)array();
 		}

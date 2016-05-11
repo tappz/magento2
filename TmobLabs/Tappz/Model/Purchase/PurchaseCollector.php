@@ -5,6 +5,7 @@ namespace TmobLabs\Tappz\Model\Purchase;
 use Magento\Store\Model\StoreManagerInterface;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 use TmobLabs\Tappz\Model\Basket\BasketCollector as Basket;
+use TmobLabs\Tappz\Model\Order\OrderCollector as OrderCollector;
 
 class PurchaseCollector extends PurchaseFill
 {
@@ -13,19 +14,22 @@ class PurchaseCollector extends PurchaseFill
 	protected $addressRepository;
 	protected $basketRepository;
 	protected $objectManager;
+	protected $orderCollector;
 
 	public function __construct(
 		RequestHandler $requestHandler,
-		Basket $basketRepository
+		Basket $basketRepository,
+		OrderCollector $orderCollector
 	) {
 		$this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$this->helper = $requestHandler;
 		$this->basketRepository = $basketRepository;
+		$this->orderCollector = $orderCollector;
 	}
 
 	public function getPurchase($quoteId, $method)
 	{
-		exit;
+
 		switch ($method) {
 			case "card":
 				exit;
@@ -72,14 +76,49 @@ class PurchaseCollector extends PurchaseFill
 
 	public function purchaseCashOnDelivery($quoteId)
 	{
-		exit;
+		$this->helper->getHeaderJson();
+		$userId = $this->helper->getAuthorization();
 		$quote = $this->basketRepository->getBasketQuoteById($quoteId);
+		if($quote->getCustomerEmail() == NULL){
+			$customerModel = $this->getUserViaUserId($userId);
+			$quote->setCustomerId($userId)
+				->setCustomerEmail($customerModel->getEmail())
+				->setCustomerGroupId($customerModel->getGroupId())
+				->setCustomerFirstname($customerModel->getFirstname())
+				->setCustomerLastname($customerModel->getLastname())
+				->setCustomerIsGuest(false);
+		}
+		$shippingQuote =  $quote->getShippingAddress();
+		$shipmentMethod = $shippingQuote->getData('shipping_method');
+		$quote->setShippingMethod($shipmentMethod);
+		$shippingQuote->setCollectShippingRates(true)
+			->collectShippingRates()
+			->setShippingMethod($shipmentMethod);
+		$quote->setPaymentMethod('cashondelivery');
+		$quote->getPayment()->importData(array('method' => 'cashondelivery'));
+		$quote->setIsActive(true)
+			->collectTotals()
+			->save();
+		$quote->getShippingMethod();
+		$rate = $this->objectManager->get('Magento\Quote\Model\Quote\Address\Rate');
+		$rate->setCode($shipmentMethod);
+		$quote->getShippingAddress()->addShippingRate($rate);
 		$quoteManagement = $this->objectManager
-			->get('\Magento\Quote\Model\QuoteManagement');
-
+			->create('\Magento\Quote\Model\QuoteManagement');
 		$order = $quoteManagement->submit($quote);
+		if($order){
+			$order->setCustomerIsGuest(false);
+			 $result = $this->orderCollector->getOrderById($order->getID());
+			error_log(json_encode($result),3,"/var/www/html/magento/var/log/request.log");
+		 	return $result;
+		}
+	}
+	public function getUserViaUserId($userid){
+			$store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+			$customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store);
+			$customer->load($userid);
+			return $customer;
 
-		exit;
 	}
 
 	public function purchasePaypal()
@@ -91,33 +130,5 @@ class PurchaseCollector extends PurchaseFill
 	{
 
 	}
-
-	public function setPurchase()
-	{
-
-		$this->setPurchaseId();
-		$this->setTrackingNumber();
-		$this->setOrderDate();
-		$this->setShippingStatus();
-		$this->setPaymentStatus();
-		$this->setIpAddress();
-		$this->setLines();
-		$this->setDelivery();
-		$this->setPayment();
-		$this->setCurrency();
-		$this->setItemsPriceTotal();
-		$this->setDiscountTotal();
-		$this->setSubtotal();
-		$this->setShippingTotal();
-		$this->setTotal();
-		$this->setTaxTotalValue();
-		$this->setShippingTotalValue();
-		$this->setTotalValue();
-		$this->setCanChangeAddress();
-		$this->setErrorCode();
-		$this->setMessage();
-		$this->setUserFriendly();
-
-	}
-
 }
+

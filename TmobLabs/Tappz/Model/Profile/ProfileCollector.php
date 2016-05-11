@@ -138,7 +138,6 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
 		$data = $this->helper->convertJson($this->helper->getHeaderJson());
 		$data->entity_id = $userid;
 		$customerData = $this->fillRegisterCustomerData($data);
-
 		$store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
 		$customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store)->load($userid);
 		$customer->setData('firstname', $customerData['firstname']);

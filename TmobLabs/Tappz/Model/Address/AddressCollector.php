@@ -90,6 +90,12 @@ class AddressCollector extends AddressFill implements AddressInterface
 		if(empty($addressResponse->cityCode)){
 			$addressResponse->cityCode = $addressResponse->city;
 		}
+		if(empty($addressResponse->state)){
+			$addressResponse->state = $addressResponse->city;
+		}
+		if(empty($addressResponse->stateCode)){
+			$addressResponse->stateCode = $addressResponse->cityCode;
+		}
 		$address->setData($this->getAddressAttr("tappzaddressname"), $addressResponse->addressName);
 		$address->setData($this->getAddressAttr("tappzaddressfirstname"), $addressResponse->name);
 		$address->setData($this->getAddressAttr("tappzaddresslastname"), $addressResponse->surname);

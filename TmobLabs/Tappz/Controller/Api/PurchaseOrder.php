@@ -15,10 +15,12 @@ class PurchaseOrder extends Action
 	private $orderRepository;
 	protected $helper;
 
+
 	public function __construct(
 		Context $context,
 		JSON $json,
 		OrderRepositoryInterface $orderRepository,
+
 		RequestHandler $helper
 	) {
 		parent::__construct($context);
@@ -32,17 +34,18 @@ class PurchaseOrder extends Action
 
 		$params = ($this->getRequest()->getParams());
 		$method = $this->helper->getRequestMethod();
+
+		$result =array();
 		switch ($method) {
 			case "GET":
 				if (count($params) > 0) {
-					$result = $this->orderRepository->getRelatedProduct($productId);
+					$orderId = key($params);
+					$result = $this->orderRepository->getOrderById($orderId);
 				} else {
 
 					$result = $this->orderRepository->getOrder();
+
 				}
-				break;
-			case "POST":
-				$result = $this->orderRepository->setOrderAddress();
 				break;
 			default:
 				break;

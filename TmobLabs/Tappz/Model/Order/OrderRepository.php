@@ -10,39 +10,24 @@ class OrderRepository implements OrderRepositoryInterface
 	private $locationCollector;
 
 	public function __construct(
-		OrderCollector $locationCollector
+		OrderCollector $orderCollector
 	) {
-		$this->locationCollector = $locationCollector;
+		$this->orderCollector = $orderCollector;
 	}
 
-	public function getCountries()
+	public function getOrderById($orderId)
 	{
-		$result = $this->locationCollector->getCountries();
+
+		$result = $this->orderCollector->getOrderById($orderId);
+		return $result;
+	}
+	public function getOrder()
+	{
+
+		$result = $this->orderCollector->getOrder();
+
 		return $result;
 	}
 
-	public function getStates($countryId)
-	{
-		$result = $this->locationCollector->getStates($countryId);
-		return $result;
-	}
-
-	public function getCities($countryId)
-	{
-		$result = $this->locationCollector->getCities($countryId);
-		return $result;
-	}
-
-	public function getDistricts($cityId)
-	{
-		$result = $this->locationCollector->getDistricts($cityId);
-		return $result;
-	}
-
-	public function getTowns($districtId)
-	{
-		$result = $this->locationCollector->getTowns($districtId);
-		return $result;
-	}
 
 }
