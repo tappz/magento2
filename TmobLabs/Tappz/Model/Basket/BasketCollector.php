@@ -134,6 +134,7 @@ class BasketCollector extends BasketFill
 	public function getLines($basketId)
 	{
 		$updateList = $this->helper->convertJson($this->helper->getHeaderJson());
+		error_log($this->helper->getHeaderJson()."----".$this->helper->getAuthorizationFull()."----".$basketId,3,"/var/www/html/magento/var/log/request.log");
 		$store = $this->store->getStore();
 		$quote = $this->objectManager
 			->get('Magento\Quote\Model\Quote')
@@ -155,7 +156,7 @@ class BasketCollector extends BasketFill
 			}
 		}
 		$this->setAddress($quote->getID());
-		$quote = $quote->collectTotals()->save();
+		$quote = $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
 		return $this->getBasketById($quote->getID());
 	}
 
@@ -208,37 +209,37 @@ class BasketCollector extends BasketFill
 
 	public function setBasketByQuote($quote)
 	{
-		$this->setBasket((object)(array()));
-		$this->setId($quote->getId());
-		$this->setShippingMethods($this->getShippingsMethodByBasket());
-		$this->setShippingMethod($this->getShippingByBasket($quote));
-		$this->setCurrency($this->store->getStore()->getCurrentCurrency()->getCode());
-		$this->setLine($this->getLinesByBasket($quote));
-		$this->setDelivery($this->getDeliveryByBasket($quote));
-		$this->setShippingTotal($this->getShippingTotalByBasket($quote));
-		$this->setDiscountTotal($this->getDiscountTotalByBasket($quote));
-		$this->setPaymentOptions($this->getPaymentMethodsByBasket($quote));
-		$this->setPayment($this->getPaymentByBasket($quote));
-		$this->setItemsPriceTotal($this->getItemPriceTotalByBasket($quote));
-		$this->setSubTotal($this->getItemSubTotalByBasket($quote));
-		$this->setBeforeTaxTotal($this->getBeforeTaxTotalByBasket($quote));
-		$this->setTaxTotal($this->getTaxTotalByBasket($quote));
-		$this->setTotal($this->getTotalByBasket($quote));
-		$this->setErrors($this->getErrorsByBasket());
-		$this->setGiftCheques($this->getGiftChequesByBasket());
-		$this->setSpentGiftChequeTotal($this->getSpentGiftChequeByBasket($quote));
-		$this->setDiscounts($this->getDiscountsByBasket($quote));
-		$this->setUsedPoints($this->getUsedPointsBasket());
-		$this->setUsedPointsAmount($this->getUsedPointsAmountByBasket());
-		$this->setRewardPoints($this->getRewardPointsByBasket());
-		$this->setPaymentFee($this->getPaymentFeeByBasket());
-		$this->setEstimatedSupplyDate($this->getEstimatedSupplyDateByBasket());
-		$this->setIsGiftWrappingEnabled(false);
-		$this->setGiftWrapping(null);
-		$this->setExpirationTime(0);
-		$this->setErrorCode(null);
-		$this->setMessage(null);
-		$this->setUserFriendly(false);
+		$this->setBasket((object)(array()))
+		->setId($quote->getId())
+		->setShippingMethods($this->getShippingsMethodByBasket())
+		->setShippingMethod($this->getShippingByBasket($quote))
+		->setCurrency($this->store->getStore()->getCurrentCurrency()->getCode())
+		->setLine($this->getLinesByBasket($quote))
+		->setDelivery($this->getDeliveryByBasket($quote))
+		->setShippingTotal($this->getShippingTotalByBasket($quote))
+		->setDiscountTotal($this->getDiscountTotalByBasket($quote))
+		->setPaymentOptions($this->getPaymentMethodsByBasket($quote))
+		->setPayment($this->getPaymentByBasket($quote))
+		->setItemsPriceTotal($this->getItemPriceTotalByBasket($quote))
+		->setSubTotal($this->getItemSubTotalByBasket($quote))
+		->setBeforeTaxTotal($this->getBeforeTaxTotalByBasket($quote))
+		->setTaxTotal($this->getTaxTotalByBasket($quote))
+		->setTotal($this->getTotalByBasket($quote))
+		->setErrors($this->getErrorsByBasket())
+		->setGiftCheques($this->getGiftChequesByBasket())
+		->setSpentGiftChequeTotal($this->getSpentGiftChequeByBasket($quote))
+		->setDiscounts($this->getDiscountsByBasket($quote))
+		->setUsedPoints($this->getUsedPointsBasket())
+		->setUsedPointsAmount($this->getUsedPointsAmountByBasket())
+		->setRewardPoints($this->getRewardPointsByBasket())
+		->setPaymentFee($this->getPaymentFeeByBasket())
+		->setEstimatedSupplyDate($this->getEstimatedSupplyDateByBasket())
+		->setIsGiftWrappingEnabled(false)
+		->setGiftWrapping(null)
+		->setExpirationTime(0)
+		->setErrorCode(null)
+		->setMessage(null)
+		->setUserFriendly(false);
 		return $this->fillBasket();
 	}
 
@@ -642,7 +643,6 @@ class BasketCollector extends BasketFill
 		$lines = array();
 
 		foreach ($quote->getAllVisibleItems() as $item) {
-
 			$this->setProductId($item->getData('product_id'));
 			$this->setProduct($this->productRepository->getById($item->getData('product_id')));
 			$this->setQuantity($item->getData('qty'));

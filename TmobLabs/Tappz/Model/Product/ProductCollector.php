@@ -43,10 +43,11 @@ class ProductCollector extends ProductFill implements ProductInterface
 
 	public function getRelatedProduct($productId)
 	{
+
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$this->product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
 		$result = array();
-		if (!$this->product->hasRelatedProductIds()) {
+		if ($this->product->hasRelatedProductIds()) {
 			foreach ($this->product->getRelatedProducts() as $product) {
 				$this->product = $this->getProduct($product->getID());
 				$result[] = $this->fillProduct();

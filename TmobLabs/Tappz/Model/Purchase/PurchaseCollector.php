@@ -109,7 +109,6 @@ class PurchaseCollector extends PurchaseFill
 		if($order){
 			$order->setCustomerIsGuest(false);
 			 $result = $this->orderCollector->getOrderById($order->getID());
-			error_log(json_encode($result),3,"/var/www/html/magento/var/log/request.log");
 		 	return $result;
 		}
 	}

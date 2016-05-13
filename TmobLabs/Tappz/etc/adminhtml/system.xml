@@ -10,7 +10,7 @@
             <label>Tappz Token Generator</label>
             <tab>tappz_tab</tab>
             <resource>TmobLabs_Tappz::config</resource>
-            <group id="tappzusernmamethod" translate="label" type="text" sortOrder="10" showInDefault="1"
+            <group id="tappzusermethod" translate="label" type="text" sortOrder="10" showInDefault="1"
                    showInWebsite="1" showInStore="1">
                 <field id="tappzusername" translate="label" type="text" sortOrder="10" showInDefault="1">
                     <label>Tappz User Name</label>

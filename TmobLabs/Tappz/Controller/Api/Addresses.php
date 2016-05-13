@@ -8,6 +8,7 @@ use Magento\Framework\Controller\Result\JsonFactory as JSON;
 use TmobLabs\Tappz\API\AddressRepositoryInterface;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 
+
 class Addresses extends Action
 {
 
@@ -25,6 +26,7 @@ class Addresses extends Action
 		$this->jsonResult = $json->create();
 		$this->helper = $helper;
 		$this->addressRepository = $addressRepository;
+		$this->helper->checkAuth();
 	}
 
 	public function execute()

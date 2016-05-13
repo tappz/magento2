@@ -54,7 +54,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
 			$shipping['shipping'][] = $this->addressRepository->getAddress($address->getID());
 		}
 		$this->setAddresses($shipping);
-		$accessToken = $this->helper->getAuthorizationFull() . " " . $customer->getID();
+		$accessToken = $this->helper->getAuthorization() . " " . $customer->getID();
 		$this->setAccessToken($accessToken);
 		return $this->fillProfile();
 	}

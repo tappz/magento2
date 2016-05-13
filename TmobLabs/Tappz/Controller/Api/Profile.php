@@ -25,6 +25,7 @@ class Profile extends Action
 		$this->jsonResult = $json->create();
 		$this->helper = $helper;
 		$this->profileRepository = $profileRepository;
+		$helper->checkAuth();
 	}
 
 	public function execute()

@@ -1,26 +1,39 @@
 <?php
 
 namespace TmobLabs\Tappz\Helper;
-
+use Magento\Framework\App\Config\ScopeConfigInterface ;
 class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
 {
-
+	protected $scopeConfig;
+	public function __construct(
+		ScopeConfigInterface $scopeConfig
+	) {
+		$this->scopeConfig = $scopeConfig;
+	}
 	public function getRequestMethod()
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
-
-	public function checkToken($token)
+	public function getRealUrl($url){
+		return urldecode($url."$_SERVER[REQUEST_URI]");
+	}
+	public function checkAuth()
 	{
 		$header = (isset($_SERVER['HTTP_AUTHORIZATION']) && $_SERVER['HTTP_AUTHORIZATION'] != '') ? $_SERVER['HTTP_AUTHORIZATION'] : '';
 		$auth = (@explode(' ', $header));
-		$url = urldecode($this->getUrl($_SERVER));
+
+		$objectManager =\Magento\Framework\App\ObjectManager::getInstance();
+		$url = substr($objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore()
+		->getBaseUrl(),0,-1);
+		$realUrl = $this->getRealUrl($url);
+
+		$username =  $this->scopeConfig->getValue('tappztoken/tappzusermethod/tappzusername');
+		$token =  $this->scopeConfig->getValue('tappztoken/tappzusermethod/tappzsecretkey');
 		if (sizeof($token) == 0) {
 			exit(' 401 - Token not initialized.Please create  token on configuration page ');
-		} elseif (sha1(utf8_encode(trim($token . '|' . ($url) . '|' . @$auth[2])), false) != @$auth[1]) {
+		} elseif (sha1((trim($token . '|' . ($realUrl) . '|' . @$auth[2])), false) != @$auth[1] ||  $username != @$auth[0]) {
 			exit(' 403 - Access denied.Please check your tokens');
 		}
-
 		return $auth;
 	}
 

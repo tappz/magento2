@@ -123,34 +123,34 @@ class AddressCollector extends AddressFill implements AddressInterface
 
 	public function setAddress($address)
 	{
-		$this->set($address);
-		$this->setId($address->getID());
-		$this->setName($address->getData($this->getAddressAttr("tappzaddressname")));
-		$this->setCustomerName($address->getData($this->getAddressAttr("tappzaddressfirstname")));
-		$this->setCustomerSurname($address->getData($this->getAddressAttr("tappzaddresslastname")));
-		$this->setAddressCustomerEmail($address->getData($this->getAddressAttr("tappzaddressemail")));
-		$this->setLine($address->getData($this->getAddressAttr("tappzaddressstreet")));
-		$this->setCountry($address->getData($this->getAddressAttr("tappzaddresscountry")));
-		$this->setCountryCode($address->getData($this->getAddressAttr("tappzaddresscountryid")));
-		$this->setState($address->getData($this->getAddressAttr("tappzaddressregion")));
-		$this->setStateCode($address->getData($this->getAddressAttr("tappzaddressregionid")));
-		$this->setCity($address->getData($this->getAddressAttr("tappzaddresscity")));
-		$this->setCityCode($address->getData($this->getAddressAttr("tappzaddresscityid")));
-		$this->setDistrict($address->getData($this->getAddressAttr("tappzaddressdistrict")));
-		$this->setDistrictCode($address->getData($this->getAddressAttr("tappzaddressdistrictid")));
-		$this->setTown($address->getData($this->getAddressAttr("tappzaddresstown")));
-		$this->setTownCode($address->getData($this->getAddressAttr("tappzaddresstownid")));
-		$this->setCorporate(false);
-		$this->setCorporateTitle($address->getData($this->getAddressAttr("tappzaddresscompany")));
-		$this->setTaxDepartment($address->getData($this->getAddressAttr("tappztaxdepartmentattribute")));
-		$this->setTaxNo($address->getData($this->getAddressAttr("tappzvatno")));
-		$this->setPhoneNumber($address->getData($this->getAddressAttr("tappzphone")));
-		$this->setIdentityNo($address->getData($this->getAddressAttr("tappzidno")));
-		$this->setZipCode($address->getData($this->getAddressAttr("tappzpostcode")));
-		$this->setUsCheckoutCity($address->getData($this->getAddressAttr("tappzaddresscityid")));
-		$this->setErrorCode("");
-		$this->setMessage("Success");
-		$this->setUserFriendly(true);
+		$this->set($address)
+		->setId($address->getID())
+		->setName($address->getData($this->getAddressAttr("tappzaddressname")))
+		->setCustomerName($address->getData($this->getAddressAttr("tappzaddressfirstname")))
+		->setCustomerSurname($address->getData($this->getAddressAttr("tappzaddresslastname")))
+		->setAddressCustomerEmail($address->getData($this->getAddressAttr("tappzaddressemail")))
+		->setLine($address->getData($this->getAddressAttr("tappzaddressstreet")))
+		->setCountry($address->getData($this->getAddressAttr("tappzaddresscountry")))
+		->setCountryCode($address->getData($this->getAddressAttr("tappzaddresscountryid")))
+		->setState($address->getData($this->getAddressAttr("tappzaddressregion")))
+		->setStateCode($address->getData($this->getAddressAttr("tappzaddressregionid")))
+		->setCity($address->getData($this->getAddressAttr("tappzaddresscity")))
+		->setCityCode($address->getData($this->getAddressAttr("tappzaddresscityid")))
+		->setDistrict($address->getData($this->getAddressAttr("tappzaddressdistrict")))
+		->setDistrictCode($address->getData($this->getAddressAttr("tappzaddressdistrictid")))
+		->setTown($address->getData($this->getAddressAttr("tappzaddresstown")))
+		->setTownCode($address->getData($this->getAddressAttr("tappzaddresstownid")))
+		->setCorporate(false)
+		->setCorporateTitle($address->getData($this->getAddressAttr("tappzaddresscompany")))
+		->setTaxDepartment($address->getData($this->getAddressAttr("tappztaxdepartmentattribute")))
+		->setTaxNo($address->getData($this->getAddressAttr("tappzvatno")))
+		->setPhoneNumber($address->getData($this->getAddressAttr("tappzphone")))
+		->setIdentityNo($address->getData($this->getAddressAttr("tappzidno")))
+		->setZipCode($address->getData($this->getAddressAttr("tappzpostcode")))
+		->setUsCheckoutCity($address->getData($this->getAddressAttr("tappzaddresscityid")))
+		->setErrorCode("")
+		->setMessage("Success")
+		->setUserFriendly(true);
 	}
 
 	public function getAddressAttr($attr)

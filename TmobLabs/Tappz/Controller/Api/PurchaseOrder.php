@@ -27,6 +27,7 @@ class PurchaseOrder extends Action
 		$this->jsonResult = $json->create();
 		$this->helper = $helper;
 		$this->orderRepository = $orderRepository;
+		$helper->checkAuth();
 	}
 
 	public function execute()
