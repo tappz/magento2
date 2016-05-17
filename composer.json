@@ -14,7 +14,7 @@
       "require-dev": {
    "magento/magento-composer-installer": "*"
     },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
    "autoload": {
     "files": [ "registration.php" ],
     "psr-4": {
