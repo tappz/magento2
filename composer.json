@@ -11,9 +11,9 @@
     "OSL-3.0",
     "AFL-3.0"
   ],
-      "require-dev": {
+  "require-dev": {
    "magento/magento-composer-installer": "*"
-    },
+  },
   "minimum-stability": "stable",
    "autoload": {
     "files": [ "registration.php" ],
