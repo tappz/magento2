@@ -11,7 +11,7 @@
     "OSL-3.0",
     "AFL-3.0"
   ],
-  "minimum-stability": "alpha",
+  "minimum-stability": "stable",
    "autoload": {
     "files": [ "registration.php" ],
     "psr-4": {
