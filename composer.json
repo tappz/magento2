@@ -13,7 +13,14 @@
   "require-dev": {
    "magento/magento-composer-installer": "*"
   },
-  
+    "extra": {
+        "map": [
+            [
+                "*",
+                "Tmoblabs/Tappz"
+            ]
+        ]
+    },
    "autoload": {
     "files": [ "registration.php" ],
     "psr-4": {
