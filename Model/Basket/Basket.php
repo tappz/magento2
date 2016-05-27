@@ -287,7 +287,9 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getQuantity()
     {
-        return $this->basket->quantity;
+        $quantity = $this->basket->quantity;
+        $result =  empty($quantity) ? 0 :$quantity;
+        return $result;
     }
 
     /**

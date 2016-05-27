@@ -151,7 +151,9 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getTrackingNumberByOrder($order)
     {
-        return !empty($order->getTrackingNumbers()) ? $order->getTrackingNumbers() : null;
+        $trackNumber = $order->getTrackingNumbers();
+        $result = !empty($trackNumber) ? ($trackNumber) : null;
+        return $result;
     }
 
     /**

@@ -4,13 +4,13 @@ t-appz magento extension allows you create your own Native M-commerce Apps for i
 
 ## How t-appz works 
  ![alt tag](https://raw.githubusercontent.com/tappz/t-appz-php-sdk/master/docs/assets/how-its-works.jpg)
- 
 #Installation Guide
 ##### Install plug-in via Git
 ##### Install plug-in via Marketplace 
 
 ##### Install plug-in via Composer 
  composer require tmoblabs/tappz dev-master
+##### Install plug-in via Git
 
 ##### Manual Installation 
 
