@@ -51,8 +51,8 @@ class Branchescitylist extends Action
      */
     public function execute()
     {
-        $arr = array(
-            0 => array(
+        $arr = [
+            0 => [
                     'cityId' => 0,
                     'name' => 'string',
                     'latitude' => 'string',
@@ -60,8 +60,8 @@ class Branchescitylist extends Action
                     'ErrorCode' => 'string',
                     'Message' => 'string',
                     'UserFriendly' => true,
-                ),
-        );
+                ],
+        ];
         $this->jsonResult->setData($arr);
 
         return $this->jsonResult;

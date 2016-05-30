@@ -80,7 +80,7 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
      */
     public function getCategories()
     {
-        $result = array();
+        $result = [];
         $categories = $this->getStoreCategories(true, false, true);
         foreach ($categories as $category) {
             $this->category = $category;

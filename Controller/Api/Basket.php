@@ -55,7 +55,7 @@ class Basket extends Action
     {
         $params = ($this->getRequest()->getParams());
 
-        $result = array();
+        $result = [];;
         if (count($params) > 0 && empty($params[key($params)])) {
             $basketId = key($params);
             $result = $this->basketRepository->getByBasketById($basketId);

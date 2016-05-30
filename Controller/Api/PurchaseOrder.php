@@ -63,7 +63,7 @@ class PurchaseOrder extends Action
         $params = ($this->getRequest()->getParams());
         $method = $this->helper->getRequestMethod();
 
-        $result = array();
+        $result = [];
         switch ($method) {
             case 'GET':
                 if (count($params) > 0) {

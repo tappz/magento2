@@ -225,7 +225,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function giftCheques()
     {
-        return array();
+        return [];
     }
 
     /**

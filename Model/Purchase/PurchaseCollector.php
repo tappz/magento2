@@ -87,7 +87,7 @@ class PurchaseCollector extends PurchaseFill
                 $result = $this->purchaseApplePay();
                 break;
             default:
-                $result = array();
+                $result = [];
                 break;
         }
 
@@ -141,7 +141,7 @@ class PurchaseCollector extends PurchaseFill
             ->collectShippingRates()
             ->setShippingMethod($shipmentMethod);
         $quote->setPaymentMethod('cashondelivery');
-        $quote->getPayment()->importData(array('method' => 'cashondelivery'));
+        $quote->getPayment()->importData(['method' => 'cashondelivery']);
         $quote->setIsActive(true)
             ->collectTotals()
             ->save();

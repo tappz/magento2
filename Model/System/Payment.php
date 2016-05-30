@@ -34,15 +34,15 @@ class Payment implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        $options = array();
+        $options = [];
         $collection = $this->storeHelper->getStoreMethods();
         foreach ($collection as $method) {
             array_push(
                 $options,
-                array(
+                [
                     'value' => $method->getCode(),
                     'label' => $method->getTitle(),
-                )
+                ]
             );
         }
 

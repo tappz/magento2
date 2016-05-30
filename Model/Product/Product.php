@@ -97,7 +97,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getCreditCardInstallments()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -131,7 +131,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getVariants()
     {
-        $result = array();
+        $result = [];
         $productType = $this->product->getTypeId();
         if ($productType == 'configurable') {
             $instanceConf = $this->product->getTypeInstance();
@@ -141,12 +141,12 @@ class Product extends AbstractExtensibleObject implements ProductInterface
                     $this->product
                 );
             foreach ($configurableAttributesData as $dt => $val) {
-                $group = array();
+                $group = [];
 
                 $group['groupId'] = $val['attribute_code'];
                 $group['groupName'] = $val['label'];
                 foreach ($val['values'] as $vv) {
-                    $groupValue = array();
+                    $groupValue = [];
 
                     $groupValue['displayName'] = $vv['label'];
                     $groupValue['value'] = $vv['value_index'];
@@ -199,8 +199,8 @@ class Product extends AbstractExtensibleObject implements ProductInterface
     public function getPictures()
     {
         $images = $this->product->getMediaGalleryImages();
-        $image = array();
-        $result = array();
+        $image = [];
+        $result = [];
         if (isset($images)) {
             if (count($images) > 0) {
                 foreach ($images as $image) {
@@ -272,7 +272,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getBackInStockSubSelectedVariant()
     {
-        return array();
+        return [];
     }
 
     /**

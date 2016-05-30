@@ -57,7 +57,7 @@ class ProductCollector extends ProductFill implements ProductInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->product = $objectManager->get('Magento\Catalog\Model\Product')->
         load($productId);
-        $result = array();
+        $result = [];
         if ($this->product->hasRelatedProductIds()) {
             foreach ($this->product->getRelatedProducts() as $product) {
                 $this->product = $this->getProduct($product->getID());
@@ -109,8 +109,8 @@ class ProductCollector extends ProductFill implements ProductInterface
             );
         }
         $productCollection->addStoreFilter();
-        $productCollection->addFieldToFilter('status', array('eq' => '1'));
-        $productCollection->addAttributeToFilter('price', array('gt' => 0));
+        $productCollection->addFieldToFilter('status', ['eq' => '1']);
+        $productCollection->addAttributeToFilter('price', ['gt' => 0]);
         if (!empty($params['filters'])) {
             foreach ($params['filters'] as $f) {
                 if (isset($f->selected)) {
@@ -124,7 +124,7 @@ class ProductCollector extends ProductFill implements ProductInterface
             $productCollection->addAttributeToSort($sortArr[0], $sortArr[1]);
         }
         $productCollection->setPage($pageNumber, $pageSize);
-        $products = array();
+        $products = [];
         foreach ($productCollection as $product) {
             $this->setProduct($product);
             $products[] = $this->getProduct($product->getId());
@@ -134,7 +134,7 @@ class ProductCollector extends ProductFill implements ProductInterface
             $pageNumber,
             $pageSize,
             $products,
-            array(),
+            [],
             $this->fillShortList());
         return $result;
     }

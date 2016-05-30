@@ -1494,7 +1494,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setContract($data)
     {
-        $result = $this->contract = (object) array();
+        $result = $this->contract = (object) [];
 
         return $result;
     }

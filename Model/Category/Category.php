@@ -51,7 +51,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getChildren()
     {
-        $result = array();
+        $result = [];
         $categories = $this->category->getChildrenCategories();
         if (($categories)) {
             foreach ($categories as $category) {
@@ -84,10 +84,10 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getIsRoot()
     {
-         $categoryId = $this->getParentCategoryId();
-         $rootCategory  = $this->getRootCategory();
-         $response = $categoryId ==$rootCategory ? true : false;
-         return $response;
+        $categoryId = $this->getParentCategoryId();
+        $rootCategory = $this->getRootCategory();
+        $response = $categoryId == $rootCategory ? true : false;
+        return $response;
     }
 
     /**
@@ -134,7 +134,8 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
                                        $toLoad = true
     )
     {
-        return $this->categoryHelper->getStoreCategories($sorted, $asCollection, $toLoad);
+        return $this->categoryHelper->
+        getStoreCategories($sorted, $asCollection, $toLoad);
     }
 
     /**

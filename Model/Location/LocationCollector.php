@@ -44,8 +44,8 @@ class LocationCollector extends LocationFill implements LocationInterface
         get('Magento\Directory\Model\Country')->getResourceCollection()
             ->loadByStore()
             ->toOptionArray(true);
-        $result = array();
-        $this->location = (object) array();
+        $result = [];
+        $this->location = (object) [];
         foreach ($countries as $country) {
             if (!empty($country['label']) && !empty($country['value'])) {
                 $this->setCode($country['value']);
@@ -70,8 +70,8 @@ class LocationCollector extends LocationFill implements LocationInterface
         load($countryId)->
         getRegions()->
         toOptionArray(true);
-        $this->location = (object) array();
-        $result = array();
+        $this->location = (object) [];
+        $result = [];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
                 $this->setCode($state['value']);
@@ -96,8 +96,8 @@ class LocationCollector extends LocationFill implements LocationInterface
         load($countryId)->
         getRegions()->
         toOptionArray(true);
-        $result = array();
-        $this->location = (object) array();
+        $result = [];
+        $this->location = (object) [];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
                 $this->setCode($state['value']);
@@ -117,10 +117,10 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getDistricts($cityId)
     {
-        $this->location = (object) array();
+        $this->location = (object) [];
         $this->setCode('');
         $this->setName('');
-        $result = array();
+        $result = [];
         $this->setCodeAndName($result);
 
         return $this->fillDistricts();
@@ -133,10 +133,10 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getTowns($districtId)
     {
-        $this->location = (object) array();
+        $this->location = (object) [];
         $this->setDefaultCode('');
         $this->setDefaultName('');
-        $result = array();
+        $result = [];
         $this->setCodeAndName($result);
 
         return $this->fillTowns();

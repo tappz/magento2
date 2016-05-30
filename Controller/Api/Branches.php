@@ -51,7 +51,7 @@ class Branches extends Action
      */
     public function execute()
     {
-        $this->jsonResult->setData(array());
+        $this->jsonResult->setData([]);
 
         return $this->jsonResult;
     }

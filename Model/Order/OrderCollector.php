@@ -104,7 +104,7 @@ class OrderCollector extends OrderFill implements OrderInterface
     {
         $order = $this->objectManager->get('Magento\Sales\Model\Order');
         $order = $order->load($orderId);
-        $this->setOrders((object) array());
+        $this->setOrders((object) []);
         $this->setOrderId($this->getOrderIdByOrder($order));
         $this->setTrackingNumber($this->getTrackingNumberByOrder($order));
         $this->setOrderDate($this->getOrderDateByOrder($order));
@@ -202,7 +202,7 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getLinesByOrder($order)
     {
-        $this->basketCollector->setBasket((object) array());
+        $this->basketCollector->setBasket((object) []);
         foreach ($order->getAllVisibleItems() as $item) {
             $this->basketCollector->setProductId(
                 $item->getData('product_id')
@@ -233,7 +233,7 @@ class OrderCollector extends OrderFill implements OrderInterface
             );
             $this->basketCollector->setStatus(0);
             $this->basketCollector->setAverageDeliveryDays('');
-            $this->basketCollector->setVariants(array());
+            $this->basketCollector->setVariants([]);
             $this->basketCollector->setStrikeoutPrice(null);
             $result[] = $this->basketCollector->fillLines();
         }
@@ -273,7 +273,7 @@ class OrderCollector extends OrderFill implements OrderInterface
         }
         if (!isset($delivery['shippingAddress']) ||
             is_null($delivery['shippingAddress']['id'])) {
-            $delivery = (object) array();
+            $delivery = (object) [];
         } else {
             $delivery['useSameAddressForBilling'] = false;
             if ($shippingAddressId == $billingAddressId) {

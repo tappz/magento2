@@ -54,7 +54,7 @@ class Product extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $result = array();
+        $result = [];
         if (count($params) > 0 && $params[key($params)] == 'related') {
             $productId = key($params);
             $result = $this->productRepository->getRelatedProduct($productId);

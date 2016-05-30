@@ -60,7 +60,7 @@ class Profile extends Action
     public function execute()
     {
         $method = $this->helper->getRequestMethod();
-        $result = array();
+        $result = [];
         switch ($method) {
             case 'GET':
                 $result = $this->profileRepository->getProfile();

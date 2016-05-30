@@ -87,7 +87,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
         $this->profile = ($customer->loadByEmail($email));
         $this->setIsSubscribe((bool) $subscriber->getId());
-        $shipping['shipping'] = array();
+        $shipping['shipping'] = [];
         foreach ($customer->getAddresses() as $address) {
             $shipping['shipping'][] = $this->addressRepository->
             getAddress($address->getID());
@@ -131,7 +131,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
                 get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
                 $this->profile = ($customer->loadByEmail($email));
                 $this->setIsSubscribe((bool) $subscriber->getId());
-                $shipping['shipping'] = array();
+                $shipping['shipping'] = [];
                 foreach ($customer->getAddresses() as $address) {
                     $shipping['shipping'][] = $this->addressRepository->
                     getAddress($address->getID());
@@ -188,7 +188,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $subscriber = $this->objectManager->
         get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
         $this->setIsSubscribe((bool) $subscriber->getId());
-        $shipping['shipping'] = array();
+        $shipping['shipping'] = [];
         foreach ($customer->getAddresses() as $address) {
             $shipping['shipping'][] = $this->addressRepository->
             getAddress($address->getID());

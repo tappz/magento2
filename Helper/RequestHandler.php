@@ -93,7 +93,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     public function getHeaderJson()
     {
         $resource = fopen('php://input', 'r');
-        $result = array();
+        $result = [];
         while ($putData = fread($resource, 8192)) {
             $result = $putData;
         }

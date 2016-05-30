@@ -59,8 +59,8 @@ class IndexCollector extends IndexFill implements IndexInterface
     public function getIndex()
     {
         $categories = $this->categoryRepository->getCategories();
-        $items = array();
-        $groups = array();
+        $items = [];
+        $groups = [];
         foreach ($categories as $category) {
             $id = $category['id'];
             $name = $category['name'];

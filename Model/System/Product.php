@@ -34,8 +34,8 @@ class Product implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        $options = array();
-        $options[] = array('value' => ' ', 'label' => ' ');
+
+        $options[] = ['value' => ' ', 'label' => ' '];
         $product = Mage::getModel('catalog/product');
         $attributes = $product->getAttributes();
         foreach ($attributes as $attribute) {
@@ -45,8 +45,8 @@ class Product implements \Magento\Framework\Option\ArrayInterface
                     $attribute->getEntityType(),
                     $code
                 );
-                $options[] = array('value' => $code, 'label' =>
-                    $attributeModel->getFrontendLabel());
+                $options[] = ['value' => $code, 'label' =>
+                    $attributeModel->getFrontendLabel()];
             }
             break;
         }

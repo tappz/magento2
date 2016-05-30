@@ -34,17 +34,17 @@ class Address implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        $options = array();
-        $options[] = array('value' => ' ', 'label' => ' ');
+
+        $options[] = ['value' => ' ', 'label' => ' '];
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $attributes = $objectManager->
         get('Magento\Customer\Model\Address')->getAttributes();
         foreach ($attributes as $attribute) {
             if ($attribute->getIsVisible()) {
-                $options[] = array(
+                $options[] = [
                     'value' => $attribute->getAttributeCode(),
                     'label' => $attribute->getFrontendLabel(),
-                );
+                ];
             }
         }
 
