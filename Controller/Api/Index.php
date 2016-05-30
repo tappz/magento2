@@ -37,7 +37,10 @@ class Index extends Action
      * @param IndexRepositoryInterface $indexRepository
      * @param RequestHandler           $helper
      */
-    public function __construct(Context $context, JSON $json, IndexRepositoryInterface $indexRepository, RequestHandler $helper)
+    public function __construct(Context $context,
+                                JSON $json,
+                                IndexRepositoryInterface $indexRepository,
+                                RequestHandler $helper)
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();

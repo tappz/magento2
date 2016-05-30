@@ -67,7 +67,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function getMessage()
     {
-        return;
+        return '';
     }
 
     /**
@@ -173,7 +173,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      *
      * @return array
      */
-    public function fillGroups($displayName = '', $image = '', $items = array())
+    public function fillGroups($displayName = '', $image = '', $items = [])
     {
         return [
             'displayName' => $displayName,
@@ -189,7 +189,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      *
      * @return array
      */
-    public function fillAds($displayName = '', $image = '', $action = array())
+    public function fillAds($displayName = '', $image = '', $action = [])
     {
         return [
             'displayName' => $displayName,

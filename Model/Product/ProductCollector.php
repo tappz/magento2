@@ -34,7 +34,9 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+        $this->product = $objectManager->
+        get('Magento\Catalog\Model\Product')->
+        load($productId);
 
         return $this->fillProduct();
     }
@@ -42,8 +44,10 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProductBySku($barcode)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $productId = $objectManager->get('Magento\Catalog\Model\Product')->getIdBySku($barcode);
-        $this->product = $product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+        $productId = $objectManager->
+        get('Magento\Catalog\Model\Product')->getIdBySku($barcode);
+        $this->product = $product = $objectManager->
+        get('Magento\Catalog\Model\Product')->load($productId);
 
         return $this->fillProduct();
     }
@@ -51,7 +55,8 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getRelatedProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->
+        load($productId);
         $result = array();
         if ($this->product->hasRelatedProductIds()) {
             foreach ($this->product->getRelatedProducts() as $product) {
@@ -66,27 +71,42 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProductSearch($params)
     {
         if (isset($params['category']) && !empty($params['category'])) {
-            $layer = $this->objectManager->get('Magento\Catalog\Model\CategoryFactory')->create()->load($params['category']);
-            $category = $this->objectManager->get('Magento\Catalog\Model\Category')->load($params['category']);
+            $layer = $this->objectManager->
+            get('Magento\Catalog\Model\CategoryFactory')->
+            create()->load($params['category']);
+            $category = $this->objectManager->
+            get('Magento\Catalog\Model\Category')->
+            load($params['category']);
             $layer->setCurrentCategory($category);
-            $productCollection = $layer->getProductCollection()
-                ->addAttributeToSelect('*')->addPriceData()->addAttributeToFilter('status', '1');
+            $productCollection = $layer->
+            getProductCollection()->
+            addAttributeToSelect('*')->
+            addPriceData()->
+            addAttributeToFilter('status', '1');
         } else {
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $productCollection = $objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Collection');
+            $object = \Magento\Framework\App\ObjectManager::getInstance();
+            $productCollection = $object->
+            create('Magento\Catalog\Model\ResourceModel\Product\Collection');
         }
-        if (!isset($params['pageSize']) || empty($params['pageSize']) || intval($params['pageSize']) < 1) {
+        if (!isset($params['pageSize'])
+            || empty($params['pageSize'])
+            || intval($params['pageSize']) < 1
+        ) {
             $pageSize = 6;
         } else {
             $pageSize = (int) $params['pageSize'];
         }
-        if (!isset($params['pageNumber']) || empty($params['pageNumber']) || intval($params['pageNumber']) < 1) {
+        if (!isset($params['pageNumber'])
+            || empty($params['pageNumber'])
+            || intval($params['pageNumber']) < 1) {
             $pageNumber = 1;
         } else {
             $pageNumber = $params['pageNumber'] + 1;
         }
         if (isset($params['phrase']) && !empty($params['phrase'])) {
-            $productCollection->addFieldToFilter('name', ['like' => '%'.$params['phrase'].'%']);
+            $productCollection->addFieldToFilter('name',
+                ['like' => '%'.$params['phrase'].'%']
+            );
         }
         $productCollection->addStoreFilter();
         $productCollection->addFieldToFilter('status', array('eq' => '1'));
@@ -110,9 +130,12 @@ class ProductCollector extends ProductFill implements ProductInterface
             $products[] = $this->getProduct($product->getId());
         }
         $totalResultCount = $productCollection->getSize();
-        $result = $this->fillProductSearch($totalResultCount, $pageNumber, $pageSize, $products, array(),
+        $result = $this->fillProductSearch($totalResultCount,
+            $pageNumber,
+            $pageSize,
+            $products,
+            array(),
             $this->fillShortList());
-
         return $result;
     }
 }

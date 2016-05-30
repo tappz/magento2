@@ -37,7 +37,10 @@ class mergeBasket extends Action
      * @param BasketRepositoryInterface $basketRepository
      * @param RequestHandler            $helper
      */
-    public function __construct(Context $context, JSON $json, BasketRepositoryInterface $basketRepository, RequestHandler $helper)
+    public function __construct(Context $context,
+                                JSON $json,
+                                BasketRepositoryInterface $basketRepository,
+                                RequestHandler $helper)
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();

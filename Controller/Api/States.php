@@ -37,7 +37,10 @@ class States extends Action
      * @param LocationRepositoryInterface $locationRepository
      * @param RequestHandler              $helper
      */
-    public function __construct(Context $context, JSON $json, LocationRepositoryInterface $locationRepository, RequestHandler $helper)
+    public function __construct(Context $context,
+                                JSON $json,
+                                LocationRepositoryInterface $locationRepository,
+                                RequestHandler $helper)
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();

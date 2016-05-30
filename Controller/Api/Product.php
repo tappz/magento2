@@ -37,7 +37,10 @@ class Product extends Action
      * @param ProductRepositoryInterface $productRepository
      * @param RequestHandler             $helper
      */
-    public function __construct(Context $context, JSON $json, ProductRepositoryInterface $productRepository, RequestHandler $helper)
+    public function __construct(Context $context,
+                                JSON $json,
+                                ProductRepositoryInterface $productRepository,
+                                RequestHandler $helper)
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();

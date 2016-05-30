@@ -51,7 +51,8 @@ class PurchaseCollector extends PurchaseFill
         Basket $basketRepository,
         OrderCollector $orderCollector
     ) {
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->objectManager =
+            \Magento\Framework\App\ObjectManager::getInstance();
         $this->helper = $requestHandler;
         $this->basketRepository = $basketRepository;
         $this->orderCollector = $orderCollector;
@@ -166,8 +167,10 @@ class PurchaseCollector extends PurchaseFill
      */
     public function getUserViaUserId($userid)
     {
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store);
+        $store = $this->objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        $customer = $this->objectManager->
+        get('Magento\Customer\Model\Customer')->setStore($store);
         $customer->load($userid);
 
         return $customer;

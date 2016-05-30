@@ -26,14 +26,18 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getErrorCode()
     {
-        return isset($this->location->errorCode) ? $this->location->errorCode : null;
+        $errorCode = $this->location->errorCode;
+        $result = isset($errorCode) ? $errorCode : null;
+        return $result;
     }
 
     /**
      */
     public function getMessage()
     {
-        return isset($this->location->message) ? $this->location->message : null;
+        $message = $this->location->message;
+        $result = isset($message) ? $message : null;
+        return $result;
     }
 
     /**
@@ -41,7 +45,8 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getUserFriendly()
     {
-        return isset($this->location->userFriendly) ? $this->location->userFriendly : false;
+        $userFriendly = $this->location->userFriendly;
+        return isset($userFriendly) ? $userFriendly : false;
     }
 
     /**

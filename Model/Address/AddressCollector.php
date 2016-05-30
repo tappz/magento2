@@ -83,10 +83,14 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function deleteAddress()
     {
+        $json = $this->helper->getHeaderJson();
         $userId = $this->helper->convertJson($this->helper->getAuthorization());
-        $addressResponse = $this->helper->convertJson($this->helper->getHeaderJson());
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store)->load($userId);
+        $addressResponse = $this->helper->convertJson($json);
+        $store = $this->
+        objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')
+            ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
@@ -106,9 +110,14 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function createOrUpdateAddress($update = false)
     {
         $userId = $this->helper->convertJson($this->helper->getAuthorization());
-        $addressResponse = $this->helper->convertJson($this->helper->getHeaderJson());
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store)->load($userId);
+        $addressResponse = $this->
+        helper->
+        convertJson($this->helper->getHeaderJson());
+        $store = $this->
+        objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')
+            ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
@@ -136,39 +145,103 @@ class AddressCollector extends AddressFill implements AddressInterface
      *
      * @return mixed
      */
-    public function addressBeforeSave($addressResponse, $address)
+    public function addressBeforeSave($response, $address)
     {
-        if (empty($addressResponse->cityCode)) {
-            $addressResponse->cityCode = $addressResponse->city;
+        if (empty($response->cityCode)) {
+            $response->cityCode = $response->city;
         }
-        if (empty($addressResponse->state)) {
-            $addressResponse->state = $addressResponse->city;
+        if (empty($response->state)) {
+            $response->state = $response->city;
         }
-        if (empty($addressResponse->stateCode)) {
-            $addressResponse->stateCode = $addressResponse->cityCode;
+        if (empty($response->stateCode)) {
+            $response->stateCode = $response->cityCode;
         }
-        $address->setData($this->getAddressAttr('tappzaddressname'), $addressResponse->addressName);
-        $address->setData($this->getAddressAttr('tappzaddressfirstname'), $addressResponse->name);
-        $address->setData($this->getAddressAttr('tappzaddresslastname'), $addressResponse->surname);
-        $address->setData($this->getAddressAttr('tappzaddressemail'), $addressResponse->email);
-        $address->setData($this->getAddressAttr('tappzaddressstreet'), $addressResponse->addressLine);
-        $address->setData($this->getAddressAttr('tappzaddresscountry'), $addressResponse->country);
-        $address->setData($this->getAddressAttr('tappzaddresscountryid'), $addressResponse->countryCode);
-        $address->setData($this->getAddressAttr('tappzaddressregion'), $addressResponse->state);
-        $address->setData($this->getAddressAttr('tappzaddressregionid'), $addressResponse->stateCode);
-        $address->setData($this->getAddressAttr('tappzaddresscity'), $addressResponse->city);
-        $address->setData($this->getAddressAttr('tappzaddresscityid'), $addressResponse->cityCode);
-        $address->setData($this->getAddressAttr('tappzaddressdistrict'), $addressResponse->district);
-        $address->setData($this->getAddressAttr('tappzaddressdistrictid'), $addressResponse->districtCode);
-        $address->setData($this->getAddressAttr('tappzaddresstown'), $addressResponse->town);
-        $address->setData($this->getAddressAttr('tappzaddresstownid'), $addressResponse->townCode);
-        $address->setData($this->getAddressAttr('tappzaddresscompany'), $addressResponse->companyTitle);
-        $address->setData($this->getAddressAttr('tappzaddressiscompany'), (bool) $addressResponse->corporate);
-        $address->setData($this->getAddressAttr('tappztaxdepartmentattribute'), $addressResponse->taxDepartment);
-        $address->setData($this->getAddressAttr('tappzvatno'), $addressResponse->taxNo);
-        $address->setData($this->getAddressAttr('tappzphone'), $addressResponse->phoneNumber);
-        $address->setData($this->getAddressAttr('tappzidno'), $addressResponse->identityNo);
-        $address->setData($this->getAddressAttr('tappzpostcode'), $addressResponse->zipCode);
+        $address->setData(
+            $this->getAttr('tappzaddressname'),
+            $response->addressName
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressfirstname'),
+            $response->name
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresslastname'),
+            $response->surname
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressemail'),
+            $response->email
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressstreet'),
+            $response->addressLine
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresscountry'),
+            $response->country
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresscountryid'),
+            $response->countryCode
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressregion'),
+            $response->state);
+        $address->setData(
+            $this->getAttr('tappzaddressregionid'),
+            $response->stateCode
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresscity'),
+            $response->city
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresscityid'),
+            $response->cityCode
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressdistrict'),
+            $response->district
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressdistrictid'),
+            $response->districtCode
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresstown'),
+            $response->town);
+        $address->setData(
+            $this->getAttr('tappzaddresstownid'),
+            $response->townCode
+        );
+        $address->setData(
+            $this->getAttr('tappzaddresscompany'),
+            $response->companyTitle
+        );
+        $address->setData(
+            $this->getAttr('tappzaddressiscompany'),
+            (bool) $response->corporate
+        );
+        $address->setData(
+            $this->getAttr('tappztaxdepartmentattribute'),
+            $response->taxDepartment
+        );
+        $address->setData(
+            $this->getAttr('tappzvatno'),
+            $response->taxNo
+        );
+        $address->setData(
+            $this->getAttr('tappzphone'),
+            $response->phoneNumber
+        );
+        $address->setData(
+            $this->getAttr('tappzidno'),
+            $response->identityNo
+        );
+        $address->setData(
+            $this->getAttr('tappzpostcode'),
+            $response->zipCode
+        );
 
         return $address;
     }
@@ -179,30 +252,76 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function setAddress($address)
     {
         $this->set($address)
-        ->setId($address->getID())
-        ->setName($address->getData($this->getAddressAttr('tappzaddressname')))
-        ->setCustomerName($address->getData($this->getAddressAttr('tappzaddressfirstname')))
-        ->setCustomerSurname($address->getData($this->getAddressAttr('tappzaddresslastname')))
-        ->setAddressCustomerEmail($address->getData($this->getAddressAttr('tappzaddressemail')))
-        ->setLine($address->getData($this->getAddressAttr('tappzaddressstreet')))
-        ->setCountry($address->getData($this->getAddressAttr('tappzaddresscountry')))
-        ->setCountryCode($address->getData($this->getAddressAttr('tappzaddresscountryid')))
-        ->setState($address->getData($this->getAddressAttr('tappzaddressregion')))
-        ->setStateCode($address->getData($this->getAddressAttr('tappzaddressregionid')))
-        ->setCity($address->getData($this->getAddressAttr('tappzaddresscity')))
-        ->setCityCode($address->getData($this->getAddressAttr('tappzaddresscityid')))
-        ->setDistrict($address->getData($this->getAddressAttr('tappzaddressdistrict')))
-        ->setDistrictCode($address->getData($this->getAddressAttr('tappzaddressdistrictid')))
-        ->setTown($address->getData($this->getAddressAttr('tappzaddresstown')))
-        ->setTownCode($address->getData($this->getAddressAttr('tappzaddresstownid')))
+        ->setId(
+            $address->getID()
+        )
+        ->setName(
+            $address->getData($this->getAttr('tappzaddressname'))
+        )
+        ->setCustomerName(
+            $address->getData($this->getAttr('tappzaddressfirstname'))
+        )
+        ->setCustomerSurname(
+            $address->getData($this->getAttr('tappzaddresslastname'))
+        )
+        ->setAddressCustomerEmail(
+            $address->getData($this->getAttr('tappzaddressemail'))
+        )
+        ->setLine(
+            $address->getData($this->getAttr('tappzaddressstreet'))
+        )
+        ->setCountry(
+            $address->getData($this->getAttr('tappzaddresscountry'))
+        )
+        ->setCountryCode(
+            $address->getData($this->getAttr('tappzaddresscountryid'))
+        )
+        ->setState(
+            $address->getData($this->getAttr('tappzaddressregion'))
+        )
+        ->setStateCode(
+            $address->getData($this->getAttr('tappzaddressregionid'))
+        )
+        ->setCity(
+            $address->getData($this->getAttr('tappzaddresscity'))
+        )
+        ->setCityCode(
+            $address->getData($this->getAttr('tappzaddresscityid'))
+        )
+        ->setDistrict(
+            $address->getData($this->getAttr('tappzaddressdistrict'))
+        )
+        ->setDistrictCode(
+            $address->getData($this->getAttr('tappzaddressdistrictid'))
+        )
+        ->setTown(
+            $address->getData($this->getAttr('tappzaddresstown'))
+        )
+        ->setTownCode(
+            $address->getData($this->getAttr('tappzaddresstownid'))
+        )
         ->setCorporate(false)
-        ->setCorporateTitle($address->getData($this->getAddressAttr('tappzaddresscompany')))
-        ->setTaxDepartment($address->getData($this->getAddressAttr('tappztaxdepartmentattribute')))
-        ->setTaxNo($address->getData($this->getAddressAttr('tappzvatno')))
-        ->setPhoneNumber($address->getData($this->getAddressAttr('tappzphone')))
-        ->setIdentityNo($address->getData($this->getAddressAttr('tappzidno')))
-        ->setZipCode($address->getData($this->getAddressAttr('tappzpostcode')))
-        ->setUsCheckoutCity($address->getData($this->getAddressAttr('tappzaddresscityid')))
+        ->setCorporateTitle(
+            $address->getData($this->getAttr('tappzaddresscompany'))
+        )
+        ->setTaxDepartment(
+            $address->getData($this->getAttr('tappztaxdepartmentattribute'))
+        )
+        ->setTaxNo(
+            $address->getData($this->getAttr('tappzvatno'))
+        )
+        ->setPhoneNumber(
+            $address->getData($this->getAttr('tappzphone'))
+        )
+        ->setIdentityNo(
+            $address->getData($this->getAttr('tappzidno'))
+        )
+        ->setZipCode(
+            $address->getData($this->getAttr('tappzpostcode'))
+        )
+        ->setUsCheckoutCity(
+            $address->getData($this->getAttr('tappzaddresscityid'))
+        )
         ->setErrorCode('')
         ->setMessage('Success')
         ->setUserFriendly(true);
@@ -213,9 +332,11 @@ class AddressCollector extends AddressFill implements AddressInterface
      *
      * @return mixed
      */
-    public function getAddressAttr($attr)
+    public function getAttr($attr)
     {
-        return $this->configAddress->getValue('tappzaddress/tappzaddressesform/'.$attr);
+        return $this->
+        configAddress->
+        getValue('tappzaddress/tappzaddressesform/'.$attr);
     }
 
     /**
@@ -225,7 +346,8 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function getAddressById($addressId)
     {
-        $this->setAddress($this->objectManager->get('Magento\Customer\Model\Address')->load($addressId));
+        $address = $this->objectManager->get('Magento\Customer\Model\Address');
+        $this->setAddress($address->load($addressId));
 
         return $this->fillAddress();
     }

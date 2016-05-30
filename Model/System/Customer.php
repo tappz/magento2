@@ -37,7 +37,8 @@ class Customer implements \Magento\Framework\Option\ArrayInterface
         $options = array();
         $options[] = array('value' => ' ', 'label' => ' ');
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $attributes = $objectManager->get('Magento\Customer\Model\Customer')->getAttributes();
+        $attributes = $objectManager->
+        get('Magento\Customer\Model\Customer')->getAttributes();
         foreach ($attributes as $attribute) {
             if ($attribute->getIsVisible()) {
                 $options[] = array(

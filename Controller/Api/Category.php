@@ -37,7 +37,11 @@ class Category extends Action
      * @param CategoryRepositoryInterface $categoryRepository
      * @param RequestHandler              $helper
      */
-    public function __construct(Context $context, JSON $json, CategoryRepositoryInterface $categoryRepository, RequestHandler $helper)
+    public function __construct(
+        Context $context,
+        JSON $json,
+        CategoryRepositoryInterface $categoryRepository,
+        RequestHandler $helper)
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();

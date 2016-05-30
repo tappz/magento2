@@ -67,7 +67,9 @@ class IndexCollector extends IndexFill implements IndexInterface
             $image = null;
             $collection = $this->getCategoryProducts($id);
             foreach ($collection as $_product) {
-                $items[] = $this->productCollector->getProduct($_product->getId());
+                $items[] = $this->productCollector->getProduct(
+                    $_product->getId()
+                );
             }
             if (count($items) > 0) {
                 $groups[] = $this->fillGroups($name, $image, $items);

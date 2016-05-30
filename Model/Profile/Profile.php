@@ -103,7 +103,9 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getFirstName()
     {
-        return $this->profile->getFirstname().($this->profile->getMiddleName() ? (' '.$this->profile->getMiddleName()) : '');
+        $firstName = $this->profile->getFirstname();
+        $middleName = $this->profile->getMiddleName();
+        return $firstName.($middleName ? (' '.$middleName) : '');
     }
 
     /**

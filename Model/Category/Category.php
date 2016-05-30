@@ -68,7 +68,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getErrorCode()
     {
-        return;
+        return '';
     }
 
     /**
@@ -84,7 +84,10 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getIsRoot()
     {
-        return $this->getParentCategoryId() == $this->getRootCategory() ? true : false;
+         $categoryId = $this->getParentCategoryId();
+         $rootCategory  = $this->getRootCategory();
+         $response = $categoryId ==$rootCategory ? true : false;
+         return $response;
     }
 
     /**
@@ -92,7 +95,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getMessage()
     {
-        return;
+        return '';
     }
 
     /**
@@ -100,7 +103,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getDescription()
     {
-        return;
+        return '';
     }
 
     /**
@@ -126,7 +129,10 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      *
      * @return mixed
      */
-    public function getStoreCategories($sorted = false, $asCollection = true, $toLoad = true)
+    public function getStoreCategories($sorted = false,
+                                       $asCollection = true,
+                                       $toLoad = true
+    )
     {
         return $this->categoryHelper->getStoreCategories($sorted, $asCollection, $toLoad);
     }

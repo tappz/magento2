@@ -68,8 +68,10 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     public function getCategory($categoryId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->category = $objectManager->get('Magento\Catalog\Model\Category')->load($categoryId);
-
+        $this->category =
+            $objectManager
+                ->get('Magento\Catalog\Model\Category')
+                ->load($categoryId);
         return $this->fillCategory();
     }
 

@@ -35,7 +35,11 @@ class Branches extends Action
      * @param JSON                        $json
      * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(Context $context, JSON $json, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(
+        Context $context,
+        JSON $json,
+        CategoryRepositoryInterface $categoryRepository
+    )
     {
         parent::__construct($context);
         $this->jsonResult = $json->create();
