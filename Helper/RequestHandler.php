@@ -56,7 +56,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     public function checkAuth()
     {
         $header = (isset($_SERVER['HTTP_AUTHORIZATION']) && $_SERVER['HTTP_AUTHORIZATION'] != '') ? $_SERVER['HTTP_AUTHORIZATION'] : '';
-        $auth = (@explode(' ', $header));
+        $auth = (explode(' ', $header));
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $url = substr($objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore()
@@ -67,7 +67,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         $token = $this->scopeConfig->getValue('tappztoken/tappzusermethod/tappzsecretkey');
         if (sizeof($token) == 0) {
             exit(' 401 - Token not initialized.Please create  token on configuration page ');
-        } elseif (sha1((trim($token.'|'.($realUrl).'|'.@$auth[2])), false) != @$auth[1] ||  $username != @$auth[0]) {
+        } elseif (sha1((trim($token.'|'.($realUrl).'|'.$auth[2])), false) != $auth[1] ||  $username != $auth[0]) {
             exit(' 403 - Access denied.Please check your tokens');
         }
 
@@ -107,7 +107,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $authorization = $_SERVER['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ? $authorization : '';
-        $auth = @end(@explode(' ', $header));
+        $auth = end(explode(' ', $header));
 
         return $auth;
     }
