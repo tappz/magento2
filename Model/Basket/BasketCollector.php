@@ -79,7 +79,6 @@ class BasketCollector extends BasketFill
         \Magento\Shipping\Model\Config $shippingMethodConfig,
         CarrierConfig $carrierConfig,
         AddressRepositoryInterface $_addressRepository
-
     )
     {
         $this->helper = $requestHandler;
@@ -123,7 +122,7 @@ class BasketCollector extends BasketFill
             ->setStore($store)
             ->load($userId);
         $quote = $quoteObject->loadByCustomer($customer);
-        if (is_null($quote->getId())) {
+        if (empty($quote->getId())) {
             $quote = $quote->setStoreId($store)
                 ->setIsActive(false)
                 ->setIsMultiShipping(false)
@@ -158,7 +157,7 @@ class BasketCollector extends BasketFill
             ->setStore($store)
             ->load($quoteId);
 
-        if (!is_null($billingAddressId)) {
+        if ($billingAddressId !== null && !empty($billingAddressId)) {
             $userAddress = $this->objectManager->
             get('Magento\Customer\Model\Address')->load($billingAddressId);
             $address = $this->objectManager->
@@ -171,7 +170,7 @@ class BasketCollector extends BasketFill
             $quote->setBillingAddress($address)
                 ->setCollectShippingRates(true);
         }
-        if (!is_null($shippingAddressId)) {
+        if ($shippingAddressId !== null && !empty($shippingAddressId)) {
             $userAddress = $this->objectManager->
             get('Magento\Customer\Model\Address')->
             load($shippingAddressId);
@@ -180,7 +179,6 @@ class BasketCollector extends BasketFill
             setCustomerAddressData($userAddress);
             $shippingAddres = $this->_addressRepository->
             getById($shippingAddressId);
-
             $this->objectManager->
             get('Magento\Quote\Model\Quote\Address')->
             importCustomerAddressData($shippingAddres);
@@ -188,15 +186,10 @@ class BasketCollector extends BasketFill
                 ->setCollectShippingRates(true);
             $quote->getShippingAddress()->setCollectShippingRates(true);
         }
-        if (!is_null($shippingMethodId)) {
+        if ($shippingMethodId !== null && !empty($shippingMethodId)) {
             $quoteShippingAddress = $quote->getShippingAddress();
             $rate = $quoteShippingAddress->collectShippingRates()->
             getShippingRateByCode($shippingMethodId);
-            if (!$rate) {
-                /*
-                 * @todo dzgok set here dynamic error
-                 */
-            }
             $rate = $this->objectManager->
             get('Magento\Quote\Model\Quote\Address\Rate');
             $rate->setCode($shippingMethodId)->getPrice(1);
@@ -215,7 +208,9 @@ class BasketCollector extends BasketFill
      */
     public function getLines($basketId)
     {
-        $updateList = $this->helper->convertJson($this->helper->getHeaderJson());
+        $updateList = $this->helper->convertJson(
+            $this->helper->getHeaderJson()
+        );
         $store = $this->store->getStore();
         $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
@@ -295,7 +290,7 @@ class BasketCollector extends BasketFill
         } else {
             $quote = $quoteObject->save();
         }
-        if (is_null($quote->getId())) {
+        if (($quote->getId()) == null || empty(($quote->getId()))) {
             try {
                 if (isset($userId) && $userId !== '') {
                     $quote = $quoteObject->setCustomerId($userId);
@@ -546,9 +541,7 @@ class BasketCollector extends BasketFill
         $methods = $this->methodList->getAvailableMethods($quote);
         foreach ($methods as $method) {
             $code = $method->getCode();
-            /*
-             * @todo dzgok I already wrote setters and getters
-             */
+
 
             if (($code == 'creditCard')) {
                 $paymentOptions['creditCard'] = [];
@@ -647,8 +640,8 @@ class BasketCollector extends BasketFill
                 $paymentData['displayName'] = 'Check / Money Order';
                 $paymentData['bankCode'] = null;
                 $paymentData['installment'] = 0;
-                $paymentData['accountNumber'] = '123456'; // TODO
-                $paymentData['branch'] = '321'; // TODO
+                $paymentData['accountNumber'] = '123456';
+                $paymentData['branch'] = '321';
                 $paymentData['iban'] = 'TR12 3456 7890 1234 5678 9012 00';
             } else {
                 if ($method == 'creditcard') {
@@ -806,7 +799,7 @@ class BasketCollector extends BasketFill
                 $delivery['shippingMethod'][0]['imageUrl'] = null;
             }
         }
-        if (is_null($delivery['shippingAddress']['id'])) {
+        if (empty($delivery['shippingAddress']['id'])) {
             $delivery = (object)[];
         }
 
@@ -887,7 +880,7 @@ class BasketCollector extends BasketFill
             $rateItem['id'] = $carrierCode;
             $rateItem['displayName'] = $carrierTitle;
             $rateItem['trackingAddress'] = null;
-            $rateItem['price'] = is_null($carrierPrice) ? 0 : $carrierPrice;
+            $rateItem['price'] = empty($carrierPrice) ? 0 : $carrierPrice;
             $rateItem['priceForYou'] = null;
             $rateItem['shippingMethodType'] = $carrierCode;
             $rateItem['imageUrl'] = null;

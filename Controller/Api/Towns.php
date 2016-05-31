@@ -32,10 +32,10 @@ class Towns extends Action
     /**
      * Towns constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
+     * @param Context $context
+     * @param JSON $json
      * @param LocationRepositoryInterface $locationRepository
-     * @param RequestHandler              $helper
+     * @param RequestHandler $helper
      */
     public function __construct(Context $context,
                                 JSON $json,

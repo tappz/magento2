@@ -15,7 +15,7 @@ use TmobLabs\Tappz\API\Data\ProductInterface;
 /**
  * Class Product.
  */
-class Product extends AbstractExtensibleObject implements ProductInterface
+class Product extends AbstractExtensibleObject
 {
     /**
      * @var string
@@ -442,15 +442,6 @@ class Product extends AbstractExtensibleObject implements ProductInterface
         return $this;
     }
 
-    /**
-     * @param $product
-     *
-     * @return string
-     */
-    public function getProduct($product)
-    {
-        return $this->product;
-    }
 
     /**
      * @param $parentProductId

@@ -27,8 +27,9 @@ class PurchaseRepository implements PurchaseRepositoryInterface
      * @param PurchaseCollector $purchaseCollector
      */
     public function __construct(
-    PurchaseCollector $purchaseCollector
-    ) {
+        PurchaseCollector $purchaseCollector
+    )
+    {
         $this->purchaseCollector = $purchaseCollector;
     }
 }

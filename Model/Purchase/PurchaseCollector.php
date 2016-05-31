@@ -146,7 +146,8 @@ class PurchaseCollector extends PurchaseFill
             ->collectTotals()
             ->save();
         $quote->getShippingMethod();
-        $rate = $this->objectManager->get('Magento\Quote\Model\Quote\Address\Rate');
+        $rate = $this->objectManager->
+        get('Magento\Quote\Model\Quote\Address\Rate');
         $rate->setCode($shipmentMethod);
         $quote->getShippingAddress()->addShippingRate($rate);
         $quoteManagement = $this->objectManager

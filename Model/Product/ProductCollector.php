@@ -28,7 +28,8 @@ class ProductCollector extends ProductFill implements ProductInterface
         parent::__construct($storeManager);
         $this->scopeConfigInterface = $scopeConfigInterface;
         $this->categoryFactory = $categoryFactory;
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->objectManager =
+            \Magento\Framework\App\ObjectManager::getInstance();
     }
 
     public function getProduct($productId)

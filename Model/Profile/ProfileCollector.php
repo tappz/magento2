@@ -108,7 +108,8 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $token = $header->fbAccessToken;
         $fbUserId = $header->fbUid;
         $curl = curl_init();
-        $fbField = 'id,name,email,first_name,last_name,gender,verified,birthday';
+        $fbField = 'id,name,email,first_name,'.
+            'last_name,gender,verified,birthday';
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL,
             "https://graph.facebook.com/$fbUserId?".

@@ -58,8 +58,10 @@ class AddressCollector extends AddressFill implements AddressInterface
         $this->helper = $requestHandler;
         $this->customerUrl = $customerUrl;
         $this->configAddress = $configAddress;
-        $this->scopeInterface = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->scopeInterface =
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $this->objectManager =
+            \Magento\Framework\App\ObjectManager::getInstance();
     }
 
     /**

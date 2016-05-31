@@ -272,7 +272,7 @@ class OrderCollector extends OrderFill implements OrderInterface
             }
         }
         if (!isset($delivery['shippingAddress']) ||
-            is_null($delivery['shippingAddress']['id'])) {
+            empty($delivery['shippingAddress']['id'])) {
             $delivery = (object) [];
         } else {
             $delivery['useSameAddressForBilling'] = false;
