@@ -10,7 +10,6 @@
 namespace TmobLabs\Tappz\Model\Address;
 
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
-use Magento\Store\Model\StoreManagerInterface;
 use TmobLabs\Tappz\API\Data\AddressInterface;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 
@@ -22,23 +21,23 @@ class AddressCollector extends AddressFill implements AddressInterface
     /**
      * @var RequestHandler
      */
-    protected $helper;
+    protected $_helper;
     /**
      * @var \Magento\Customer\Model\Url
      */
-    protected $customerUrl;
+    protected $_customerUrl;
     /**
      * @var
      */
-    protected $objectManager;
+    protected $_objectManager;
     /**
      * @var
      */
-    protected $scopeInterface;
+    protected $_scopeInterface;
     /**
      * @var ScopeConfig
      */
-    protected $configAddress;
+    protected $_configAddress;
 
     /**
      * AddressCollector constructor.
@@ -49,18 +48,16 @@ class AddressCollector extends AddressFill implements AddressInterface
      * @param ScopeConfig                 $configAddress
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
         RequestHandler $requestHandler,
         \Magento\Customer\Model\Url $customerUrl,
         ScopeConfig $configAddress
     ) {
-        parent::__construct($storeManager);
-        $this->helper = $requestHandler;
-        $this->customerUrl = $customerUrl;
-        $this->configAddress = $configAddress;
-        $this->scopeInterface =
+        $this->_helper = $requestHandler;
+        $this->_customerUrl = $customerUrl;
+        $this->_configAddress = $configAddress;
+        $this->_scopeInterface =
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
     }
 
@@ -85,18 +82,22 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function deleteAddress()
     {
-        $json = $this->helper->getHeaderJson();
-        $userId = $this->helper->convertJson($this->helper->getAuthorization());
-        $addressResponse = $this->helper->convertJson($json);
+        $json = $this->_helper->getHeaderJson();
+        $userId = $this->_helper->convertJson(
+            $this->_helper->getAuthorization()
+        );
+        $addressResponse = $this->_helper->convertJson($json);
         $store = $this->
-        objectManager->
+        _objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')
+        $customer =
+            $this->_objectManager->get('Magento\Customer\Model\Customer')
             ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
-        $address = $this->objectManager->get('Magento\Customer\Model\Address');
+        $address =
+            $this->_objectManager->get('Magento\Customer\Model\Address');
         $address->load($addressResponse->id);
         $result = $this->getAddressById($address->getID());
         $address->delete();
@@ -111,19 +112,22 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function createOrUpdateAddress($update = false)
     {
-        $userId = $this->helper->convertJson($this->helper->getAuthorization());
+        $userId = $this->_helper->convertJson(
+            $this->_helper->getAuthorization()
+        );
         $addressResponse = $this->
-        helper->
-        convertJson($this->helper->getHeaderJson());
+        _helper->
+        convertJson($this->_helper->getHeaderJson());
         $store = $this->
-        objectManager->
+        _objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')
+        $customer = $this->_objectManager->
+        get('Magento\Customer\Model\Customer')
             ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
-        $address = $this->objectManager->get('Magento\Customer\Model\Address');
+        $address = $this->_objectManager->get('Magento\Customer\Model\Address');
         if ($update) {
             $address->load($addressResponse->id);
         }
@@ -337,7 +341,7 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function getAttr($attr)
     {
         return $this->
-        configAddress->
+        _configAddress->
         getValue('tappzaddress/tappzaddressesform/'.$attr);
     }
 
@@ -348,7 +352,7 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function getAddressById($addressId)
     {
-        $address = $this->objectManager->get('Magento\Customer\Model\Address');
+        $address = $this->_objectManager->get('Magento\Customer\Model\Address');
         $this->setAddress($address->load($addressId));
 
         return $this->fillAddress();

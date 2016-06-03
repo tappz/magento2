@@ -23,11 +23,11 @@ class Category extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    private $_categoryRepository;
 
     /**
      * Category constructor.
@@ -44,8 +44,8 @@ class Category extends Action
         RequestHandler $helper)
     {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->categoryRepository = $categoryRepository;
+        $this->_jsonResult = $json->create();
+        $this->_categoryRepository = $categoryRepository;
         $helper->checkAuth();
     }
 
@@ -56,9 +56,8 @@ class Category extends Action
     {
         $params = ($this->getRequest()->getParams());
         $categoryId = key($params);
-        $result = $this->categoryRepository->getByCategoryById($categoryId);
-        $this->jsonResult->setData($result);
-
-        return $this->jsonResult;
+        $result = $this->_categoryRepository->getByCategoryById($categoryId);
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

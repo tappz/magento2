@@ -19,7 +19,7 @@ class ProfileRepository implements ProfileRepositoryInterface
     /**
      * @var ProfileCollector
      */
-    private $profileCollector;
+    private $_profileCollector;
 
     /**
      * ProfileRepository constructor.
@@ -29,7 +29,7 @@ class ProfileRepository implements ProfileRepositoryInterface
     public function __construct(
         ProfileCollector $profileCollector
     ) {
-        $this->profileCollector = $profileCollector;
+        $this->_profileCollector = $profileCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function getUserAgreement()
     {
-        $result = $this->profileCollector->userAgreement();
+        $result = $this->_profileCollector->userAgreement();
 
         return $result;
     }
@@ -47,7 +47,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function login()
     {
-        $result = $this->profileCollector->login();
+        $result = $this->_profileCollector->login();
 
         return $result;
     }
@@ -57,7 +57,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function fblogin()
     {
-        $result = $this->profileCollector->fblogin();
+        $result = $this->_profileCollector->fblogin();
 
         return $result;
     }
@@ -67,7 +67,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function getProfile()
     {
-        $result = $this->profileCollector->getProfile();
+        $result = $this->_profileCollector->getProfile();
 
         return $result;
     }
@@ -77,7 +77,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function createProfile()
     {
-        $result = $this->profileCollector->createProfile();
+        $result = $this->_profileCollector->createProfile();
 
         return $result;
     }
@@ -87,7 +87,7 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     public function editProfile()
     {
-        $result = $this->profileCollector->editProfile();
+        $result = $this->_profileCollector->editProfile();
 
         return $result;
     }

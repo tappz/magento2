@@ -17,7 +17,7 @@ class Product implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var \Magento\Payment\Helper\Data
      */
-    private $storeHelper;
+    private $_storeHelper;
 
     /**
      * Product constructor.
@@ -26,7 +26,7 @@ class Product implements \Magento\Framework\Option\ArrayInterface
      */
     public function __construct(\Magento\Payment\Helper\Data $storeHelper)
     {
-        $this->storeHelper = $storeHelper;
+        $this->_storeHelper = $storeHelper;
     }
 
     /**
@@ -39,7 +39,8 @@ class Product implements \Magento\Framework\Option\ArrayInterface
         $product = Mage::getModel('catalog/product');
         $attributes = $product->getAttributes();
         foreach ($attributes as $attribute) {
-            foreach ($attribute->getEntityType()->getAttributeCodes() as $code) {
+            foreach ($attribute->getEntityType()->getAttributeCodes() as $code)
+            {
                 $attributeModel = Mage::getModel('eav/entity_attribute')->
                 loadByCode(
                     $attribute->getEntityType(),

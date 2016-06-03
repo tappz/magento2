@@ -19,7 +19,7 @@ class PurchaseRepository implements PurchaseRepositoryInterface
     /**
      * @var PurchaseCollector
      */
-    private $purchaseCollector;
+    private $_purchaseCollector;
 
     /**
      * PurchaseRepository constructor.
@@ -30,6 +30,6 @@ class PurchaseRepository implements PurchaseRepositoryInterface
         PurchaseCollector $purchaseCollector
     )
     {
-        $this->purchaseCollector = $purchaseCollector;
+        $this->_purchaseCollector = $purchaseCollector;
     }
 }

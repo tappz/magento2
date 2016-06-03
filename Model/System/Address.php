@@ -14,20 +14,6 @@ namespace TmobLabs\Tappz\Model\System;
  */
 class Address implements \Magento\Framework\Option\ArrayInterface
 {
-    /**
-     * @var \Magento\Payment\Helper\Data
-     */
-    private $storeHelper;
-
-    /**
-     * Address constructor.
-     *
-     * @param \Magento\Payment\Helper\Data $storeHelper
-     */
-    public function __construct(\Magento\Payment\Helper\Data $storeHelper)
-    {
-        $this->storeHelper = $storeHelper;
-    }
 
     /**
      * @return array

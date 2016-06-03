@@ -14,21 +14,7 @@ namespace TmobLabs\Tappz\Model\Basket;
  */
 class BasketFill extends Basket
 {
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $_storeManager;
 
-    /**
-     * BasketFill constructor.
-     *
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
-        $this->_storeManager = $storeManager;
-    }
 
     /**
      * @return array

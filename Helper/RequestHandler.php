@@ -10,7 +10,6 @@
 namespace TmobLabs\Tappz\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
 /**
  * Class RequestHandler.
  */
@@ -19,17 +18,19 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
-
+    protected $_scopeConfig;
+    protected $_request;
     /**
      * RequestHandler constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\RequestInterface $httpRequest
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->_scopeConfig = $scopeConfig;
+        $this->_request = $httpRequest;
     }
 
     /**
@@ -37,7 +38,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getRequestMethod()
     {
-        return $_SERVER['REQUEST_METHOD'];
+        $server=  $this->_request->getServerValue();
+        return $server['REQUEST_METHOD'];
     }
 
     /**
@@ -47,7 +49,9 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getRealUrl($url)
     {
-        return urldecode($url."$_SERVER[REQUEST_URI]");
+        $server = $this->_request->getServerValue();
+
+        return urldecode($url.$server['REQUEST_URI']);
     }
 
     /**
@@ -55,9 +59,22 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function checkAuth()
     {
-        $header = (isset($_SERVER['HTTP_AUTHORIZATION'])
-            && $_SERVER['HTTP_AUTHORIZATION'] != '')
-            ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+        $server = $this->_request->getServerValue();
+
+
+
+        if(!isset($server['HTTP_AUTHORIZATION']) ||
+            empty($server['HTTP_AUTHORIZATION']))
+        {
+            $error = "Couldn't find AUTHORIZATION !Please "
+            ."check your  .htaccess  ";
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+        }
+
+        $header = (isset($server['HTTP_AUTHORIZATION'])
+            && $server['HTTP_AUTHORIZATION'] != '')
+            ? $server['HTTP_AUTHORIZATION'] : '';
         $auth = (explode(' ', $header));
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -69,19 +86,23 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         $realUrl = $this->getRealUrl($url);
 
         $username =
-            $this->scopeConfig->
+            $this->_scopeConfig->
             getValue('tappztoken/tappzusermethod/tappzusername');
-        $token = $this->scopeConfig->
+        $token = $this->_scopeConfig->
             getValue('tappztoken/tappzusermethod/tappzsecretkey');
         if (sizeof($token) == 0) {
-            $response = ' 401 - Token not initialized.Please'
+            $error = ' 401 - Token not initialized.Please'
             .'create  token on configuration page ';
-            exit($response);
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
         } elseif (
             sha1((trim($token.'|'.($realUrl).'|'.$auth[2])), false) != $auth[1]
             ||  $username != $auth[0]
         ) {
-            exit(' 403 - Access denied.Please check your tokens');
+            $error = ' 403 - Access denied.Please check your tokens';
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+
         }
 
         return $auth;
@@ -107,7 +128,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAuthorizationFull()
     {
-        $authorization = $_SERVER['HTTP_AUTHORIZATION'];
+        $server = $this->_request->getServerValue();
+        $authorization = $server['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ?
             $authorization : '';
 
@@ -119,12 +141,17 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAuthorization()
     {
-        $authorization = $_SERVER['HTTP_AUTHORIZATION'];
+        $server = $this->_request->getServerValue();
+       if(!isset($server['HTTP_AUTHORIZATION'])
+           || empty($server['HTTP_AUTHORIZATION']))
+           return "";
+        $authorization = $server['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ?
             $authorization : '';
-        $auth = end(explode(' ', $header));
+        $auth = (explode(' ', $header));
+        $result = (int)end($auth);
 
-        return $auth;
+        return $result;
     }
 
     /**

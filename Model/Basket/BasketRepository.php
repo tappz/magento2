@@ -20,11 +20,11 @@ class BasketRepository implements BasketRepositoryInterface
     /**
      * @var BasketCollector
      */
-    private $basketCollector;
+    private $_basketCollector;
     /**
      * @var PurchaseCollector
      */
-    private $purchaseCollector;
+    private $_purchaseCollector;
 
     /**
      * BasketRepository constructor.
@@ -36,8 +36,8 @@ class BasketRepository implements BasketRepositoryInterface
         BasketCollector $basketCollector,
         PurchaseCollector $purchaseCollector
     ) {
-        $this->basketCollector = $basketCollector;
-        $this->purchaseCollector = $purchaseCollector;
+        $this->_basketCollector = $basketCollector;
+        $this->_purchaseCollector = $purchaseCollector;
     }
 
     /**
@@ -47,7 +47,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getByBasketById($basketId)
     {
-        $result = $this->basketCollector->getBasketById($basketId);
+        $result = $this->_basketCollector->getBasketById($basketId);
 
         return $result;
     }
@@ -57,7 +57,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getUserBasket()
     {
-        $result = $this->basketCollector->getUserBasket();
+        $result = $this->_basketCollector->getUserBasket();
 
         return $result;
     }
@@ -69,7 +69,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getPayment($quoteId)
     {
-        $result = $this->basketCollector->getBasketPayment($quoteId);
+        $result = $this->_basketCollector->getBasketPayment($quoteId);
 
         return $result;
     }
@@ -81,7 +81,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getLines($quoteId = null)
     {
-        $result = $this->basketCollector->getLines($quoteId);
+        $result = $this->_basketCollector->getLines($quoteId);
 
         return $result;
     }
@@ -93,7 +93,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getAddress($quoteId = null)
     {
-        $result = $this->basketCollector->setAddress($quoteId);
+        $result = $this->_basketCollector->setAddress($quoteId);
 
         return $result;
     }
@@ -105,7 +105,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getContract($quoteId = null)
     {
-        $result = $this->basketCollector->getBasketContract($quoteId);
+        $result = $this->_basketCollector->getBasketContract($quoteId);
 
         return $result;
     }
@@ -118,7 +118,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getPurchase($quoteId, $method)
     {
-        $result = $this->purchaseCollector->getPurchase($quoteId, $method);
+        $result = $this->_purchaseCollector->getPurchase($quoteId, $method);
 
         return $result;
     }
@@ -128,7 +128,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function merge()
     {
-        $result = $this->basketCollector->merge();
+        $result = $this->_basketCollector->merge();
 
         return $result;
     }

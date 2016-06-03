@@ -15,7 +15,7 @@ use TmobLabs\Tappz\API\Data\ProductInterface;
 
 class ProductCollector extends ProductFill implements ProductInterface
 {
-    protected $product;
+    protected $_product;
     protected $scopeConfigInterface;
     protected $objectManager;
     protected $categoryFactory;
@@ -35,7 +35,7 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->
+        $this->_product = $objectManager->
         get('Magento\Catalog\Model\Product')->
         load($productId);
 
@@ -47,7 +47,7 @@ class ProductCollector extends ProductFill implements ProductInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $productId = $objectManager->
         get('Magento\Catalog\Model\Product')->getIdBySku($barcode);
-        $this->product = $product = $objectManager->
+        $this->_product = $product = $objectManager->
         get('Magento\Catalog\Model\Product')->load($productId);
 
         return $this->fillProduct();
@@ -56,12 +56,12 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getRelatedProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->
+        $this->_product = $objectManager->get('Magento\Catalog\Model\Product')->
         load($productId);
         $result = [];
-        if ($this->product->hasRelatedProductIds()) {
-            foreach ($this->product->getRelatedProducts() as $product) {
-                $this->product = $this->getProduct($product->getID());
+        if ($this->_product->hasRelatedProductIds()) {
+            foreach ($this->_product->getRelatedProducts() as $product) {
+                $this->_product = $this->getProduct($product->getID());
                 $result[] = $this->fillProduct();
             }
         }

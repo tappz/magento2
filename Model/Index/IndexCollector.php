@@ -27,11 +27,11 @@ class IndexCollector extends IndexFill implements IndexInterface
     /**
      * @var CategoryRepository
      */
-    public $categoryRepository;
+    public $_categoryRepository;
     /**
      * @var ProductCollector
      */
-    public $productCollector;
+    public $_productCollector;
 
     /**
      * IndexCollector constructor.
@@ -48,8 +48,8 @@ class IndexCollector extends IndexFill implements IndexInterface
         CategoryFactory $categoryFactory
     ) {
         parent::__construct($storeManager);
-        $this->categoryRepository = $categoryRepository;
-        $this->productCollector = $productCollector;
+        $this->_categoryRepository = $categoryRepository;
+        $this->_productCollector = $productCollector;
         $this->_categoryFactory = $categoryFactory;
     }
 
@@ -58,7 +58,7 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getIndex()
     {
-        $categories = $this->categoryRepository->getCategories();
+        $categories = $this->_categoryRepository->getCategories();
         $items = [];
         $groups = [];
         foreach ($categories as $category) {
@@ -67,7 +67,7 @@ class IndexCollector extends IndexFill implements IndexInterface
             $image = null;
             $collection = $this->getCategoryProducts($id);
             foreach ($collection as $_product) {
-                $items[] = $this->productCollector->getProduct(
+                $items[] = $this->_productCollector->getProduct(
                     $_product->getId()
                 );
             }

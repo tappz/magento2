@@ -24,39 +24,36 @@ class BasketCollector extends BasketFill
     /**
      * @var
      */
-    protected $objectManager;
+    protected $_objectManager;
     /**
      * @var
      */
-    protected $store;
+    protected $_store;
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected $_productRepository;
     /**
      * @var AddressRepository
      */
-    protected $addressRepository;
+    protected $_addressRepository;
     /**
      * @var \Magento\Payment\Model\MethodList
      */
-    protected $methodList;
+    protected $_methodList;
     /**
      * @var ScopeConfig
      */
-    protected $configBasket;
+    protected $_configBasket;
+
     /**
      * @var CarrierConfig
      */
-    protected $shippingMethodConfig;
-    /**
-     * @var CarrierConfig
-     */
-    protected $carrierConfig;
+    protected $_carrierConfig;
     /**
      * @var AddressRepositoryInterface
      */
-    private $_addressRepository;
+    private $_addressRepositoryInterface;
 
     /**
      * BasketCollector constructor.
@@ -66,9 +63,8 @@ class BasketCollector extends BasketFill
      * @param AddressRepository $addressRepository
      * @param \Magento\Payment\Model\MethodList $methodList
      * @param ScopeConfig $configBasket
-     * @param CarrierConfig $shippingMethodConfig
      * @param CarrierConfig $carrierConfig
-     * @param AddressRepositoryInterface $_addressRepository
+     * @param AddressRepositoryInterface $_addressRepositoryInterface
      */
     public function __construct(
         RequestHandler $requestHandler,
@@ -76,23 +72,21 @@ class BasketCollector extends BasketFill
         AddressRepository $addressRepository,
         \Magento\Payment\Model\MethodList $methodList,
         ScopeConfig $configBasket,
-        \Magento\Shipping\Model\Config $shippingMethodConfig,
         CarrierConfig $carrierConfig,
-        AddressRepositoryInterface $_addressRepository
+        AddressRepositoryInterface $addressRepositoryInterface
     )
     {
         $this->helper = $requestHandler;
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-        $this->store = $this->objectManager->
+        $this->_store = $this->_objectManager->
         get('Magento\Store\Model\StoreManagerInterface');
-        $this->productRepository = $productRepository;
-        $this->addressRepository = $addressRepository;
-        $this->methodList = $methodList;
-        $this->configBasket = $configBasket;
-        $this->shippingMethodConfig = $shippingMethodConfig;
-        $this->carrierConfig = $carrierConfig;
-        $this->_addressRepository = $_addressRepository;
+        $this->_productRepository = $productRepository;
+        $this->_addressRepository = $addressRepository;
+        $this->_methodList = $methodList;
+        $this->_configBasket = $configBasket;
+        $this->_carrierConfig = $carrierConfig;
+        $this->_addressRepositoryInterface = $addressRepositoryInterface;
     }
 
     /**
@@ -106,18 +100,18 @@ class BasketCollector extends BasketFill
             $anonymousBasketId = $result->basketId;
         }
         $userId = $this->helper->getAuthorization();
-        $store = $this->store->getStore();
+        $store = $this->_store->getStore();
         if ($anonymousBasketId == 'null' || empty($anonymousBasketId)) {
             return $this->getUserBasket();
         }
 
-        $anonymousQuote = $this->objectManager
+        $anonymousQuote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($anonymousBasketId);
-        $quoteObject = $this->objectManager->
+        $quoteObject = $this->_objectManager->
         get('Magento\Quote\Model\Quote')->setStore($store);
-        $customer = $this->objectManager
+        $customer = $this->_objectManager
             ->get('Magento\Customer\Model\Customer')
             ->setStore($store)
             ->load($userId);
@@ -151,35 +145,35 @@ class BasketCollector extends BasketFill
         $shippingMethodId = isset($result->shippingMethod[0]->id) ?
             $result->shippingMethod[0]->id : null;
 
-        $store = $this->store->getStore();
-        $quote = $this->objectManager
+        $store = $this->_store->getStore();
+        $quote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($quoteId);
 
         if ($billingAddressId !== null && !empty($billingAddressId)) {
-            $userAddress = $this->objectManager->
+            $userAddress = $this->_objectManager->
             get('Magento\Customer\Model\Address')->load($billingAddressId);
-            $address = $this->objectManager->
+            $address = $this->_objectManager->
             get('Magento\Quote\Model\Quote\Address')
                 ->setCustomerAddressData($userAddress);
-            $billingAddress = $this->_addressRepository->
+            $billingAddress = $this->_addressRepositoryInterface->
             getById($billingAddressId);
-            $this->objectManager->get('Magento\Quote\Model\Quote\Address')->
+            $this->_objectManager->get('Magento\Quote\Model\Quote\Address')->
             importCustomerAddressData($billingAddress);
             $quote->setBillingAddress($address)
                 ->setCollectShippingRates(true);
         }
         if ($shippingAddressId !== null && !empty($shippingAddressId)) {
-            $userAddress = $this->objectManager->
+            $userAddress = $this->_objectManager->
             get('Magento\Customer\Model\Address')->
             load($shippingAddressId);
-            $address = $this->objectManager->
+            $address = $this->_objectManager->
             get('Magento\Quote\Model\Quote\Address')->
             setCustomerAddressData($userAddress);
-            $shippingAddres = $this->_addressRepository->
+            $shippingAddres = $this->_addressRepositoryInterface->
             getById($shippingAddressId);
-            $this->objectManager->
+            $this->_objectManager->
             get('Magento\Quote\Model\Quote\Address')->
             importCustomerAddressData($shippingAddres);
             $quote->setShippingAddress($address)
@@ -188,9 +182,9 @@ class BasketCollector extends BasketFill
         }
         if ($shippingMethodId !== null && !empty($shippingMethodId)) {
             $quoteShippingAddress = $quote->getShippingAddress();
-            $rate = $quoteShippingAddress->collectShippingRates()->
+            $quoteShippingAddress->collectShippingRates()->
             getShippingRateByCode($shippingMethodId);
-            $rate = $this->objectManager->
+            $rate = $this->_objectManager->
             get('Magento\Quote\Model\Quote\Address\Rate');
             $rate->setCode($shippingMethodId)->getPrice(1);
             $quote->getShippingAddress()->setShippingMethod($shippingMethodId);
@@ -211,8 +205,8 @@ class BasketCollector extends BasketFill
         $updateList = $this->helper->convertJson(
             $this->helper->getHeaderJson()
         );
-        $store = $this->store->getStore();
-        $quote = $this->objectManager
+        $store = $this->_store->getStore();
+        $quote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
@@ -220,7 +214,7 @@ class BasketCollector extends BasketFill
             $productId = $item->productId;
             $qty = $item->quantity;
             $products[] = $qty;
-            $product = $this->objectManager->
+            $product = $this->_objectManager->
             get('Magento\Catalog\Model\Product')->
             load($productId);
             $quoteItem = $quote->getItemByProduct($product);
@@ -247,8 +241,8 @@ class BasketCollector extends BasketFill
      */
     public function getBasketById($basketId)
     {
-        $store = $this->store->getStore();
-        $quote = $this->objectManager
+        $store = $this->_store->getStore();
+        $quote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
@@ -263,8 +257,8 @@ class BasketCollector extends BasketFill
      */
     public function getBasketQuoteById($basketId)
     {
-        $store = $this->store->getStore();
-        $quote = $this->objectManager
+        $store = $this->_store->getStore();
+        $quote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
@@ -278,11 +272,11 @@ class BasketCollector extends BasketFill
     public function getUserBasket()
     {
         $userId = $this->helper->getAuthorization();
-        $store = $this->store->getStore();
-        $quoteObject = $this->objectManager->get('Magento\Quote\Model\Quote')
+        $store = $this->_store->getStore();
+        $quoteObject = $this->_objectManager->get('Magento\Quote\Model\Quote')
             ->setStore($store);
         if (is_numeric($userId)) {
-            $customer = $this->objectManager
+            $customer = $this->_objectManager
                 ->get('Magento\Customer\Model\Customer')
                 ->setStore($store)
                 ->load($userId);
@@ -316,7 +310,7 @@ class BasketCollector extends BasketFill
             ->setShippingMethods($this->getShippingsMethodByBasket())
             ->setShippingMethod($this->getShippingByBasket($quote))
             ->setCurrency(
-                $this->store->getStore()->getCurrentCurrency()->getCode()
+                $this->_store->getStore()->getCurrentCurrency()->getCode()
             )
             ->setLine($this->getLinesByBasket($quote))
             ->setDelivery($this->getDeliveryByBasket($quote))
@@ -538,7 +532,7 @@ class BasketCollector extends BasketFill
     public function getPaymentMethodsByBasket($quote)
     {
         $paymentOptions = [];
-        $methods = $this->methodList->getAvailableMethods($quote);
+        $methods = $this->_methodList->getAvailableMethods($quote);
         foreach ($methods as $method) {
             $code = $method->getCode();
 
@@ -589,7 +583,7 @@ class BasketCollector extends BasketFill
                 $paymentOptions['paypal']['displayName'] =
                     $method->getTitle();
                 $paymentOptions['paypal']['isSandbox'] =
-                    (bool)$this->configBasket->
+                    (bool)$this->_configBasket->
                     getValue('tappzpaypal/tappzpaypalmethod/paypalSandbox/');
             }
         }
@@ -722,9 +716,9 @@ class BasketCollector extends BasketFill
     public function getBasketPayment($quoteId)
     {
         $result = $this->helper->convertJson($this->helper->getHeaderJson());
-        $store = $this->store->getStore();
+        $store = $this->_store->getStore();
 
-        $quote = $this->objectManager
+        $quote = $this->_objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($quoteId);
@@ -776,13 +770,14 @@ class BasketCollector extends BasketFill
         $quoteShippingAddress = $quote->getShippingAddress();
 
         if ($quoteBillingAddress) {
-            $delivery['billingAddress'] = $this->addressRepository->getAddress(
+            $delivery['billingAddress'] = $this->_addressRepository->getAddress(
                 $quoteBillingAddress->getData('customer_address_id')
             );
         }
         if ($quoteShippingAddress) {
-            $delivery['shippingAddress'] = $this->addressRepository->getAddress(
-                $quoteShippingAddress->getData('customer_address_id')
+            $delivery['shippingAddress'] = $this->_addressRepository
+                ->getAddress(
+                    $quoteShippingAddress->getData('customer_address_id')
             );
             $method = $quoteShippingAddress->getData('shipping_method');
             if (!empty($method)) {
@@ -866,14 +861,14 @@ class BasketCollector extends BasketFill
      */
     public function getShippingsMethodByBasket()
     {
-        $carriers = $this->carrierConfig->getActiveCarriers();
+        $carriers = $this->_carrierConfig->getActiveCarriers();
         $shippingMethods = [];
         foreach ($carriers as $carrierCode => $carrierModel) {
-            $carrierTitle = $this->configBasket->getValue(
+            $carrierTitle = $this->_configBasket->getValue(
                 'carriers/' . $carrierCode . '/title',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             );
-            $carrierPrice = $this->configBasket->getValue(
+            $carrierPrice = $this->_configBasket->getValue(
                 'carriers/' . $carrierCode . '/price',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             );
@@ -902,7 +897,7 @@ class BasketCollector extends BasketFill
         foreach ($quote->getAllVisibleItems() as $item) {
             $this->setProductId($item->getData('product_id'));
             $this->setProduct(
-                $this->productRepository->getById(
+                $this->_productRepository->getById(
                     $item->getData('product_id')
                 )
             );

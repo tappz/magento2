@@ -12,7 +12,6 @@ namespace TmobLabs\Tappz\Model\Category;
 use Magento\Catalog\Api\Data\CategoryTreeInterface as CategoryTree;
 use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Catalog\Model\Indexer\Category\Flat\State as State;
-use Magento\Store\Model\StoreManagerInterface as StoreManagerInterface;
 use TmobLabs\Tappz\API\Data\CategoryInterface;
 
 /**
@@ -23,23 +22,16 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     /**
      * @var
      */
-    protected $category;
+    protected $_category;
     /**
      * @var CategoryHelper
      */
-    protected $categoryHelper;
-    /**
-     * @var State
-     */
-    protected $state;
+    protected $_categoryHelper;
+
     /**
      * @var
      */
-    protected $eventObserver;
-    /**
-     * @var
-     */
-    protected $categoryRepository;
+    protected $_categoryRepository;
 
     /**
      * CategoryCollector constructor.
@@ -47,17 +39,12 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
      * @param StoreManagerInterface $storeManager
      * @param CategoryHelper        $categoryHelper
      * @param State                 $state
-     * @param CategoryTree          $categoryTree
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
-        CategoryHelper $categoryHelper,
-        State $state,
-        CategoryTree $categoryTree
+        CategoryHelper $categoryHelper
     ) {
-        parent::__construct($storeManager);
-        $this->categoryHelper = $categoryHelper;
-        $this->state = $state;
+        $this->_categoryHelper = $categoryHelper;
+
     }
 
     /**
@@ -68,7 +55,7 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     public function getCategory($categoryId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->category =
+        $this->_category =
             $objectManager
                 ->get('Magento\Catalog\Model\Category')
                 ->load($categoryId);
@@ -83,10 +70,9 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
         $result = [];
         $categories = $this->getStoreCategories(true, false, true);
         foreach ($categories as $category) {
-            $this->category = $category;
+            $this->_category = $category;
             $result[] = $this->fillCategory();
         }
-
         return $result;
     }
 }

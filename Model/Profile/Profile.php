@@ -20,7 +20,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
     /**
      * @var
      */
-    protected $profile;
+    protected $_profile;
     /**
      * @var
      */
@@ -28,14 +28,14 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
     /**
      * @var
      */
-    protected $userAgreement;
+    protected $_userAgreement;
 
     /**
      * @return mixed
      */
     public function getId()
     {
-        return $this->profile->getID();
+        return $this->_profile->getID();
     }
 
     /**
@@ -43,7 +43,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getAccessToken()
     {
-        return $this->profile->accessToken;
+        return $this->_profile->accessToken;
     }
 
     /**
@@ -51,7 +51,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getFullName()
     {
-        return $this->profile->getName();
+        return $this->_profile->getName();
     }
 
     /**
@@ -59,7 +59,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getAccept()
     {
-        return !$this->profile->isConfirmationRequired();
+        return !$this->_profile->isConfirmationRequired();
     }
 
     /**
@@ -67,7 +67,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getAddresses()
     {
-        return $this->profile->addresses;
+        return $this->_profile->addresses;
     }
 
     /**
@@ -77,7 +77,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function setAddresses($addresses)
     {
-        $this->profile->addresses = $addresses;
+        $this->_profile->addresses = $addresses;
 
         return $this;
     }
@@ -87,7 +87,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getEmail()
     {
-        return $this->profile->getEmail();
+        return $this->_profile->getEmail();
     }
 
     /**
@@ -103,8 +103,8 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getFirstName()
     {
-        $firstName = $this->profile->getFirstname();
-        $middleName = $this->profile->getMiddleName();
+        $firstName = $this->_profile->getFirstname();
+        $middleName = $this->_profile->getMiddleName();
         return $firstName.($middleName ? (' '.$middleName) : '');
     }
 
@@ -113,7 +113,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getGender()
     {
-        return $this->profile->getData('gender');
+        return $this->_profile->getData('gender');
     }
 
     /**
@@ -129,7 +129,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getIsSubscribe()
     {
-        return $this->profile->subscribe;
+        return $this->_profile->subscribe;
     }
 
     /**
@@ -139,7 +139,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function setIsSubscribe($subscribe)
     {
-        $this->profile->subscribe = $subscribe;
+        $this->_profile->subscribe = $subscribe;
 
         return $this;
     }
@@ -149,7 +149,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getLastName()
     {
-        return $this->profile->getLastname();
+        return $this->_profile->getLastname();
     }
 
     /**
@@ -173,7 +173,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getPhone()
     {
-        return $this->profile->getPhone();
+        return $this->_profile->getPhone();
     }
 
     /**
@@ -205,7 +205,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getUserAgreement()
     {
-        return $this->userAgreement;
+        return $this->_userAgreement;
     }
 
     /**
@@ -215,7 +215,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function setUserAgreement($userAgreement)
     {
-        $this->userAgreement = $userAgreement;
+        $this->_userAgreement = $userAgreement;
 
         return $this;
     }
@@ -235,7 +235,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function setProfile($profile)
     {
-        $this->profile = $profile;
+        $this->_profile = $profile;
 
         return $this;
     }
@@ -247,7 +247,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function setAccessToken($token = null)
     {
-        $this->profile->accessToken = $token;
+        $this->_profile->accessToken = $token;
 
         return $this;
     }

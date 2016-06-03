@@ -17,7 +17,7 @@ class Payment implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var \Magento\Payment\Helper\Data
      */
-    private $storeHelper;
+    private $_storeHelper;
 
     /**
      * Payment constructor.
@@ -26,7 +26,7 @@ class Payment implements \Magento\Framework\Option\ArrayInterface
      */
     public function __construct(\Magento\Payment\Helper\Data $storeHelper)
     {
-        $this->storeHelper = $storeHelper;
+        $this->_storeHelper = $storeHelper;
     }
 
     /**
@@ -35,7 +35,7 @@ class Payment implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $options = [];
-        $collection = $this->storeHelper->getStoreMethods();
+        $collection = $this->_storeHelper->getStoreMethods();
         foreach ($collection as $method) {
             array_push(
                 $options,

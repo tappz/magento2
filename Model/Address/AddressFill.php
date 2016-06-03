@@ -14,21 +14,7 @@ namespace TmobLabs\Tappz\Model\Address;
  */
 class AddressFill extends Address
 {
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $_storeManager;
 
-    /**
-     * AddressFill constructor.
-     *
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
-        $this->_storeManager = $storeManager;
-    }
 
     /**
      * @return array
