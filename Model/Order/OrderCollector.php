@@ -9,12 +9,13 @@
 
 namespace TmobLabs\Tappz\Model\Order;
 
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as Collection;
 use TmobLabs\Tappz\API\Data\OrderInterface;
+use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 use TmobLabs\Tappz\Model\Address\AddressRepository as AddressRepository;
 use TmobLabs\Tappz\Model\Basket\BasketCollector as BasketCollector;
 use TmobLabs\Tappz\Model\Product\ProductRepository as ProductRepository;
-use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
-use  \Magento\Sales\Model\ResourceModel\Order\CollectionFactory as Collection;
+
 /**
  * Class OrderCollector.
  */
@@ -35,30 +36,30 @@ class OrderCollector extends OrderFill implements OrderInterface
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected $_productRepository;
     /**
      * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
      */
-    protected $orderCollectionFactory;
+    protected $_orderCollectionFactory;
     /**
      * @var RequestHandler
      */
-    protected $helper;
+    protected $_helper;
 
-    public function __construct(AddressRepository $addressRepository,
-                                BasketCollector $basketCollector,
-                                ProductRepository $productRepository,
-                                RequestHandler $requestHandler,
-                                Collection $orderCollectionFactory
-
+    public function __construct(
+        AddressRepository $addressRepository,
+        BasketCollector $basketCollector,
+        ProductRepository $productRepository,
+        RequestHandler $requestHandler,
+        Collection $orderCollectionFactory
     ) {
         $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
         $this->_addressRepository = $addressRepository;
         $this->_basketCollector = $basketCollector;
-        $this->productRepository = $productRepository;
-        $this->orderCollectionFactory = $orderCollectionFactory;
-        $this->helper = $requestHandler;
+        $this->_productRepository = $productRepository;
+        $this->_orderCollectionFactory = $orderCollectionFactory;
+        $this->_helper = $requestHandler;
     }
 
     /**
@@ -66,33 +67,24 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getOrder()
     {
-        $userId = $this->helper->getAuthorization();
-        $orders = $this->orderCollectionFactory->create()->addFieldToSelect(
-                '*'
-            )->addFieldToFilter(
-                'customer_id',
-                $userId
-            )->setOrder(
-                'created_at',
-                'desc'
-            );
+        $userId = $this->_helper->getAuthorization();
+        $orders = $this->_orderCollectionFactory->create()->addFieldToSelect(
+            '*'
+        )->addFieldToFilter(
+            'customer_id',
+            $userId
+        )->setOrder(
+            'created_at',
+            'desc'
+        );
         if (count($orders) > 0) {
             foreach ($orders as $order) {
+                $orderLast = $order;
             }
-            $result[] = self::setOrder($order->getId());
+            $result[] = self::setOrder($orderLast->getId());
         }
 
         return $result;
-    }
-
-    /**
-     * @param $orderId
-     *
-     * @return array
-     */
-    public function getOrderById($orderId)
-    {
-        return $this->setOrder($orderId);
     }
 
     /**
@@ -104,7 +96,7 @@ class OrderCollector extends OrderFill implements OrderInterface
     {
         $order = $this->_objectManager->get('Magento\Sales\Model\Order');
         $order = $order->load($orderId);
-        $this->setOrders((object) []);
+        $this->setOrders((object)[]);
         $this->setOrderId($this->getOrderIdByOrder($order));
         $this->setTrackingNumber($this->getTrackingNumberByOrder($order));
         $this->setOrderDate($this->getOrderDateByOrder($order));
@@ -180,9 +172,9 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getPaymentStatusByOrder($order)
     {
-        $statusHistories =  $order->getStatusHistories();
+        $statusHistories = $order->getStatusHistories();
         $getStatus = $order->getStatus();
-        return  empty($statusHistories) ? $getStatus : $statusHistories;
+        return empty($statusHistories) ? $getStatus : $statusHistories;
     }
 
     /**
@@ -202,13 +194,13 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getLinesByOrder($order)
     {
-        $this->_basketCollector->setBasket((object) []);
+        $this->_basketCollector->setBasket((object)[]);
         foreach ($order->getAllVisibleItems() as $item) {
             $this->_basketCollector->setProductId(
                 $item->getData('product_id')
             );
             $this->_basketCollector->setProduct(
-                $this->productRepository->getById(
+                $this->_productRepository->getById(
                     $item->getData('product_id')
                 )
             );
@@ -272,8 +264,9 @@ class OrderCollector extends OrderFill implements OrderInterface
             }
         }
         if (!isset($delivery['shippingAddress']) ||
-            empty($delivery['shippingAddress']['id'])) {
-            $delivery = (object) [];
+            empty($delivery['shippingAddress']['id'])
+        ) {
+            $delivery = (object)[];
         } else {
             $delivery['useSameAddressForBilling'] = false;
             if ($shippingAddressId == $billingAddressId) {
@@ -291,9 +284,10 @@ class OrderCollector extends OrderFill implements OrderInterface
     {
         $paymentMethod = $order->getPayment()->getMethod();
         if (!empty($paymentMethod)) {
+            $result = '';
         }
 
-        return;
+        return $result;
     }
 
     /**
@@ -313,7 +307,7 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getItemsPriceByOrder($order)
     {
-        return  $order->getSubtotal();
+        return $order->getSubtotal();
     }
 
     /**
@@ -361,6 +355,16 @@ class OrderCollector extends OrderFill implements OrderInterface
      *
      * @return mixed
      */
+    public function getTaxTotalValueByOrder($order)
+    {
+        return $order->getTaxAmount();
+    }
+
+    /**
+     * @param $order
+     *
+     * @return mixed
+     */
     public function getShippingTotalValueByOrder($order)
     {
         return $order->getShippingAmount();
@@ -377,12 +381,12 @@ class OrderCollector extends OrderFill implements OrderInterface
     }
 
     /**
-     * @param $order
+     * @param $orderId
      *
-     * @return mixed
+     * @return array
      */
-    public function getTaxTotalValueByOrder($order)
+    public function getOrderById($orderId)
     {
-        return $order->getTaxAmount();
+        return $this->setOrder($orderId);
     }
 }

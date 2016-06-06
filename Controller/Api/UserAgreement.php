@@ -37,12 +37,12 @@ class UserAgreement extends Action
      * @param ProfileRepositoryInterface $profileRepository
      * @param RequestHandler $helper
      */
-    public function __construct(Context $context,
-                                JSON $json,
-                                ProfileRepositoryInterface $profileRepository,
-                                RequestHandler $helper
-    )
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        ProfileRepositoryInterface $profileRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
         $this->_profileRepository = $profileRepository;

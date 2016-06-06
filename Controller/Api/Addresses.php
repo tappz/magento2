@@ -21,6 +21,10 @@ use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 class Addresses extends Action
 {
     /**
+     * @var RequestHandler
+     */
+    protected $_helper;
+    /**
      * @var
      */
     private $_jsonResult;
@@ -28,18 +32,14 @@ class Addresses extends Action
      * @var AddressRepositoryInterface
      */
     private $_addressRepository;
-    /**
-     * @var RequestHandler
-     */
-    protected $_helper;
 
     /**
      * Addresses constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param AddressRepositoryInterface $addressRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,

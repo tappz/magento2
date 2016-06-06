@@ -21,6 +21,10 @@ use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 class PurchaseOrder extends Action
 {
     /**
+     * @var RequestHandler
+     */
+    protected $_helper;
+    /**
      * @var
      */
     private $_jsonResult;
@@ -28,24 +32,19 @@ class PurchaseOrder extends Action
      * @var OrderRepositoryInterface
      */
     private $_orderRepository;
-    /**
-     * @var RequestHandler
-     */
-    protected $_helper;
 
     /**
      * PurchaseOrder constructor.
      *
-     * @param Context                  $context
-     * @param JSON                     $json
+     * @param Context $context
+     * @param JSON $json
      * @param OrderRepositoryInterface $orderRepository
-     * @param RequestHandler           $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,
         JSON $json,
         OrderRepositoryInterface $orderRepository,
-
         RequestHandler $helper
     ) {
         parent::__construct($context);

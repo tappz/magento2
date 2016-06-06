@@ -32,16 +32,17 @@ class Product extends Action
     /**
      * Product constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param ProductRepositoryInterface $productRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context,
-                                JSON $json,
-                                ProductRepositoryInterface $productRepository,
-                                RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        ProductRepositoryInterface $productRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
         $this->_productRepository = $productRepository;

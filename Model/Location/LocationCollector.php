@@ -27,7 +27,8 @@ class LocationCollector extends LocationFill implements LocationInterface
      *
      * @param StoreManagerInterface $storeManager
      */
-    public function __construct(StoreManagerInterface $storeManager
+    public function __construct(
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($storeManager);
         $this->_objectManager =
@@ -45,7 +46,7 @@ class LocationCollector extends LocationFill implements LocationInterface
             ->loadByStore()
             ->toOptionArray(true);
         $result = [];
-        $this->_location = (object) [];
+        $this->_location = (object)[];
         foreach ($countries as $country) {
             if (!empty($country['label']) && !empty($country['value'])) {
                 $this->setCode($country['value']);
@@ -70,7 +71,7 @@ class LocationCollector extends LocationFill implements LocationInterface
         load($countryId)->
         getRegions()->
         toOptionArray(true);
-        $this->_location = (object) [];
+        $this->_location = (object)[];
         $result = [];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
@@ -97,7 +98,7 @@ class LocationCollector extends LocationFill implements LocationInterface
         getRegions()->
         toOptionArray(true);
         $result = [];
-        $this->_location = (object) [];
+        $this->_location = (object)[];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
                 $this->setCode($state['value']);
@@ -117,7 +118,8 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getDistricts($cityId)
     {
-        $this->_location = (object) [];
+        $cityId;
+        $this->_location = (object)[];
         $this->setCode('');
         $this->setName('');
         $result = [];
@@ -133,7 +135,8 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getTowns($districtId)
     {
-        $this->_location = (object) [];
+        $districtId;
+        $this->_location = (object)[];
         $this->setDefaultCode('');
         $this->setDefaultName('');
         $result = [];

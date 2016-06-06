@@ -10,36 +10,19 @@
 namespace TmobLabs\Tappz\Model\Product;
 
 use Magento\Catalog\Model\CategoryFactory;
-use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfigInterface;
 use TmobLabs\Tappz\API\Data\ProductInterface;
 
 class ProductCollector extends ProductFill implements ProductInterface
 {
     protected $_product;
-    protected $scopeConfigInterface;
-    protected $objectManager;
-    protected $categoryFactory;
+    protected $_objectManager;
 
     public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        ScopeConfigInterface $scopeConfigInterface,
-        CategoryFactory $categoryFactory
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         parent::__construct($storeManager);
-        $this->scopeConfigInterface = $scopeConfigInterface;
-        $this->categoryFactory = $categoryFactory;
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-    }
-
-    public function getProduct($productId)
-    {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_product = $objectManager->
-        get('Magento\Catalog\Model\Product')->
-        load($productId);
-
-        return $this->fillProduct();
     }
 
     public function getProductBySku($barcode)
@@ -69,13 +52,23 @@ class ProductCollector extends ProductFill implements ProductInterface
         return $result;
     }
 
+    public function getProduct($productId)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_product = $objectManager->
+        get('Magento\Catalog\Model\Product')->
+        load($productId);
+
+        return $this->fillProduct();
+    }
+
     public function getProductSearch($params)
     {
         if (isset($params['category']) && !empty($params['category'])) {
-            $layer = $this->objectManager->
+            $layer = $this->_objectManager->
             get('Magento\Catalog\Model\CategoryFactory')->
             create()->load($params['category']);
-            $category = $this->objectManager->
+            $category = $this->_objectManager->
             get('Magento\Catalog\Model\Category')->
             load($params['category']);
             $layer->setCurrentCategory($category);
@@ -95,18 +88,19 @@ class ProductCollector extends ProductFill implements ProductInterface
         ) {
             $pageSize = 6;
         } else {
-            $pageSize = (int) $params['pageSize'];
+            $pageSize = (int)$params['pageSize'];
         }
         if (!isset($params['pageNumber'])
             || empty($params['pageNumber'])
-            || intval($params['pageNumber']) < 1) {
+            || intval($params['pageNumber']) < 1
+        ) {
             $pageNumber = 1;
         } else {
             $pageNumber = $params['pageNumber'] + 1;
         }
         if (isset($params['phrase']) && !empty($params['phrase'])) {
             $productCollection->addFieldToFilter('name',
-                ['like' => '%'.$params['phrase'].'%']
+                ['like' => '%' . $params['phrase'] . '%']
             );
         }
         $productCollection->addStoreFilter();

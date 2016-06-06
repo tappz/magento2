@@ -37,8 +37,8 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
      * CategoryCollector constructor.
      *
      * @param StoreManagerInterface $storeManager
-     * @param CategoryHelper        $categoryHelper
-     * @param State                 $state
+     * @param CategoryHelper $categoryHelper
+     * @param State $state
      */
     public function __construct(
         CategoryHelper $categoryHelper

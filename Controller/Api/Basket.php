@@ -32,15 +32,16 @@ class Basket extends Action
     /**
      * Basket constructor.
      *
-     * @param Context                   $context
-     * @param JSON                      $json
+     * @param Context $context
+     * @param JSON $json
      * @param BasketRepositoryInterface $basketRepository
-     * @param RequestHandler            $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context,
-                                JSON $json,
-                                BasketRepositoryInterface $basketRepository,
-                                RequestHandler $helper
+    public function __construct(
+        Context $context,
+        JSON $json,
+        BasketRepositoryInterface $basketRepository,
+        RequestHandler $helper
     ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
@@ -54,7 +55,7 @@ class Basket extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $result = [];;
+        $result = [];
         if (count($params) > 0 && empty($params[key($params)])) {
             $basketId = key($params);
             $result = $this->_basketRepository->getByBasketById($basketId);
@@ -69,7 +70,10 @@ class Basket extends Action
                 } else {
                     $endArray = end($allKeys);
                     $lastKey = ($endArray);
-                    $result = $this->_basketRepository->{$method}($key, $lastKey);
+                    $result = $this->_basketRepository->{$method}(
+                        $key,
+                        $lastKey
+                    );
                 }
             }
         } else {

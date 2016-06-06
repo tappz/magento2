@@ -47,8 +47,8 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getUserFriendly()
     {
-     
-        $result= isset($this->_location->userFriendly) ?
+
+        $result = isset($this->_location->userFriendly) ?
             $this->_location->userFriendly : false;
         return $result;
     }

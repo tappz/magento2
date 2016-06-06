@@ -29,7 +29,7 @@ class BasketRepository implements BasketRepositoryInterface
     /**
      * BasketRepository constructor.
      *
-     * @param BasketCollector   $basketCollector
+     * @param BasketCollector $basketCollector
      * @param PurchaseCollector $purchaseCollector
      */
     public function __construct(
@@ -103,9 +103,9 @@ class BasketRepository implements BasketRepositoryInterface
      *
      * @return array
      */
-    public function getContract($quoteId = null)
+    public function getContract()
     {
-        $result = $this->_basketCollector->getBasketContract($quoteId);
+        $result = $this->_basketCollector->getBasketContract();
 
         return $result;
     }

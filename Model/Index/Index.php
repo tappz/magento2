@@ -189,8 +189,11 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      *
      * @return array
      */
-    public function fillAds($displayName = '', $image = '', $action = [])
-    {
+    public function fillAds(
+        $displayName = '',
+        $image = '',
+        $action = []
+    ) {
         return [
             'displayName' => $displayName,
             'image' => $image,
@@ -208,13 +211,14 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      *
      * @return array
      */
-    public function fillActions($type = '',
-                                $image = '',
-                                $text = '',
-                                $productId = '',
-                                $href = '',
-                                $categoryId = '')
-    {
+    public function fillActions(
+        $type = '',
+        $image = '',
+        $text = '',
+        $productId = '',
+        $href = '',
+        $categoryId = ''
+    ) {
         return [
             'type' => $type,
             'image' => $image,

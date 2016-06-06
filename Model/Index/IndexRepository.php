@@ -28,7 +28,6 @@ class IndexRepository implements IndexRepositoryInterface
      */
     public function __construct(
         IndexCollector $indexCollector
-
     ) {
         $this->_indexCollector = $indexCollector;
     }
@@ -39,7 +38,6 @@ class IndexRepository implements IndexRepositoryInterface
     public function getIndex()
     {
         $result = $this->_indexCollector->getIndex();
-
         return $result;
     }
 }

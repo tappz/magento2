@@ -91,51 +91,11 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
     }
 
     /**
-     *
-     */
-    public function getMessage()
-    {
-        return '';
-    }
-
-    /**
-     *
-     */
-    public function getDescription()
-    {
-        return '';
-    }
-
-    /**
      * @return mixed
      */
     public function getParentCategoryId()
     {
         return $this->_category->getParentId();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUserFriendly()
-    {
-        return false;
-    }
-
-    /**
-     * @param bool $sorted
-     * @param bool $asCollection
-     * @param bool $toLoad
-     *
-     * @return mixed
-     */
-    public function getStoreCategories($sorted = false,
-                                       $asCollection = true,
-                                       $toLoad = true
-    )
-    {
-        return $this->_categoryHelper->
-        getStoreCategories($sorted, $asCollection, $toLoad);
     }
 
     /**
@@ -156,5 +116,45 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
         return $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+    }
+
+    /**
+     *
+     */
+    public function getMessage()
+    {
+        return '';
+    }
+
+    /**
+     *
+     */
+    public function getDescription()
+    {
+        return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUserFriendly()
+    {
+        return false;
+    }
+
+    /**
+     * @param bool $sorted
+     * @param bool $asCollection
+     * @param bool $toLoad
+     *
+     * @return mixed
+     */
+    public function getStoreCategories(
+        $sorted = false,
+        $asCollection = true,
+        $toLoad = true
+    ) {
+        return $this->_categoryHelper->
+        getStoreCategories($sorted, $asCollection, $toLoad);
     }
 }

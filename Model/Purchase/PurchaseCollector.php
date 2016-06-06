@@ -35,7 +35,7 @@ class PurchaseCollector extends PurchaseFill
      */
     protected $_objectManager;
     /**
-     * @var OrderCollector
+     * @var OrderCollectorß
      */
     protected $_orderCollector;
 
@@ -43,7 +43,7 @@ class PurchaseCollector extends PurchaseFill
      * PurchaseCollector constructor.
      *
      * @param RequestHandler $requestHandler
-     * @param Basket         $basketRepository
+     * @param Basket $basketRepository
      * @param OrderCollector $orderCollector
      */
     public function __construct(
@@ -68,7 +68,6 @@ class PurchaseCollector extends PurchaseFill
     {
         switch ($method) {
             case 'card':
-                exit;
                 $result = $this->purchaseCreditCards($quoteId);
                 break;
             case 'threeD':

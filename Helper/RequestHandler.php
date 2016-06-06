@@ -10,6 +10,7 @@
 namespace TmobLabs\Tappz\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+
 /**
  * Class RequestHandler.
  */
@@ -20,6 +21,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $_scopeConfig;
     protected $_request;
+
     /**
      * RequestHandler constructor.
      *
@@ -38,20 +40,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getRequestMethod()
     {
-        $server=  $this->_request->getServerValue();
-        return $server['REQUEST_METHOD'];
-    }
-
-    /**
-     * @param $url
-     *
-     * @return string
-     */
-    public function getRealUrl($url)
-    {
         $server = $this->_request->getServerValue();
-
-        return urldecode($url.$server['REQUEST_URI']);
+        return $server['REQUEST_METHOD'];
     }
 
     /**
@@ -62,12 +52,11 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         $server = $this->_request->getServerValue();
 
 
-
-        if(!isset($server['HTTP_AUTHORIZATION']) ||
-            empty($server['HTTP_AUTHORIZATION']))
-        {
+        if (!isset($server['HTTP_AUTHORIZATION']) ||
+            empty($server['HTTP_AUTHORIZATION'])
+        ) {
             $error = "Couldn't find AUTHORIZATION !Please "
-            ."check your  .htaccess  ";
+                . "check your  .htaccess  ";
             throw new
             \Magento\Framework\Exception\AuthenticationException(__($error));
         }
@@ -80,24 +69,24 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $url = substr(
             $objectManager->
-        get('Magento\Store\Model\StoreManagerInterface')
-        ->getStore()
-        ->getBaseUrl(), 0, -1);
+            get('Magento\Store\Model\StoreManagerInterface')
+                ->getStore()
+                ->getBaseUrl(), 0, -1);
         $realUrl = $this->getRealUrl($url);
 
         $username =
             $this->_scopeConfig->
             getValue('tappztoken/tappzusermethod/tappzusername');
         $token = $this->_scopeConfig->
-            getValue('tappztoken/tappzusermethod/tappzsecretkey');
+        getValue('tappztoken/tappzusermethod/tappzsecretkey');
+        $newToken = trim($token . '|' . ($realUrl) . '|' . $auth[2]);
         if (sizeof($token) == 0) {
             $error = ' 401 - Token not initialized.Please'
-            .'create  token on configuration page ';
+                . 'create  token on configuration page ';
             throw new
             \Magento\Framework\Exception\AuthenticationException(__($error));
         } elseif (
-            sha1((trim($token.'|'.($realUrl).'|'.$auth[2])), false) != $auth[1]
-            ||  $username != $auth[0]
+            sha1(($newToken), false) != $auth[1] || $username != $auth[0]
         ) {
             $error = ' 403 - Access denied.Please check your tokens';
             throw new
@@ -106,6 +95,18 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $auth;
+    }
+
+    /**
+     * @param $url
+     *
+     * @return string
+     */
+    public function getRealUrl($url)
+    {
+        $server = $this->_request->getServerValue();
+
+        return urldecode($url . $server['REQUEST_URI']);
     }
 
     /**
@@ -142,9 +143,15 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAuthorization()
     {
         $server = $this->_request->getServerValue();
-       if(!isset($server['HTTP_AUTHORIZATION'])
-           || empty($server['HTTP_AUTHORIZATION']))
-           return "";
+
+        if (!isset($server['HTTP_AUTHORIZATION']) ||
+            empty($server['HTTP_AUTHORIZATION'])
+        ) {
+            $error = "Couldn't find AUTHORIZATION !Please "
+                . "check your  .htaccess  ";
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+        }
         $authorization = $server['HTTP_AUTHORIZATION'];
         $header = (isset($authorization) && $authorization != '') ?
             $authorization : '';

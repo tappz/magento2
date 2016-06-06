@@ -36,10 +36,10 @@ class Profile extends Action
     /**
      * Profile constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param ProfileRepositoryInterface $profileRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,

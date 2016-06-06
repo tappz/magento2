@@ -12,7 +12,7 @@ namespace TmobLabs\Tappz\Controller\Api;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context as Context;
 use Magento\Framework\Controller\Result\JsonFactory as JSON;
-use TmobLabs\Tappz\API\LocationRepositoryInterface as LocationRepositoryInterface;
+use TmobLabs\Tappz\API\LocationRepositoryInterface as LocationRepositoryI;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 
 /**
@@ -25,23 +25,24 @@ class Countries extends Action
      */
     private $_jsonResult;
     /**
-     * @var LocationRepositoryInterface
+     * @var LocationRepository
      */
     private $_locationRepository;
 
     /**
      * Countries constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
-     * @param LocationRepositoryInterface $locationRepository
-     * @param RequestHandler              $helper
+     * @param Context $context
+     * @param JSON $json
+     * @param LocationRepositoryI $locationRepository
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context,
-                                JSON $json,
-                                LocationRepositoryInterface $locationRepository,
-                                RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        LocationRepositoryI $locationRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
         $this->_locationRepository = $locationRepository;

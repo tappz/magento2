@@ -21,25 +21,25 @@ use TmobLabs\Tappz\Model\Product\ProductCollector;
 class IndexCollector extends IndexFill implements IndexInterface
 {
     /**
-     * @var CategoryFactory
-     */
-    private $_categoryFactory;
-    /**
      * @var CategoryRepository
      */
-    public $_categoryRepository;
+    protected $_categoryRepository;
     /**
      * @var ProductCollector
      */
-    public $_productCollector;
+    protected $_productCollector;
+    /**
+     * @var CategoryFactory
+     */
+    private $_categoryFactory;
 
     /**
      * IndexCollector constructor.
      *
      * @param StoreManagerInterface $storeManager
-     * @param CategoryRepository    $categoryRepository
-     * @param ProductCollector      $productCollector
-     * @param CategoryFactory       $categoryFactory
+     * @param CategoryRepository $categoryRepository
+     * @param ProductCollector $productCollector
+     * @param CategoryFactory $categoryFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -71,9 +71,8 @@ class IndexCollector extends IndexFill implements IndexInterface
                     $_product->getId()
                 );
             }
-            if (count($items) > 0) {
-                $groups[] = $this->fillGroups($name, $image, $items);
-            }
+            $groups[] = $this->fillGroups($name, $image, $items);
+
         }
         $this->setGroups($groups);
         $action = $this->fillActions();
@@ -88,12 +87,12 @@ class IndexCollector extends IndexFill implements IndexInterface
      *
      * @return mixed
      */
-    public function getCategory($categoryId)
+    public function getCategoryProducts($categoryId)
     {
-        $category = $this->_categoryFactory->create();
-        $category->load($categoryId);
+        $products = $this->getCategory($categoryId)->getProductCollection();
+        $products->addAttributeToSelect('*');
 
-        return $category;
+        return $products;
     }
 
     /**
@@ -101,11 +100,11 @@ class IndexCollector extends IndexFill implements IndexInterface
      *
      * @return mixed
      */
-    public function getCategoryProducts($categoryId)
+    public function getCategory($categoryId)
     {
-        $products = $this->getCategory($categoryId)->getProductCollection();
-        $products->addAttributeToSelect('*');
+        $category = $this->_categoryFactory->create();
+        $category->load($categoryId);
 
-        return $products;
+        return $category;
     }
 }

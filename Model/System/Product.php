@@ -24,8 +24,9 @@ class Product implements \Magento\Framework\Option\ArrayInterface
      *
      * @param \Magento\Payment\Helper\Data $storeHelper
      */
-    public function __construct(\Magento\Payment\Helper\Data $storeHelper)
-    {
+    public function __construct(
+        \Magento\Payment\Helper\Data $storeHelper
+    ) {
         $this->_storeHelper = $storeHelper;
     }
 
@@ -34,13 +35,12 @@ class Product implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-
         $options[] = ['value' => ' ', 'label' => ' '];
         $product = Mage::getModel('catalog/product');
         $attributes = $product->getAttributes();
         foreach ($attributes as $attribute) {
-            foreach ($attribute->getEntityType()->getAttributeCodes() as $code)
-            {
+            $codes = $attribute->getEntityType()->getAttributeCodes();
+            foreach ($codes as $code) {
                 $attributeModel = Mage::getModel('eav/entity_attribute')->
                 loadByCode(
                     $attribute->getEntityType(),

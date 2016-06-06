@@ -10,7 +10,6 @@
 namespace TmobLabs\Tappz\Model\Product;
 
 use Magento\Framework\Api\AbstractExtensibleObject;
-use TmobLabs\Tappz\API\Data\ProductInterface;
 
 /**
  * Class Product.
@@ -54,11 +53,30 @@ class Product extends AbstractExtensibleObject
     }
 
     /**
+     * @param int $amount
+     * @param null $defaultCurrency
+     * @param null $currency
+     *
+     * @return array
+     */
+    public function fillProductPrice(
+        $amount = 0,
+        $defaultCurrency = null,
+        $currency = null
+    ) {
+        return [
+            'amount' => number_format($amount, 2, '.', ''),
+            'amountDefaultCurrency' => $defaultCurrency,
+            'currency' => $currency,
+        ];
+    }
+
+    /**
      *
      */
     public function getNoImageUrl()
     {
-        return;
+        return '';
     }
 
     /**
@@ -66,7 +84,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getHeadline()
     {
-        return;
+        return '';
     }
 
     /**
@@ -119,11 +137,39 @@ class Product extends AbstractExtensibleObject
     }
 
     /**
+     * @param string $type
+     * @param string $image
+     * @param string $text
+     * @param string $productId
+     * @param string $href
+     * @param string $categoryId
+     *
+     * @return array
+     */
+    public function fillActions(
+        $type = '',
+        $image = '',
+        $text = '',
+        $productId = '',
+        $href = '',
+        $categoryId = ''
+    ) {
+        return [
+            'type' => $type,
+            'image' => $image,
+            'text' => $text,
+            'productId' => $productId,
+            'href' => $href,
+            'categoryId' => $categoryId,
+        ];
+    }
+
+    /**
      *
      */
     public function getFeatures()
     {
-        return;
+        return '';
     }
 
     /**
@@ -199,7 +245,6 @@ class Product extends AbstractExtensibleObject
     public function getPictures()
     {
         $images = $this->_product->getMediaGalleryImages();
-        $image = [];
         $result = [];
         if (isset($images)) {
             if (count($images) > 0) {
@@ -285,11 +330,25 @@ class Product extends AbstractExtensibleObject
     }
 
     /**
+     * @param string $key
+     * @param string $text
+     *
+     * @return array
+     */
+    public function fillAditionalTexts($key = '', $text = '')
+    {
+        return [
+            'key' => $key,
+            'text' => $text,
+        ];
+    }
+
+    /**
      *
      */
     public function getErrorCode()
     {
-        return;
+        return '';
     }
 
     /**
@@ -297,7 +356,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getMessage()
     {
-        return;
+        return '';
     }
 
     /**
@@ -313,66 +372,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getShoutOutTexts()
     {
-        return;
-    }
-
-    /**
-     * @param string $type
-     * @param string $image
-     * @param string $text
-     * @param string $productId
-     * @param string $href
-     * @param string $categoryId
-     *
-     * @return array
-     */
-    public function fillActions($type = '',
-                                $image = '',
-                                $text = '',
-                                $productId = '',
-                                $href = '',
-                                $categoryId = '')
-    {
-        return [
-            'type' => $type,
-            'image' => $image,
-            'text' => $text,
-            'productId' => $productId,
-            'href' => $href,
-            'categoryId' => $categoryId,
-        ];
-    }
-
-    /**
-     * @param string $key
-     * @param string $text
-     *
-     * @return array
-     */
-    public function fillAditionalTexts($key = '', $text = '')
-    {
-        return [
-            'key' => $key,
-            'text' => $text,
-        ];
-    }
-
-    /**
-     * @param int $amount
-     * @param null $defaultCurrency
-     * @param null $currency
-     *
-     * @return array
-     */
-    public function fillProductPrice($amount = 0,
-                                     $defaultCurrency = null,
-                                     $currency = null)
-    {
-        return [
-            'amount' => number_format($amount, 2, '.', ''),
-            'amountDefaultCurrency' => $defaultCurrency,
-            'currency' => $currency,
-        ];
+        return '';
     }
 
     /**
@@ -382,10 +382,11 @@ class Product extends AbstractExtensibleObject
      *
      * @return array
      */
-    public function fillBackInStockSubSelectedVariant($groupName = null,
-                                                      $groupId = null,
-                                                      $features = null)
-    {
+    public function fillBackInStockSubSelectedVariant(
+        $groupName = null,
+        $groupId = null,
+        $features = null
+    ) {
         return [
             'groupName' => $groupName,
             'groupId' => $groupId,
@@ -411,12 +412,7 @@ class Product extends AbstractExtensibleObject
         ];
     }
 
-    /**
-     *
-     */
-    public function fillFilterItems()
-    {
-    }
+
 
     /**
      * @return array

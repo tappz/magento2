@@ -32,16 +32,17 @@ class Index extends Action
     /**
      * Index constructor.
      *
-     * @param Context                  $context
-     * @param JSON                     $json
+     * @param Context $context
+     * @param JSON $json
      * @param IndexRepositoryInterface $indexRepository
-     * @param RequestHandler           $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context,
-                                JSON $json,
-                                IndexRepositoryInterface $indexRepository,
-                                RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        IndexRepositoryInterface $indexRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
         $this->_indexRepository = $indexRepository;

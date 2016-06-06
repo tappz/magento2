@@ -24,7 +24,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
     /**
      * @var
      */
-    protected $address;
+    protected $_address;
     /**
      * @var
      */
@@ -95,7 +95,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getErrorCode()
     {
-        return;
+        return '';
     }
 
     /**
@@ -105,7 +105,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
     {
         $firstName = $this->_profile->getFirstname();
         $middleName = $this->_profile->getMiddleName();
-        return $firstName.($middleName ? (' '.$middleName) : '');
+        return $firstName . ($middleName ? (' ' . $middleName) : '');
     }
 
     /**
@@ -157,7 +157,7 @@ class Profile extends AbstractExtensibleObject implements ProfileInterface
      */
     public function getMessage()
     {
-        return;
+        return '';
     }
 
     /**

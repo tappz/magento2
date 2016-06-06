@@ -38,7 +38,6 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function getCategories()
     {
         $result = $this->_categoryCollector->getCategories();
-
         return $result;
     }
 
@@ -50,7 +49,6 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function getByCategoryById($categoryId)
     {
         $result = $this->_categoryCollector->getCategory($categoryId);
-
         return $result;
     }
 }

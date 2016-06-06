@@ -28,15 +28,14 @@ class Branchescitylist extends Action
     /**
      * Branchescitylist constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
+     * @param Context $context
+     * @param JSON $json
      * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         Context $context,
         JSON $json
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->_jsonResult = $json->create();
     }
@@ -48,14 +47,14 @@ class Branchescitylist extends Action
     {
         $arr = [
             0 => [
-                    'cityId' => 0,
-                    'name' => 'string',
-                    'latitude' => 'string',
-                    'longitude' => 'string',
-                    'ErrorCode' => 'string',
-                    'Message' => 'string',
-                    'UserFriendly' => true,
-                ],
+                'cityId' => 0,
+                'name' => 'string',
+                'latitude' => 'string',
+                'longitude' => 'string',
+                'ErrorCode' => 'string',
+                'Message' => 'string',
+                'UserFriendly' => true,
+            ],
         ];
         $this->_jsonResult->setData($arr);
 

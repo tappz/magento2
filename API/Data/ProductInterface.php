@@ -33,6 +33,7 @@ interface ProductInterface
      * @return string
      */
     public function getNoImageUrl();
+
     /**
      * @return array
      */
@@ -52,6 +53,7 @@ interface ProductInterface
      * @return string
      */
     public function getCreditCardInstallments();
+
     /**
      * @return string
      */
@@ -71,6 +73,7 @@ interface ProductInterface
      * @return string
      */
     public function getFeatures();
+
     /**
      * @return string
      */
@@ -90,76 +93,94 @@ interface ProductInterface
      * @return string
      */
     public function getPicture();
+
     /**
      * @return string
      */
     public function getPictures();
+
     /**
      * @return string
      */
     public function getProductDetailUrl();
-      /**
-       * @return string
-       */
-      public function getProductUrl();
-      /**
-       * @return string
-       */
-      public function getPoints();
-      /**
-       * @return string
-       */
-      public function getUnit();
-      /**
-       * @return string
-       */
-      public function getIsFavorite();
-      /**
-       * @return string
-       */
-      public function getIsBackInStockSubscription();
-      /**
-       * @return string
-       */
-      public function getBackInStockSubSelectedVariant();
-      /**
-       * @return string
-       */
-      public function getAdditionalTexts();
-      /**
-       * @return string
-       */
-      public function getErrorCode();
-      /**
-       * @return string
-       */
-      public function getMessage();
-      /**
-       * @return string
-       */
-      public function getUserFriendly();
-      /** 
-       * @return string
-       */
-      public function fillActions();
-      /**
-       * @return string
-       */
-      public function fillProductPrice();
-      /**
-       * @return string
-       */
-      public function getProduct($product);
-      /**
-       * @return string
-       */
-      public function setProduct($product);
-      /**
-       * @return string
-       */
-      public function fillAditionalTexts();
-      /**
-       * @return string
-       */
-      public function fillBackInStockSubSelectedVariant();
+
+    /**
+     * @return string
+     */
+    public function getProductUrl();
+
+    /**
+     * @return string
+     */
+    public function getPoints();
+
+    /**
+     * @return string
+     */
+    public function getUnit();
+
+    /**
+     * @return string
+     */
+    public function getIsFavorite();
+
+    /**
+     * @return string
+     */
+    public function getIsBackInStockSubscription();
+
+    /**
+     * @return string
+     */
+    public function getBackInStockSubSelectedVariant();
+
+    /**
+     * @return string
+     */
+    public function getAdditionalTexts();
+
+    /**
+     * @return string
+     */
+    public function getErrorCode();
+
+    /**
+     * @return string
+     */
+    public function getMessage();
+
+    /**
+     * @return string
+     */
+    public function getUserFriendly();
+
+    /**
+     * @return string
+     */
+    public function fillActions();
+
+    /**
+     * @return string
+     */
+    public function fillProductPrice();
+
+    /**
+     * @return string
+     */
+    public function getProduct($product);
+
+    /**
+     * @return string
+     */
+    public function setProduct($product);
+
+    /**
+     * @return string
+     */
+    public function fillAditionalTexts();
+
+    /**
+     * @return string
+     */
+    public function fillBackInStockSubSelectedVariant();
 }

@@ -7,7 +7,7 @@
  * @link     http://t-appz.com/
  */
 
-namespace  TmobLabs\Tappz\Model\System;
+namespace TmobLabs\Tappz\Model\System;
 
 /**
  * Class Payment.
@@ -24,8 +24,9 @@ class Payment implements \Magento\Framework\Option\ArrayInterface
      *
      * @param \Magento\Payment\Helper\Data $storeHelper
      */
-    public function __construct(\Magento\Payment\Helper\Data $storeHelper)
-    {
+    public function __construct(
+        \Magento\Payment\Helper\Data $storeHelper
+    ) {
         $this->_storeHelper = $storeHelper;
     }
 

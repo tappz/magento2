@@ -43,6 +43,18 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     }
 
     /**
+     * @param $data
+     *
+     * @return $this
+     */
+    public function setBasket($data)
+    {
+        $this->_basket = $data;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getAverageDeliveryDays()
@@ -235,6 +247,18 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     }
 
     /**
+     * @param $data
+     *
+     * @return $this
+     */
+    public function setPayment($data)
+    {
+        $this->_basket->payment = $data;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getPaymentFee()
@@ -288,7 +312,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     public function getQuantity()
     {
         $quantity = $this->_basket->quantity;
-        $result =  empty($quantity) ? 0 :$quantity;
+        $result = empty($quantity) ? 0 : $quantity;
         return $result;
     }
 
@@ -403,6 +427,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getLines($id)
     {
+        $id;
         return $this->_basket->lines;
     }
 
@@ -651,18 +676,6 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      *
      * @return $this
      */
-    public function setPayment($data)
-    {
-        $this->_basket->payment = $data;
-
-        return $this;
-    }
-
-    /**
-     * @param $data
-     *
-     * @return $this
-     */
     public function setPaymentFee($data)
     {
         $this->_basket->paymentFee = $data;
@@ -890,18 +903,6 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     public function setUserFriendly($data)
     {
         $this->_basket->userFriendly = $data;
-
-        return $this;
-    }
-
-    /**
-     * @param $data
-     *
-     * @return $this
-     */
-    public function setBasket($data)
-    {
-        $this->_basket = $data;
 
         return $this;
     }
@@ -1472,6 +1473,19 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     }
 
     /**
+     * @param $data
+     *
+     * @return object
+     */
+    public function setContract($data)
+    {
+        $data;
+        $result = $this->_contract = (object)[];
+
+        return $result;
+    }
+
+    /**
      * @return mixed
      */
     public function getContractData()
@@ -1485,18 +1499,6 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     public function getShippingContract()
     {
         return $this->_contract->shippingContract;
-    }
-
-    /**
-     * @param $data
-     *
-     * @return object
-     */
-    public function setContract($data)
-    {
-        $result = $this->_contract = (object) [] ;
-
-        return $result;
     }
 
     /**

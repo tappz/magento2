@@ -40,16 +40,14 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
     /**
      * ProfileCollector constructor.
      *
-     * @param StoreManagerInterface       $storeManager
-     * @param RequestHandler              $requestHandler
-     * @param \Magento\Customer\Model\Url $customerUrl
-     * @param ScopeConfig                 $scopeConfig
-     * @param AddressRepository           $addressRepository
+     * @param StoreManagerInterface $storeManager
+     * @param RequestHandler $requestHandler
+     * @param ScopeConfig $scopeConfig
+     * @param AddressRepository $addressRepository
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         RequestHandler $requestHandler,
-        \Magento\Customer\Model\Url $customerUrl,
         ScopeConfig $scopeConfig,
         AddressRepository $addressRepository
     ) {
@@ -74,16 +72,13 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
         $customer = $this->_objectManager->
         get('Magento\Customer\Model\Customer')->setStore($store);
-        try {
-            $customer->authenticate($email, $password);
-        } catch (Exception $e) {
+        $customer->authenticate($email, $password);
 
-        }
 
         $subscriber = $this->_objectManager->
         get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
         $this->_profile = ($customer->loadByEmail($email));
-        $this->setIsSubscribe((bool) $subscriber->getId());
+        $this->setIsSubscribe((bool)$subscriber->getId());
         $shipping['shipping'] = [];
 
         foreach ($customer->getAddresses() as $address) {
@@ -94,7 +89,8 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $this->setAddresses($shipping);
 
 
-        $accessToken = $this->_helper->getAuthorization().' '.$customer->getID();
+        $accessToken = $this->_helper->getAuthorization() .
+            ' ' . $customer->getID();
 
         $this->setAccessToken($accessToken);
 
@@ -110,11 +106,11 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $token = $header->fbAccessToken;
         $fbUserId = $header->fbUid;
         $curl = curl_init();
-        $fbField = 'id,name,email,first_name,'.
+        $fbField = 'id,name,email,first_name,' .
             'last_name,gender,verified,birthday';
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL,
-            "https://graph.facebook.com/$fbUserId?".
+            "https://graph.facebook.com/$fbUserId?" .
             "fields=$fbField&access_token=$token"
         );
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -128,12 +124,12 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
             get('Magento\Customer\Model\Customer')->setStore($store);
             $customer->loadByEmail($email);
             if ($customer) {
-                $accessToken = $this->_helper->getAuthorizationFull().
-                    ' '.$customer->getID();
+                $accessToken = $this->_helper->getAuthorizationFull() .
+                    ' ' . $customer->getID();
                 $subscriber = $this->_objectManager->
                 get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
                 $this->_profile = ($customer->loadByEmail($email));
-                $this->setIsSubscribe((bool) $subscriber->getId());
+                $this->setIsSubscribe((bool)$subscriber->getId());
                 $shipping['shipping'] = [];
                 foreach ($customer->getAddresses() as $address) {
                     $shipping['shipping'][] = $this->_addressRepository->
@@ -143,6 +139,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
                 $this->setAccessToken($accessToken);
                 return $this->fillProfile();
             } else {
+                return false;
             }
         }
     }
@@ -157,6 +154,35 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         );
 
         return $this->getProfileByUserId($userId);
+    }
+
+    /**
+     * @param $userid
+     *
+     * @return array
+     */
+    public function getProfileByUserId($userid)
+    {
+        $store = $this->_objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        $customer = $this->_objectManager->
+        get('Magento\Customer\Model\Customer')->setStore($store);
+        $this->_profile = ($customer->load($userid));
+        $email = $customer->getEmail();
+        $subscriber = $this->_objectManager->
+        get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
+        $this->setIsSubscribe((bool)$subscriber->getId());
+        $shipping['shipping'] = [];
+        foreach ($customer->getAddresses() as $address) {
+            $shipping['shipping'][] = $this->_addressRepository->
+            getAddress($address->getID());
+        }
+        $this->setAddresses($shipping);
+        $accessToken = $this->_helper->getAuthorizationFull() .
+            ' ' . $customer->getID();
+        $this->setAccessToken($accessToken);
+
+        return $this->fillProfile();
     }
 
     /**
@@ -178,35 +204,6 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
     }
 
     /**
-     * @param $userid
-     *
-     * @return array
-     */
-    public function getProfileByUserId($userid)
-    {
-        $store = $this->_objectManager->
-        get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->_objectManager->
-        get('Magento\Customer\Model\Customer')->setStore($store);
-        $this->_profile = ($customer->load($userid));
-        $email = $customer->getEmail();
-        $subscriber = $this->_objectManager->
-        get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
-        $this->setIsSubscribe((bool) $subscriber->getId());
-        $shipping['shipping'] = [];
-        foreach ($customer->getAddresses() as $address) {
-            $shipping['shipping'][] = $this->_addressRepository->
-            getAddress($address->getID());
-        }
-        $this->setAddresses($shipping);
-        $accessToken = $this->_helper->getAuthorizationFull().
-            ' '. $customer->getID();
-        $this->setAccessToken($accessToken);
-
-        return $this->fillProfile();
-    }
-
-    /**
      * @return array
      */
     public function editProfile()
@@ -215,7 +212,6 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
             $this->_helper->getAuthorization()
         );
         $data = $this->_helper->convertJson($this->_helper->getHeaderJson());
-        $data->entity_id = $userid;
         $customerData = $this->fillRegisterCustomerData($data);
         $store = $this->_objectManager
             ->get('Magento\Store\Model\StoreManagerInterface')->getStore();
@@ -244,7 +240,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $this->setUserAgreement($this->_scopeConfig->getValue(
             'tappzagreement/useragreement/agreement',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            )
+        )
         );
 
         return $this->fillUserAgreement();
@@ -257,7 +253,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
      */
     public function getCustomerAddressById($addressId)
     {
-        $this->address = $this->_objectManager->
+        $this->_address = $this->_objectManager->
         get('Magento\Customer\Model\Address')->
         load($addressId);
         return $this->fillAddress();
