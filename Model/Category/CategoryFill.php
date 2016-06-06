@@ -14,21 +14,7 @@ namespace TmobLabs\Tappz\Model\Category;
  */
 class CategoryFill extends Category
 {
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $_storeManager;
 
-    /**
-     * CategoryFill constructor.
-     *
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
-        $this->_storeManager = $storeManager;
-    }
 
     /**
      * @return array

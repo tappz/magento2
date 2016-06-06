@@ -21,25 +21,25 @@ use TmobLabs\Tappz\Model\Product\ProductCollector;
 class IndexCollector extends IndexFill implements IndexInterface
 {
     /**
-     * @var CategoryFactory
-     */
-    private $_categoryFactory;
-    /**
      * @var CategoryRepository
      */
-    public $categoryRepository;
+    protected $_categoryRepository;
     /**
      * @var ProductCollector
      */
-    public $productCollector;
+    protected $_productCollector;
+    /**
+     * @var CategoryFactory
+     */
+    private $_categoryFactory;
 
     /**
      * IndexCollector constructor.
      *
      * @param StoreManagerInterface $storeManager
-     * @param CategoryRepository    $categoryRepository
-     * @param ProductCollector      $productCollector
-     * @param CategoryFactory       $categoryFactory
+     * @param CategoryRepository $categoryRepository
+     * @param ProductCollector $productCollector
+     * @param CategoryFactory $categoryFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -48,8 +48,8 @@ class IndexCollector extends IndexFill implements IndexInterface
         CategoryFactory $categoryFactory
     ) {
         parent::__construct($storeManager);
-        $this->categoryRepository = $categoryRepository;
-        $this->productCollector = $productCollector;
+        $this->_categoryRepository = $categoryRepository;
+        $this->_productCollector = $productCollector;
         $this->_categoryFactory = $categoryFactory;
     }
 
@@ -58,20 +58,21 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getIndex()
     {
-        $categories = $this->categoryRepository->getCategories();
-        $items = array();
-        $groups = array();
+        $categories = $this->_categoryRepository->getCategories();
+        $items = [];
+        $groups = [];
         foreach ($categories as $category) {
             $id = $category['id'];
             $name = $category['name'];
             $image = null;
             $collection = $this->getCategoryProducts($id);
             foreach ($collection as $_product) {
-                $items[] = $this->productCollector->getProduct($_product->getId());
+                $items[] = $this->_productCollector->getProduct(
+                    $_product->getId()
+                );
             }
-            if (count($items) > 0) {
-                $groups[] = $this->fillGroups($name, $image, $items);
-            }
+            $groups[] = $this->fillGroups($name, $image, $items);
+
         }
         $this->setGroups($groups);
         $action = $this->fillActions();
@@ -86,12 +87,12 @@ class IndexCollector extends IndexFill implements IndexInterface
      *
      * @return mixed
      */
-    public function getCategory($categoryId)
+    public function getCategoryProducts($categoryId)
     {
-        $category = $this->_categoryFactory->create();
-        $category->load($categoryId);
+        $products = $this->getCategory($categoryId)->getProductCollection();
+        $products->addAttributeToSelect('*');
 
-        return $category;
+        return $products;
     }
 
     /**
@@ -99,11 +100,11 @@ class IndexCollector extends IndexFill implements IndexInterface
      *
      * @return mixed
      */
-    public function getCategoryProducts($categoryId)
+    public function getCategory($categoryId)
     {
-        $products = $this->getCategory($categoryId)->getProductCollection();
-        $products->addAttributeToSelect('*');
+        $category = $this->_categoryFactory->create();
+        $category->load($categoryId);
 
-        return $products;
+        return $category;
     }
 }

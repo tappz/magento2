@@ -77,15 +77,15 @@ class ProfileFill extends Profile
      */
     protected function fillRegisterCustomerData($data)
     {
+        $data = (array)$data;
         return [
-            'firstname' => $data->firstName,
-            'lastname' => $data->lastName,
-            'password' => $data->password,
-            'gender' => $data->gender,
-            'isSubscribed' => $data->IsSubscribe,
-            'email' => $data->email,
-            'phone' => $data->phone,
-
+            'firstname' => $data['firstName'],
+            'lastname' => $data['lastName'],
+            'password' => $data['password'],
+            'gender' => $data['gender'],
+            'isSubscribed' => $data['IsSubscribe'],
+            'email' => $data['email'],
+            'phone' => $data['phone'] ,
         ];
     }
 }

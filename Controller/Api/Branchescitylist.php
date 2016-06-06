@@ -22,24 +22,22 @@ class Branchescitylist extends Action
     /**
      * @var
      */
-    protected $jsonResult;
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
+    private $_jsonResult;
+
 
     /**
      * Branchescitylist constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
+     * @param Context $context
+     * @param JSON $json
      * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(Context $context, JSON $json, CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->categoryRepository = $categoryRepository;
+        $this->_jsonResult = $json->create();
     }
 
     /**
@@ -47,19 +45,19 @@ class Branchescitylist extends Action
      */
     public function execute()
     {
-        $arr = array(
-            0 => array(
-                    'cityId' => 0,
-                    'name' => 'string',
-                    'latitude' => 'string',
-                    'longitude' => 'string',
-                    'ErrorCode' => 'string',
-                    'Message' => 'string',
-                    'UserFriendly' => true,
-                ),
-        );
-        $this->jsonResult->setData($arr);
+        $arr = [
+            0 => [
+                'cityId' => 0,
+                'name' => 'string',
+                'latitude' => 'string',
+                'longitude' => 'string',
+                'ErrorCode' => 'string',
+                'Message' => 'string',
+                'UserFriendly' => true,
+            ],
+        ];
+        $this->_jsonResult->setData($arr);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

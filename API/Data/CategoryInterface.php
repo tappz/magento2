@@ -64,7 +64,11 @@ interface CategoryInterface
      * @param type $asCollection
      * @param type $toLoad
      */
-    public function getStoreCategories($sorted = false, $asCollection = true, $toLoad = true);
+    public function getStoreCategories(
+        $sorted = false,
+        $asCollection = true,
+        $toLoad = true
+    );
 
     /**
      * @return string

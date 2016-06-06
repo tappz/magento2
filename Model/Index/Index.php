@@ -20,27 +20,35 @@ class Index extends AbstractExtensibleObject implements IndexInterface
     /**
      * @var
      */
-    protected $index;
+    protected $_index;
     /**
      * @var
      */
-    protected $items;
+    protected $_items;
     /**
      * @var
      */
-    protected $ads;
+    protected $_ads;
     /**
      * @var
      */
-    protected $adsAction;
+    protected $_adsAction;
     /**
      * @var
      */
-    protected $groups;
+    protected $_groups;
     /**
      * @var
      */
-    protected $categories;
+    protected $_categories;
+
+    /**
+     * @return mixed
+     */
+    public function getGroups()
+    {
+        return $this->_groups;
+    }
 
     /**
      * @param $groups
@@ -49,17 +57,9 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setGroups($groups)
     {
-        $this->groups = $groups;
+        $this->_groups = $groups;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGroups()
-    {
-        return $this->groups;
     }
 
     /**
@@ -67,7 +67,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function getMessage()
     {
-        return;
+        return '';
     }
 
     /**
@@ -83,7 +83,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function getErrorCode()
     {
-        return;
+        return '';
     }
 
     /**
@@ -91,31 +91,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function getIndex()
     {
-        return $this->index;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAds()
-    {
-        return $this->ads;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAdsAction()
-    {
-        return $this->adsAction;
+        return $this->_index;
     }
 
     /**
@@ -125,9 +101,17 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setIndex($index)
     {
-        $this->index = $index;
+        $this->_index = $index;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getItems()
+    {
+        return $this->_items;
     }
 
     /**
@@ -137,9 +121,17 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setItems($item)
     {
-        $this->items = $item;
+        $this->_index = $item;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAds()
+    {
+        return $this->_ads;
     }
 
     /**
@@ -149,9 +141,17 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setAds($ads)
     {
-        $this->ads = $ads;
+        $this->_ads = $ads;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdsAction()
+    {
+        return $this->_adsAction;
     }
 
     /**
@@ -161,7 +161,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setAdsAction($adsAction)
     {
-        $this->adsAction = $adsAction;
+        $this->_adsAction = $adsAction;
 
         return $this;
     }
@@ -169,11 +169,11 @@ class Index extends AbstractExtensibleObject implements IndexInterface
     /**
      * @param string $displayName
      * @param string $image
-     * @param array  $items
+     * @param array $items
      *
      * @return array
      */
-    public function fillGroups($displayName = '', $image = '', $items = array())
+    public function fillGroups($displayName = '', $image = '', $items = [])
     {
         return [
             'displayName' => $displayName,
@@ -185,12 +185,15 @@ class Index extends AbstractExtensibleObject implements IndexInterface
     /**
      * @param string $displayName
      * @param string $image
-     * @param array  $action
+     * @param array $action
      *
      * @return array
      */
-    public function fillAds($displayName = '', $image = '', $action = array())
-    {
+    public function fillAds(
+        $displayName = '',
+        $image = '',
+        $action = []
+    ) {
         return [
             'displayName' => $displayName,
             'image' => $image,
@@ -208,8 +211,14 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      *
      * @return array
      */
-    public function fillActions($type = '', $image = '', $text = '', $productId = '', $href = '', $categoryId = '')
-    {
+    public function fillActions(
+        $type = '',
+        $image = '',
+        $text = '',
+        $productId = '',
+        $href = '',
+        $categoryId = ''
+    ) {
         return [
             'type' => $type,
             'image' => $image,
@@ -227,7 +236,7 @@ class Index extends AbstractExtensibleObject implements IndexInterface
      */
     public function setAction($data)
     {
-        $this->adsAction = $data;
+        $this->_adsAction = $data;
 
         return $this;
     }

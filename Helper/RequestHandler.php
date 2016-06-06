@@ -19,7 +19,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected $_scopeConfig;
+    protected $_request;
 
     /**
      * RequestHandler constructor.
@@ -27,9 +28,11 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\RequestInterface $httpRequest
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->_scopeConfig = $scopeConfig;
+        $this->_request = $httpRequest;
     }
 
     /**
@@ -37,7 +40,61 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getRequestMethod()
     {
-        return $_SERVER['REQUEST_METHOD'];
+        $server = $this->_request->getServerValue();
+        return $server['REQUEST_METHOD'];
+    }
+
+    /**
+     * @return array
+     */
+    public function checkAuth()
+    {
+        $server = $this->_request->getServerValue();
+
+
+        if (!isset($server['HTTP_AUTHORIZATION']) ||
+            empty($server['HTTP_AUTHORIZATION'])
+        ) {
+            $error = "Couldn't find AUTHORIZATION !Please "
+                . "check your  .htaccess  ";
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+        }
+
+        $header = (isset($server['HTTP_AUTHORIZATION'])
+            && $server['HTTP_AUTHORIZATION'] != '')
+            ? $server['HTTP_AUTHORIZATION'] : '';
+        $auth = (explode(' ', $header));
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $url = substr(
+            $objectManager->
+            get('Magento\Store\Model\StoreManagerInterface')
+                ->getStore()
+                ->getBaseUrl(), 0, -1);
+        $realUrl = $this->getRealUrl($url);
+
+        $username =
+            $this->_scopeConfig->
+            getValue('tappztoken/tappzusermethod/tappzusername');
+        $token = $this->_scopeConfig->
+        getValue('tappztoken/tappzusermethod/tappzsecretkey');
+        $newToken = trim($token . '|' . ($realUrl) . '|' . $auth[2]);
+        if (sizeof($token) == 0) {
+            $error = ' 401 - Token not initialized.Please'
+                . 'create  token on configuration page ';
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+        } elseif (
+            sha1(($newToken), false) != $auth[1] || $username != $auth[0]
+        ) {
+            $error = ' 403 - Access denied.Please check your tokens';
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+
+        }
+
+        return $auth;
     }
 
     /**
@@ -47,31 +104,9 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getRealUrl($url)
     {
-        return urldecode($url."$_SERVER[REQUEST_URI]");
-    }
+        $server = $this->_request->getServerValue();
 
-    /**
-     * @return array
-     */
-    public function checkAuth()
-    {
-        $header = (isset($_SERVER['HTTP_AUTHORIZATION']) && $_SERVER['HTTP_AUTHORIZATION'] != '') ? $_SERVER['HTTP_AUTHORIZATION'] : '';
-        $auth = (@explode(' ', $header));
-
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $url = substr($objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore()
-        ->getBaseUrl(), 0, -1);
-        $realUrl = $this->getRealUrl($url);
-
-        $username = $this->scopeConfig->getValue('tappztoken/tappzusermethod/tappzusername');
-        $token = $this->scopeConfig->getValue('tappztoken/tappzusermethod/tappzsecretkey');
-        if (sizeof($token) == 0) {
-            exit(' 401 - Token not initialized.Please create  token on configuration page ');
-        } elseif (sha1((trim($token.'|'.($realUrl).'|'.@$auth[2])), false) != @$auth[1] ||  $username != @$auth[0]) {
-            exit(' 403 - Access denied.Please check your tokens');
-        }
-
-        return $auth;
+        return urldecode($url . $server['REQUEST_URI']);
     }
 
     /**
@@ -80,7 +115,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     public function getHeaderJson()
     {
         $resource = fopen('php://input', 'r');
-        $result = array();
+        $result = [];
         while ($putData = fread($resource, 8192)) {
             $result = $putData;
         }
@@ -94,8 +129,10 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAuthorizationFull()
     {
-        $authorization = $_SERVER['HTTP_AUTHORIZATION'];
-        $header = (isset($authorization) && $authorization != '') ? $authorization : '';
+        $server = $this->_request->getServerValue();
+        $authorization = $server['HTTP_AUTHORIZATION'];
+        $header = (isset($authorization) && $authorization != '') ?
+            $authorization : '';
 
         return $header;
     }
@@ -105,11 +142,23 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAuthorization()
     {
-        $authorization = $_SERVER['HTTP_AUTHORIZATION'];
-        $header = (isset($authorization) && $authorization != '') ? $authorization : '';
-        $auth = @end(@explode(' ', $header));
+        $server = $this->_request->getServerValue();
 
-        return $auth;
+        if (!isset($server['HTTP_AUTHORIZATION']) ||
+            empty($server['HTTP_AUTHORIZATION'])
+        ) {
+            $error = "Couldn't find AUTHORIZATION !Please "
+                . "check your  .htaccess  ";
+            throw new
+            \Magento\Framework\Exception\AuthenticationException(__($error));
+        }
+        $authorization = $server['HTTP_AUTHORIZATION'];
+        $header = (isset($authorization) && $authorization != '') ?
+            $authorization : '';
+        $auth = (explode(' ', $header));
+        $result = (int)end($auth);
+
+        return $result;
     }
 
     /**

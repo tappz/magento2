@@ -23,25 +23,29 @@ class Index extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var IndexRepositoryInterface
      */
-    private $indexRepository;
+    private $_indexRepository;
 
     /**
      * Index constructor.
      *
-     * @param Context                  $context
-     * @param JSON                     $json
+     * @param Context $context
+     * @param JSON $json
      * @param IndexRepositoryInterface $indexRepository
-     * @param RequestHandler           $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context, JSON $json, IndexRepositoryInterface $indexRepository, RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        IndexRepositoryInterface $indexRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->indexRepository = $indexRepository;
+        $this->_jsonResult = $json->create();
+        $this->_indexRepository = $indexRepository;
         $helper->checkAuth();
     }
 
@@ -50,9 +54,9 @@ class Index extends Action
      */
     public function execute()
     {
-        $result = $this->indexRepository->getIndex();
-        $this->jsonResult->setData($result);
+        $result = $this->_indexRepository->getIndex();
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

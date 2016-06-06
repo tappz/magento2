@@ -14,21 +14,7 @@ namespace TmobLabs\Tappz\Model\Basket;
  */
 class BasketFill extends Basket
 {
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $_storeManager;
 
-    /**
-     * BasketFill constructor.
-     *
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
-        $this->_storeManager = $storeManager;
-    }
 
     /**
      * @return array
@@ -77,7 +63,7 @@ class BasketFill extends Basket
         return [
             'productId' => $this->getProductId(),
             'product' => $this->getProduct(),
-            'quantity' => empty($this->getQuantity()) ? 0 : $this->getQuantity(),
+            'quantity' => $this->getQuantity(),
             'placedPrice' => $this->getPlacedPrice(),
             'placedPriceTotal' => $this->getPlacedPriceTotal(),
             'extendedPrice' => $this->getExtendedPrice(),

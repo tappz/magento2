@@ -16,32 +16,36 @@ use TmobLabs\Tappz\API\BasketRepositoryInterface;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 
 /**
- * Class mergeBasket.
+ * Class MergeBasket.
  */
-class mergeBasket extends Action
+class MergeBasket extends Action
 {
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var BasketRepositoryInterface
      */
-    private $basketRepository;
+    private $_basketRepository;
 
     /**
-     * mergeBasket constructor.
+     * MergeBasket constructor.
      *
      * @param Context                   $context
      * @param JSON                      $json
      * @param BasketRepositoryInterface $basketRepository
      * @param RequestHandler            $helper
      */
-    public function __construct(Context $context, JSON $json, BasketRepositoryInterface $basketRepository, RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        BasketRepositoryInterface $basketRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->basketRepository = $basketRepository;
+        $this->_jsonResult = $json->create();
+        $this->_basketRepository = $basketRepository;
         $helper->checkAuth();
     }
 
@@ -50,9 +54,8 @@ class mergeBasket extends Action
      */
     public function execute()
     {
-        $result = $this->basketRepository->merge();
-        $this->jsonResult->setData($result);
-
-        return $this->jsonResult;
+        $result = $this->_basketRepository->merge();
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

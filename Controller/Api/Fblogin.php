@@ -23,26 +23,30 @@ class Fblogin extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var ProfileRepositoryInterface
      */
-    private $profileRepository;
+    private $_profileRepository;
 
     /**
      * Fblogin constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param ProfileRepositoryInterface $profileRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context, JSON $json, ProfileRepositoryInterface $profileRepository, RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        ProfileRepositoryInterface $profileRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
+        $this->_jsonResult = $json->create();
+        $this->_profileRepository = $profileRepository;
         $helper->checkAuth();
-        $this->profileRepository = $profileRepository;
     }
 
     /**
@@ -50,9 +54,8 @@ class Fblogin extends Action
      */
     public function execute()
     {
-        $result = $this->profileRepository->fblogin();
-        $this->jsonResult->setData($result);
-
-        return $this->jsonResult;
+        $result = $this->_profileRepository->fblogin();
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

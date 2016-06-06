@@ -12,7 +12,7 @@ namespace TmobLabs\Tappz\Controller\Api;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context as Context;
 use Magento\Framework\Controller\Result\JsonFactory as JSON;
-use TmobLabs\Tappz\API\LocationRepositoryInterface as LocationRepositoryInterface;
+use TmobLabs\Tappz\API\LocationRepositoryInterface as LocationRepositoryI;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 
 /**
@@ -23,25 +23,29 @@ class Cities extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    protected $_jsonResult;
     /**
-     * @var LocationRepositoryInterface
+     * @var LocationRepositoryI
      */
-    private $locationRepository;
+    private $_locationRepository;
 
     /**
      * Cities constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
-     * @param LocationRepositoryInterface $locationRepository
-     * @param RequestHandler              $helper
+     * @param Context $context
+     * @param JSON $json
+     * @param LocationRepositoryI $locationRepository
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context, JSON $json, LocationRepositoryInterface $locationRepository, RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        LocationRepositoryI $locationRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->locationRepository = $locationRepository;
+        $this->_jsonResult = $json->create();
+        $this->_locationRepository = $locationRepository;
         $helper->checkAuth();
     }
 
@@ -52,9 +56,9 @@ class Cities extends Action
     {
         $params = ($this->getRequest()->getParams());
         $countryId = key($params);
-        $result = $this->locationRepository->getCities($countryId);
-        $this->jsonResult->setData($result);
+        $result = $this->_locationRepository->getCities($countryId);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

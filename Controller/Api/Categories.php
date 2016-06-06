@@ -23,19 +23,19 @@ class Categories extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    private $_categoryRepository;
 
     /**
      * Categories constructor.
      *
-     * @param Context                     $context
-     * @param JSON                        $json
+     * @param Context $context
+     * @param JSON $json
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param RequestHandler              $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,
@@ -44,8 +44,8 @@ class Categories extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->categoryRepository = $categoryRepository;
+        $this->_jsonResult = $json->create();
+        $this->_categoryRepository = $categoryRepository;
         $helper->checkAuth();
     }
 
@@ -54,9 +54,8 @@ class Categories extends Action
      */
     public function execute()
     {
-        $result = $this->categoryRepository->getCategories();
-        $this->jsonResult->setData($result);
-
-        return $this->jsonResult;
+        $result = $this->_categoryRepository->getCategories();
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

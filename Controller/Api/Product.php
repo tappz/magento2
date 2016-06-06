@@ -23,25 +23,29 @@ class Product extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    private $_productRepository;
 
     /**
      * Product constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param ProductRepositoryInterface $productRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
-    public function __construct(Context $context, JSON $json, ProductRepositoryInterface $productRepository, RequestHandler $helper)
-    {
+    public function __construct(
+        Context $context,
+        JSON $json,
+        ProductRepositoryInterface $productRepository,
+        RequestHandler $helper
+    ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->productRepository = $productRepository;
+        $this->_jsonResult = $json->create();
+        $this->_productRepository = $productRepository;
         $helper->checkAuth();
     }
 
@@ -51,22 +55,21 @@ class Product extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $result = array();
+        $result = [];
         if (count($params) > 0 && $params[key($params)] == 'related') {
             $productId = key($params);
-            $result = $this->productRepository->getRelatedProduct($productId);
+            $result = $this->_productRepository->getRelatedProduct($productId);
         } else {
             if (count($params) > 0 && !isset($params['barcode'])) {
                 $productId = key($params);
 
-                $result = $this->productRepository->getById($productId);
+                $result = $this->_productRepository->getById($productId);
             } elseif (isset($params['barcode']) && !empty($params['barcode'])) {
                 $barcode = $params['barcode'];
-                $result = $this->productRepository->getByBarcode($barcode);
+                $result = $this->_productRepository->getByBarcode($barcode);
             }
         }
-        $this->jsonResult->setData($result);
-
-        return $this->jsonResult;
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

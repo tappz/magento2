@@ -20,14 +20,14 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
     /**
      * @var
      */
-    protected $category;
+    protected $_category;
 
     /**
      * @return mixed
      */
     public function getId()
     {
-        return $this->category->getId();
+        return $this->_category->getId();
     }
 
     /**
@@ -35,7 +35,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getName()
     {
-        return $this->category->getName();
+        return $this->_category->getName();
     }
 
     /**
@@ -43,7 +43,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getAgreementText()
     {
-        return;
+        return '';
     }
 
     /**
@@ -51,11 +51,11 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getChildren()
     {
-        $result = array();
-        $categories = $this->category->getChildrenCategories();
+        $result = [];
+        $categories = $this->_category->getChildrenCategories();
         if (($categories)) {
             foreach ($categories as $category) {
-                $this->category = $category;
+                $this->_category = $category;
                 $result[] = $this->fillCategory();
             }
         }
@@ -68,7 +68,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getErrorCode()
     {
-        return;
+        return '';
     }
 
     /**
@@ -76,7 +76,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getIsLeaf()
     {
-        return $this->category->getChildrenCount() == 0;
+        return $this->_category->getChildrenCount() == 0;
     }
 
     /**
@@ -84,23 +84,10 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getIsRoot()
     {
-        return $this->getParentCategoryId() == $this->getRootCategory() ? true : false;
-    }
-
-    /**
-     *
-     */
-    public function getMessage()
-    {
-        return;
-    }
-
-    /**
-     *
-     */
-    public function getDescription()
-    {
-        return;
+        $categoryId = $this->getParentCategoryId();
+        $rootCategory = $this->getRootCategory();
+        $response = $categoryId == $rootCategory ? true : false;
+        return $response;
     }
 
     /**
@@ -108,27 +95,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getParentCategoryId()
     {
-        return $this->category->getParentId();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUserFriendly()
-    {
-        return false;
-    }
-
-    /**
-     * @param bool $sorted
-     * @param bool $asCollection
-     * @param bool $toLoad
-     *
-     * @return mixed
-     */
-    public function getStoreCategories($sorted = false, $asCollection = true, $toLoad = true)
-    {
-        return $this->categoryHelper->getStoreCategories($sorted, $asCollection, $toLoad);
+        return $this->_category->getParentId();
     }
 
     /**
@@ -149,5 +116,45 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
         return $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+    }
+
+    /**
+     *
+     */
+    public function getMessage()
+    {
+        return '';
+    }
+
+    /**
+     *
+     */
+    public function getDescription()
+    {
+        return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUserFriendly()
+    {
+        return false;
+    }
+
+    /**
+     * @param bool $sorted
+     * @param bool $asCollection
+     * @param bool $toLoad
+     *
+     * @return mixed
+     */
+    public function getStoreCategories(
+        $sorted = false,
+        $asCollection = true,
+        $toLoad = true
+    ) {
+        return $this->_categoryHelper->
+        getStoreCategories($sorted, $asCollection, $toLoad);
     }
 }

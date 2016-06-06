@@ -21,29 +21,29 @@ class PurchaseCollector extends PurchaseFill
     /**
      * @var RequestHandler
      */
-    protected $helper;
+    protected $_helper;
     /**
      * @var
      */
-    protected $addressRepository;
+    protected $_addressRepository;
     /**
      * @var Basket
      */
-    protected $basketRepository;
+    protected $_basketRepository;
     /**
      * @var
      */
-    protected $objectManager;
+    protected $_objectManager;
     /**
-     * @var OrderCollector
+     * @var OrderCollectorß
      */
-    protected $orderCollector;
+    protected $_orderCollector;
 
     /**
      * PurchaseCollector constructor.
      *
      * @param RequestHandler $requestHandler
-     * @param Basket         $basketRepository
+     * @param Basket $basketRepository
      * @param OrderCollector $orderCollector
      */
     public function __construct(
@@ -51,10 +51,11 @@ class PurchaseCollector extends PurchaseFill
         Basket $basketRepository,
         OrderCollector $orderCollector
     ) {
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->helper = $requestHandler;
-        $this->basketRepository = $basketRepository;
-        $this->orderCollector = $orderCollector;
+        $this->_objectManager =
+            \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_helper = $requestHandler;
+        $this->_basketRepository = $basketRepository;
+        $this->_orderCollector = $orderCollector;
     }
 
     /**
@@ -67,7 +68,6 @@ class PurchaseCollector extends PurchaseFill
     {
         switch ($method) {
             case 'card':
-                exit;
                 $result = $this->purchaseCreditCards($quoteId);
                 break;
             case 'threeD':
@@ -86,7 +86,7 @@ class PurchaseCollector extends PurchaseFill
                 $result = $this->purchaseApplePay();
                 break;
             default:
-                $result = array();
+                $result = [];
                 break;
         }
 
@@ -121,9 +121,9 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseCashOnDelivery($quoteId)
     {
-        $this->helper->getHeaderJson();
-        $userId = $this->helper->getAuthorization();
-        $quote = $this->basketRepository->getBasketQuoteById($quoteId);
+        $this->_helper->getHeaderJson();
+        $userId = $this->_helper->getAuthorization();
+        $quote = $this->_basketRepository->getBasketQuoteById($quoteId);
         if ($quote->getCustomerEmail() == null) {
             $customerModel = $this->getUserViaUserId($userId);
             $quote->setCustomerId($userId)
@@ -140,20 +140,21 @@ class PurchaseCollector extends PurchaseFill
             ->collectShippingRates()
             ->setShippingMethod($shipmentMethod);
         $quote->setPaymentMethod('cashondelivery');
-        $quote->getPayment()->importData(array('method' => 'cashondelivery'));
+        $quote->getPayment()->importData(['method' => 'cashondelivery']);
         $quote->setIsActive(true)
             ->collectTotals()
             ->save();
         $quote->getShippingMethod();
-        $rate = $this->objectManager->get('Magento\Quote\Model\Quote\Address\Rate');
+        $rate = $this->_objectManager->
+        get('Magento\Quote\Model\Quote\Address\Rate');
         $rate->setCode($shipmentMethod);
         $quote->getShippingAddress()->addShippingRate($rate);
-        $quoteManagement = $this->objectManager
+        $quoteManagement = $this->_objectManager
             ->create('\Magento\Quote\Model\QuoteManagement');
         $order = $quoteManagement->submit($quote);
         if ($order) {
             $order->setCustomerIsGuest(false);
-            $result = $this->orderCollector->getOrderById($order->getID());
+            $result = $this->_orderCollector->getOrderById($order->getID());
 
             return $result;
         }
@@ -166,10 +167,11 @@ class PurchaseCollector extends PurchaseFill
      */
     public function getUserViaUserId($userid)
     {
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->setStore($store);
+        $store = $this->_objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        $customer = $this->_objectManager->
+        get('Magento\Customer\Model\Customer')->setStore($store);
         $customer->load($userid);
-
         return $customer;
     }
 

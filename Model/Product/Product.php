@@ -10,24 +10,23 @@
 namespace TmobLabs\Tappz\Model\Product;
 
 use Magento\Framework\Api\AbstractExtensibleObject;
-use TmobLabs\Tappz\API\Data\ProductInterface;
 
 /**
  * Class Product.
  */
-class Product extends AbstractExtensibleObject implements ProductInterface
+class Product extends AbstractExtensibleObject
 {
     /**
      * @var string
      */
-    protected $product;
+    protected $_product;
 
     /**
      * @return string
      */
     public function getId()
     {
-        return $this->product->getId();
+        return $this->_product->getId();
     }
 
     /**
@@ -35,7 +34,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getProductName()
     {
-        return $this->product->getName();
+        return $this->_product->getName();
     }
 
     /**
@@ -43,12 +42,33 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getListPrice()
     {
-        $specialPrice = (double) $this->product->getData('specialPrice');
-        $listPrice = (double) $this->product->getData('price');
+        $specialPrice = (double)$this->_product->getData('specialPrice');
+        $listPrice = (double)$this->_product->getData('price');
         $amount = ($specialPrice) > 0 ? $specialPrice : $listPrice;
-        $currency = $defaultCurrency = $this->_storeManager->getStore()->getCurrentCurrency()->getCode();
-
+        $currency = $this->_storeManager
+            ->getStore()
+            ->getCurrentCurrency()
+            ->getCode();
         return $this->fillProductPrice($amount, $currency, $currency);
+    }
+
+    /**
+     * @param int $amount
+     * @param null $defaultCurrency
+     * @param null $currency
+     *
+     * @return array
+     */
+    public function fillProductPrice(
+        $amount = 0,
+        $defaultCurrency = null,
+        $currency = null
+    ) {
+        return [
+            'amount' => number_format($amount, 2, '.', ''),
+            'amountDefaultCurrency' => $defaultCurrency,
+            'currency' => $currency,
+        ];
     }
 
     /**
@@ -56,7 +76,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getNoImageUrl()
     {
-        return;
+        return '';
     }
 
     /**
@@ -64,7 +84,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getHeadline()
     {
-        return;
+        return '';
     }
 
     /**
@@ -72,9 +92,12 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getStrikeOutPrice()
     {
-        $specialPrice = $this->product->getData('specialPrice');
+        $specialPrice = $this->_product->getData('specialPrice');
         $amount = ($specialPrice) > 0 ? $specialPrice : 0;
-        $currency = $this->_storeManager->getStore()->getCurrentCurrency()->getCode();
+        $currency = $this->_storeManager->
+        getStore()->
+        getCurrentCurrency()->
+        getCode();
 
         return $this->fillProductPrice($amount, $currency, $currency);
     }
@@ -92,7 +115,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getCreditCardInstallments()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -114,11 +137,39 @@ class Product extends AbstractExtensibleObject implements ProductInterface
     }
 
     /**
+     * @param string $type
+     * @param string $image
+     * @param string $text
+     * @param string $productId
+     * @param string $href
+     * @param string $categoryId
+     *
+     * @return array
+     */
+    public function fillActions(
+        $type = '',
+        $image = '',
+        $text = '',
+        $productId = '',
+        $href = '',
+        $categoryId = ''
+    ) {
+        return [
+            'type' => $type,
+            'image' => $image,
+            'text' => $text,
+            'productId' => $productId,
+            'href' => $href,
+            'categoryId' => $categoryId,
+        ];
+    }
+
+    /**
      *
      */
     public function getFeatures()
     {
-        return;
+        return '';
     }
 
     /**
@@ -126,19 +177,22 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getVariants()
     {
-        $result = array();
-        $productType = $this->product->getTypeId();
+        $result = [];
+        $productType = $this->_product->getTypeId();
         if ($productType == 'configurable') {
-            $instanceConf = $this->product->getTypeInstance();
+            $instanceConf = $this->_product->getTypeInstance();
 
-            $configurableAttributesData = $instanceConf->getConfigurableAttributesAsArray($this->product);
+            $configurableAttributesData = $instanceConf
+                ->getConfigurableAttributesAsArray(
+                    $this->_product
+                );
             foreach ($configurableAttributesData as $dt => $val) {
-                $group = array();
+                $group = [];
 
                 $group['groupId'] = $val['attribute_code'];
                 $group['groupName'] = $val['label'];
                 foreach ($val['values'] as $vv) {
-                    $groupValue = array();
+                    $groupValue = [];
 
                     $groupValue['displayName'] = $vv['label'];
                     $groupValue['value'] = $vv['value_index'];
@@ -156,7 +210,10 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getInStock()
     {
-        $result = isset($this->product->getQuantityAndStockStatus()['is_in_stock']) ? $this->product->getQuantityAndStockStatus()['is_in_stock'] : false;
+        $quantity = $this->_product->getQuantityAndStockStatus();
+        $result = isset($quantity['is_in_stock']) ?
+            $this->_product->getQuantityAndStockStatus()['is_in_stock'] :
+            false;
 
         return $result;
     }
@@ -174,10 +231,12 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getPicture()
     {
-        $baseUrl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-        $result = $this->product->getImage();
+        $store = $this->_storeManager->getStore();
+        $urlMedia = \Magento\Framework\UrlInterface::URL_TYPE_MEDIA;
+        $baseUrl = $store->getBaseUrl($urlMedia);
+        $result = $this->_product->getImage();
 
-        return $baseUrl.'catalog/product'.$result;
+        return $baseUrl . 'catalog/product' . $result;
     }
 
     /**
@@ -185,16 +244,16 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getPictures()
     {
-        $images = $this->product->getMediaGalleryImages();
-        $image = array();
-        $result = array();
+        $images = $this->_product->getMediaGalleryImages();
+        $result = [];
         if (isset($images)) {
             if (count($images) > 0) {
                 foreach ($images as $image) {
                     $result[]['url'] = $image->getUrl();
                 }
             } else {
-                $result[0]['url'] = $this->product->getImageUrl($this->product);
+                $result[0]['url'] = $this->_product->
+                getImageUrl($this->_product);
             }
         }
 
@@ -206,7 +265,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getProductDetailUrl()
     {
-        return $this->product->getDescription();
+        return $this->_product->getDescription();
     }
 
     /**
@@ -214,7 +273,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getProductUrl()
     {
-        return $this->product->getProductUrl();
+        return $this->_product->getProductUrl();
     }
 
     /**
@@ -230,7 +289,10 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getUnit()
     {
-        $result = isset($this->product->getQuantityAndStockStatus()['is_in_stock']) ? $this->product->getQuantityAndStockStatus()['is_in_stock'] : false;
+        $quantity = $this->_product->getQuantityAndStockStatus();
+        $result = isset($quantity['is_in_stock']) ?
+            $this->_product->getQuantityAndStockStatus()['is_in_stock'] :
+            false;
 
         return $result;
     }
@@ -256,7 +318,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function getBackInStockSubSelectedVariant()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -265,60 +327,6 @@ class Product extends AbstractExtensibleObject implements ProductInterface
     public function getAdditionalTexts()
     {
         return $this->fillAditionalTexts();
-    }
-
-    /**
-     *
-     */
-    public function getErrorCode()
-    {
-        return;
-    }
-
-    /**
-     *
-     */
-    public function getMessage()
-    {
-        return;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUserFriendly()
-    {
-        return true;
-    }
-
-    /**
-     *
-     */
-    public function getShoutOutTexts()
-    {
-        return;
-    }
-
-    /**
-     * @param string $type
-     * @param string $image
-     * @param string $text
-     * @param string $productId
-     * @param string $href
-     * @param string $categoryId
-     *
-     * @return array
-     */
-    public function fillActions($type = '', $image = '', $text = '', $productId = '', $href = '', $categoryId = '')
-    {
-        return [
-            'type' => $type,
-            'image' => $image,
-            'text' => $text,
-            'productId' => $productId,
-            'href' => $href,
-            'categoryId' => $categoryId,
-        ];
     }
 
     /**
@@ -336,19 +344,35 @@ class Product extends AbstractExtensibleObject implements ProductInterface
     }
 
     /**
-     * @param int  $amount
-     * @param null $defaultCurrency
-     * @param null $currency
      *
-     * @return array
      */
-    public function fillProductPrice($amount = 0, $defaultCurrency = null, $currency = null)
+    public function getErrorCode()
     {
-        return [
-            'amount' => number_format($amount, 2, '.', ''),
-            'amountDefaultCurrency' => $defaultCurrency,
-            'currency' => $currency,
-        ];
+        return '';
+    }
+
+    /**
+     *
+     */
+    public function getMessage()
+    {
+        return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUserFriendly()
+    {
+        return true;
+    }
+
+    /**
+     *
+     */
+    public function getShoutOutTexts()
+    {
+        return '';
     }
 
     /**
@@ -358,8 +382,11 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      *
      * @return array
      */
-    public function fillBackInStockSubSelectedVariant($groupName = null, $groupId = null, $features = null)
-    {
+    public function fillBackInStockSubSelectedVariant(
+        $groupName = null,
+        $groupId = null,
+        $features = null
+    ) {
         return [
             'groupName' => $groupName,
             'groupId' => $groupId,
@@ -385,12 +412,7 @@ class Product extends AbstractExtensibleObject implements ProductInterface
         ];
     }
 
-    /**
-     *
-     */
-    public function fillFilterItems()
-    {
-    }
+
 
     /**
      * @return array
@@ -412,20 +434,11 @@ class Product extends AbstractExtensibleObject implements ProductInterface
      */
     public function setProduct($product)
     {
-        $this->product = $product;
+        $this->_product = $product;
 
         return $this;
     }
 
-    /**
-     * @param $product
-     *
-     * @return string
-     */
-    public function getProduct($product)
-    {
-        return $this->product;
-    }
 
     /**
      * @param $parentProductId
@@ -436,13 +449,15 @@ class Product extends AbstractExtensibleObject implements ProductInterface
     public function getChildProductId($parentProductId, $attributeList)
     {
         $subProductIds = Mage::getModel('catalog/product_type_configurable')
-            ->getChildrenIds($parentProductId); //get the children ids through a simple query
+            ->getChildrenIds($parentProductId);
         $subProducts = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToFilter('entity_id', $subProductIds);
         foreach ($attributeList as $attribute) {
             $attributeCode = $attribute->id;
             $attributeValueIndex = $attribute->values[0]->id;
-            $subProducts->addAttributeToFilter($attributeCode, $attributeValueIndex);
+            $subProducts->addAttributeToFilter(
+                $attributeCode,
+                $attributeValueIndex);
         }
         $product = null;
         if ($subProducts->getSize() > 0) {

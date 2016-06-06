@@ -23,23 +23,23 @@ class Profile extends Action
     /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var ProfileRepositoryInterface
      */
-    private $profileRepository;
+    private $_profileRepository;
     /**
      * @var RequestHandler
      */
-    protected $helper;
+    private $_helper;
 
     /**
      * Profile constructor.
      *
-     * @param Context                    $context
-     * @param JSON                       $json
+     * @param Context $context
+     * @param JSON $json
      * @param ProfileRepositoryInterface $profileRepository
-     * @param RequestHandler             $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,
@@ -48,9 +48,9 @@ class Profile extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->helper = $helper;
-        $this->profileRepository = $profileRepository;
+        $this->_jsonResult = $json->create();
+        $this->_helper = $helper;
+        $this->_profileRepository = $profileRepository;
         $helper->checkAuth();
     }
 
@@ -59,23 +59,23 @@ class Profile extends Action
      */
     public function execute()
     {
-        $method = $this->helper->getRequestMethod();
-        $result = array();
+        $method = $this->_helper->getRequestMethod();
+        $result = [];
         switch ($method) {
             case 'GET':
-                $result = $this->profileRepository->getProfile();
+                $result = $this->_profileRepository->getProfile();
                 break;
             case 'POST':
-                $result = $this->profileRepository->createProfile();
+                $result = $this->_profileRepository->createProfile();
                 break;
             case 'PUT':
-                $result = $this->profileRepository->editProfile();
+                $result = $this->_profileRepository->editProfile();
                 break;
             default:
                 break;
         }
-        $this->jsonResult->setData($result);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

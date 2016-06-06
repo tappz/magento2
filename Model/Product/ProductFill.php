@@ -80,9 +80,9 @@ class ProductFill extends Product
         $pageNumber,
         $pageSize,
         $products,
-        $filters = array(),
-        $sortList = array(),
-        $categories = array()
+        $filters = [],
+        $sortList = [],
+        $categories = []
     ) {
         return [
             'totalResultCount' => $totalResultCount,

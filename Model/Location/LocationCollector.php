@@ -20,17 +20,19 @@ class LocationCollector extends LocationFill implements LocationInterface
     /**
      * @var
      */
-    protected $objectManager;
+    protected $_objectManager;
 
     /**
      * LocationCollector constructor.
      *
      * @param StoreManagerInterface $storeManager
      */
-    public function __construct(StoreManagerInterface $storeManager
+    public function __construct(
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($storeManager);
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_objectManager =
+            \Magento\Framework\App\ObjectManager::getInstance();
     }
 
     /**
@@ -38,11 +40,13 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getCountries()
     {
-        $countries = $this->objectManager->get('Magento\Directory\Model\Country')->getResourceCollection()
+        $countries = $this->
+        _objectManager->
+        get('Magento\Directory\Model\Country')->getResourceCollection()
             ->loadByStore()
             ->toOptionArray(true);
-        $result = array();
-        $this->location = (object) array();
+        $result = [];
+        $this->_location = (object)[];
         foreach ($countries as $country) {
             if (!empty($country['label']) && !empty($country['value'])) {
                 $this->setCode($country['value']);
@@ -62,10 +66,13 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getStates($countryId)
     {
-        $states = $this->objectManager->get('Magento\Directory\Model\Country')->load($countryId)->getRegions()->toOptionArray(true);
-
-        $this->location = (object) array();
-        $result = array();
+        $states = $this->_objectManager->
+        get('Magento\Directory\Model\Country')->
+        load($countryId)->
+        getRegions()->
+        toOptionArray(true);
+        $this->_location = (object)[];
+        $result = [];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
                 $this->setCode($state['value']);
@@ -85,9 +92,13 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getCities($countryId)
     {
-        $states = $this->objectManager->get('Magento\Directory\Model\Country')->load($countryId)->getRegions()->toOptionArray(true);
-        $result = array();
-        $this->location = (object) array();
+        $states = $this->_objectManager->
+        get('Magento\Directory\Model\Country')->
+        load($countryId)->
+        getRegions()->
+        toOptionArray(true);
+        $result = [];
+        $this->_location = (object)[];
         foreach ($states as $state) {
             if (!empty($state['label']) && !empty($state['value'])) {
                 $this->setCode($state['value']);
@@ -107,10 +118,11 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getDistricts($cityId)
     {
-        $this->location = (object) array();
+        $cityId;
+        $this->_location = (object)[];
         $this->setCode('');
         $this->setName('');
-        $result = array();
+        $result = [];
         $this->setCodeAndName($result);
 
         return $this->fillDistricts();
@@ -123,10 +135,11 @@ class LocationCollector extends LocationFill implements LocationInterface
      */
     public function getTowns($districtId)
     {
-        $this->location = (object) array();
+        $districtId;
+        $this->_location = (object)[];
         $this->setDefaultCode('');
         $this->setDefaultName('');
-        $result = array();
+        $result = [];
         $this->setCodeAndName($result);
 
         return $this->fillTowns();

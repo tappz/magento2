@@ -17,16 +17,17 @@ class Product implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var \Magento\Payment\Helper\Data
      */
-    private $storeHelper;
+    private $_storeHelper;
 
     /**
      * Product constructor.
      *
      * @param \Magento\Payment\Helper\Data $storeHelper
      */
-    public function __construct(\Magento\Payment\Helper\Data $storeHelper)
-    {
-        $this->storeHelper = $storeHelper;
+    public function __construct(
+        \Magento\Payment\Helper\Data $storeHelper
+    ) {
+        $this->_storeHelper = $storeHelper;
     }
 
     /**
@@ -34,19 +35,19 @@ class Product implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        $options = array();
-        $options[] = array('value' => ' ', 'label' => ' ');
-        /** @var Mage_Catalog_Model_Product $product */
+        $options[] = ['value' => ' ', 'label' => ' '];
         $product = Mage::getModel('catalog/product');
         $attributes = $product->getAttributes();
-
-        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
         foreach ($attributes as $attribute) {
-            foreach ($attribute->getEntityType()->getAttributeCodes() as $code) {
-                /** @var Mage_Eav_Model_Entity_Attribute $attributeModel */
-                $attributeModel = Mage::getModel('eav/entity_attribute')->loadByCode($attribute->getEntityType(),
-                    $code);
-                $options[] = array('value' => $code, 'label' => $attributeModel->getFrontendLabel());
+            $codes = $attribute->getEntityType()->getAttributeCodes();
+            foreach ($codes as $code) {
+                $attributeModel = Mage::getModel('eav/entity_attribute')->
+                loadByCode(
+                    $attribute->getEntityType(),
+                    $code
+                );
+                $options[] = ['value' => $code, 'label' =>
+                    $attributeModel->getFrontendLabel()];
             }
             break;
         }

@@ -21,37 +21,36 @@ use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 class PurchaseOrder extends Action
 {
     /**
+     * @var RequestHandler
+     */
+    protected $_helper;
+    /**
      * @var
      */
-    protected $jsonResult;
+    private $_jsonResult;
     /**
      * @var OrderRepositoryInterface
      */
-    private $orderRepository;
-    /**
-     * @var RequestHandler
-     */
-    protected $helper;
+    private $_orderRepository;
 
     /**
      * PurchaseOrder constructor.
      *
-     * @param Context                  $context
-     * @param JSON                     $json
+     * @param Context $context
+     * @param JSON $json
      * @param OrderRepositoryInterface $orderRepository
-     * @param RequestHandler           $helper
+     * @param RequestHandler $helper
      */
     public function __construct(
         Context $context,
         JSON $json,
         OrderRepositoryInterface $orderRepository,
-
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->helper = $helper;
-        $this->orderRepository = $orderRepository;
+        $this->_jsonResult = $json->create();
+        $this->_helper = $helper;
+        $this->_orderRepository = $orderRepository;
         $helper->checkAuth();
     }
 
@@ -61,23 +60,23 @@ class PurchaseOrder extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $method = $this->helper->getRequestMethod();
+        $method = $this->_helper->getRequestMethod();
 
-        $result = array();
+        $result = [];
         switch ($method) {
             case 'GET':
                 if (count($params) > 0) {
                     $orderId = key($params);
-                    $result = $this->orderRepository->getOrderById($orderId);
+                    $result = $this->_orderRepository->getOrderById($orderId);
                 } else {
-                    $result = $this->orderRepository->getOrder();
+                    $result = $this->_orderRepository->getOrder();
                 }
                 break;
             default:
                 break;
         }
-        $this->jsonResult->setData($result);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }
