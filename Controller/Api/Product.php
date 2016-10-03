@@ -23,11 +23,11 @@ class Product extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var ProductRepositoryInterface
      */
-    private $_productRepository;
+    private $productRepository;
 
     /**
      * Product constructor.
@@ -44,8 +44,8 @@ class Product extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_productRepository = $productRepository;
+        $this->jsonResult = $json->create();
+        $this->productRepository = $productRepository;
         $helper->checkAuth();
     }
 
@@ -58,18 +58,18 @@ class Product extends Action
         $result = [];
         if (count($params) > 0 && $params[key($params)] == 'related') {
             $productId = key($params);
-            $result = $this->_productRepository->getRelatedProduct($productId);
+            $result = $this->productRepository->getRelatedProduct($productId);
         } else {
             if (count($params) > 0 && !isset($params['barcode'])) {
                 $productId = key($params);
 
-                $result = $this->_productRepository->getById($productId);
-            } elseif (isset($params['barcode']) && !empty($params['barcode'])) {
+                $result = $this->productRepository->getById($productId);
+            } else if (isset($params['barcode']) && !empty($params['barcode'])) {
                 $barcode = $params['barcode'];
-                $result = $this->_productRepository->getByBarcode($barcode);
+                $result = $this->productRepository->getByBarcode($barcode);
             }
         }
-        $this->_jsonResult->setData($result);
-        return $this->_jsonResult;
+        $this->jsonResult->setData($result);
+        return $this->jsonResult;
     }
 }

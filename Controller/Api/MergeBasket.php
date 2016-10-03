@@ -23,11 +23,11 @@ class MergeBasket extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var BasketRepositoryInterface
      */
-    private $_basketRepository;
+    private $basketRepository;
 
     /**
      * MergeBasket constructor.
@@ -44,8 +44,8 @@ class MergeBasket extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_basketRepository = $basketRepository;
+        $this->jsonResult = $json->create();
+        $this->basketRepository = $basketRepository;
         $helper->checkAuth();
     }
 
@@ -54,8 +54,8 @@ class MergeBasket extends Action
      */
     public function execute()
     {
-        $result = $this->_basketRepository->merge();
-        $this->_jsonResult->setData($result);
-        return $this->_jsonResult;
+        $result = $this->basketRepository->merge();
+        $this->jsonResult->setData($result);
+        return $this->jsonResult;
     }
 }

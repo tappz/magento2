@@ -14,8 +14,6 @@ namespace TmobLabs\Tappz\Model\Basket;
  */
 class BasketFill extends Basket
 {
-
-
     /**
      * @return array
      */

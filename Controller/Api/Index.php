@@ -23,11 +23,11 @@ class Index extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var IndexRepositoryInterface
      */
-    private $_indexRepository;
+    private $indexRepository;
 
     /**
      * Index constructor.
@@ -44,8 +44,8 @@ class Index extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_indexRepository = $indexRepository;
+        $this->jsonResult = $json->create();
+        $this->indexRepository = $indexRepository;
         $helper->checkAuth();
     }
 
@@ -54,9 +54,9 @@ class Index extends Action
      */
     public function execute()
     {
-        $result = $this->_indexRepository->getIndex();
-        $this->_jsonResult->setData($result);
+        $result = $this->indexRepository->getIndex();
+        $this->jsonResult->setData($result);
 
-        return $this->_jsonResult;
+        return $this->jsonResult;
     }
 }

@@ -21,7 +21,7 @@ class Branches extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
 
     /**
      * Branches constructor.
@@ -34,7 +34,7 @@ class Branches extends Action
         JSON $json
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
+        $this->jsonResult = $json->create();
     }
 
     /**
@@ -42,7 +42,7 @@ class Branches extends Action
      */
     public function execute()
     {
-        $this->_jsonResult->setData([]);
-        return $this->_jsonResult;
+        $this->jsonResult->setData([]);
+        return $this->jsonResult;
     }
 }

@@ -23,11 +23,11 @@ class Login extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var ProfileRepositoryInterface
      */
-    private $_profileRepository;
+    private $profileRepository;
 
     /**
      * Login constructor.
@@ -44,8 +44,8 @@ class Login extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_profileRepository = $profileRepository;
+        $this->jsonResult = $json->create();
+        $this->profileRepository = $profileRepository;
         $helper->checkAuth();
     }
 
@@ -55,8 +55,8 @@ class Login extends Action
     public function execute()
     {
 
-        $result = $this->_profileRepository->login();
-        $this->_jsonResult->setData($result);
-        return $this->_jsonResult;
+        $result = $this->profileRepository->login();
+        $this->jsonResult->setData($result);
+        return $this->jsonResult;
     }
 }

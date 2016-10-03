@@ -23,15 +23,15 @@ class Profile extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var ProfileRepositoryInterface
      */
-    private $_profileRepository;
+    private $profileRepository;
     /**
      * @var RequestHandler
      */
-    private $_helper;
+    private $helper;
 
     /**
      * Profile constructor.
@@ -48,9 +48,9 @@ class Profile extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_helper = $helper;
-        $this->_profileRepository = $profileRepository;
+        $this->jsonResult = $json->create();
+        $this->helper = $helper;
+        $this->profileRepository = $profileRepository;
         $helper->checkAuth();
     }
 
@@ -59,23 +59,23 @@ class Profile extends Action
      */
     public function execute()
     {
-        $method = $this->_helper->getRequestMethod();
+        $method = $this->helper->getRequestMethod();
         $result = [];
         switch ($method) {
             case 'GET':
-                $result = $this->_profileRepository->getProfile();
+                $result = $this->profileRepository->getProfile();
                 break;
             case 'POST':
-                $result = $this->_profileRepository->createProfile();
+                $result = $this->profileRepository->createProfile();
                 break;
             case 'PUT':
-                $result = $this->_profileRepository->editProfile();
+                $result = $this->profileRepository->editProfile();
                 break;
             default:
                 break;
         }
-        $this->_jsonResult->setData($result);
+        $this->jsonResult->setData($result);
 
-        return $this->_jsonResult;
+        return $this->jsonResult;
     }
 }
