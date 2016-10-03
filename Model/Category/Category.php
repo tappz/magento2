@@ -20,14 +20,14 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
     /**
      * @var
      */
-    protected $_category;
+    public $category;
 
     /**
      * @return mixed
      */
     public function getId()
     {
-        return $this->_category->getId();
+        return $this->category->getId();
     }
 
     /**
@@ -35,7 +35,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getName()
     {
-        return $this->_category->getName();
+        return $this->category->getName();
     }
 
     /**
@@ -52,10 +52,10 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
     public function getChildren()
     {
         $result = [];
-        $categories = $this->_category->getChildrenCategories();
+        $categories = $this->category->getChildrenCategories();
         if (($categories)) {
             foreach ($categories as $category) {
-                $this->_category = $category;
+                $this->category = $category;
                 $result[] = $this->fillCategory();
             }
         }
@@ -76,7 +76,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getIsLeaf()
     {
-        return $this->_category->getChildrenCount() == 0;
+        return $this->category->getChildrenCount() == 0;
     }
 
     /**
@@ -95,7 +95,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
      */
     public function getParentCategoryId()
     {
-        return $this->_category->getParentId();
+        return $this->category->getParentId();
     }
 
     /**
@@ -154,7 +154,7 @@ class Category extends AbstractExtensibleObject implements CategoryInterface
         $asCollection = true,
         $toLoad = true
     ) {
-        return $this->_categoryHelper->
+        return $this->categoryHelper->
         getStoreCategories($sorted, $asCollection, $toLoad);
     }
 }

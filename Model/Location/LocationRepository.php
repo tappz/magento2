@@ -19,7 +19,7 @@ class LocationRepository implements LocationRepositoryInterface
     /**
      * @var LocationCollector
      */
-    private $_locationCollector;
+    private $locationCollector;
 
     /**
      * LocationRepository constructor.
@@ -29,7 +29,7 @@ class LocationRepository implements LocationRepositoryInterface
     public function __construct(
         LocationCollector $locationCollector
     ) {
-        $this->_locationCollector = $locationCollector;
+        $this->locationCollector = $locationCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class LocationRepository implements LocationRepositoryInterface
      */
     public function getCountries()
     {
-        $result = $this->_locationCollector->getCountries();
+        $result = $this->locationCollector->getCountries();
 
         return $result;
     }
@@ -49,7 +49,7 @@ class LocationRepository implements LocationRepositoryInterface
      */
     public function getStates($countryId)
     {
-        $result = $this->_locationCollector->getStates($countryId);
+        $result = $this->locationCollector->getStates($countryId);
 
         return $result;
     }
@@ -61,7 +61,7 @@ class LocationRepository implements LocationRepositoryInterface
      */
     public function getCities($countryId)
     {
-        $result = $this->_locationCollector->getCities($countryId);
+        $result = $this->locationCollector->getCities($countryId);
 
         return $result;
     }
@@ -73,7 +73,7 @@ class LocationRepository implements LocationRepositoryInterface
      */
     public function getDistricts($cityId)
     {
-        $result = $this->_locationCollector->getDistricts($cityId);
+        $result = $this->locationCollector->getDistricts($cityId);
 
         return $result;
     }
@@ -85,7 +85,7 @@ class LocationRepository implements LocationRepositoryInterface
      */
     public function getTowns($districtId)
     {
-        $result = $this->_locationCollector->getTowns($districtId);
+        $result = $this->locationCollector->getTowns($districtId);
 
         return $result;
     }

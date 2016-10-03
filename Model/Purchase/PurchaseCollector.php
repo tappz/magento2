@@ -21,23 +21,23 @@ class PurchaseCollector extends PurchaseFill
     /**
      * @var RequestHandler
      */
-    protected $_helper;
+    public $helper;
     /**
      * @var
      */
-    protected $_addressRepository;
+    public $addressRepository;
     /**
      * @var Basket
      */
-    protected $_basketRepository;
+    public $basketRepository;
     /**
      * @var
      */
-    protected $_objectManager;
+    public $objectManager;
     /**
      * @var OrderCollectorß
      */
-    protected $_orderCollector;
+    public $orderCollector;
 
     /**
      * PurchaseCollector constructor.
@@ -51,11 +51,11 @@ class PurchaseCollector extends PurchaseFill
         Basket $basketRepository,
         OrderCollector $orderCollector
     ) {
-        $this->_objectManager =
+        $this->objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_helper = $requestHandler;
-        $this->_basketRepository = $basketRepository;
-        $this->_orderCollector = $orderCollector;
+        $this->helper = $requestHandler;
+        $this->basketRepository = $basketRepository;
+        $this->orderCollector = $orderCollector;
     }
 
     /**
@@ -98,6 +98,8 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseCreditCards($quoteId)
     {
+        $quoteId;
+        return "";
     }
 
     /**
@@ -105,6 +107,8 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseThreeD($quoteId)
     {
+        $quoteId;
+        return "";
     }
 
     /**
@@ -112,6 +116,8 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseMoneyTransfer($quoteId)
     {
+        $quoteId;
+        return "";
     }
 
     /**
@@ -121,9 +127,9 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseCashOnDelivery($quoteId)
     {
-        $this->_helper->getHeaderJson();
-        $userId = $this->_helper->getAuthorization();
-        $quote = $this->_basketRepository->getBasketQuoteById($quoteId);
+        $this->helper->getHeaderJson();
+        $userId = $this->helper->getAuthorization();
+        $quote = $this->basketRepository->getBasketQuoteById($quoteId);
         if ($quote->getCustomerEmail() == null) {
             $customerModel = $this->getUserViaUserId($userId);
             $quote->setCustomerId($userId)
@@ -145,17 +151,16 @@ class PurchaseCollector extends PurchaseFill
             ->collectTotals()
             ->save();
         $quote->getShippingMethod();
-        $rate = $this->_objectManager->
+        $rate = $this->objectManager->
         get('Magento\Quote\Model\Quote\Address\Rate');
         $rate->setCode($shipmentMethod);
         $quote->getShippingAddress()->addShippingRate($rate);
-        $quoteManagement = $this->_objectManager
+        $quoteManagement = $this->objectManager
             ->create('\Magento\Quote\Model\QuoteManagement');
         $order = $quoteManagement->submit($quote);
         if ($order) {
             $order->setCustomerIsGuest(false);
-            $result = $this->_orderCollector->getOrderById($order->getID());
-
+            $result = $this->orderCollector->getOrderById($order->getID());
             return $result;
         }
     }
@@ -165,13 +170,13 @@ class PurchaseCollector extends PurchaseFill
      *
      * @return mixed
      */
-    public function getUserViaUserId($userid)
+    public function getUserViaUserId($userId)
     {
-        $store = $this->_objectManager->
+        $store = $this->objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->_objectManager->
+        $customer = $this->objectManager->
         get('Magento\Customer\Model\Customer')->setStore($store);
-        $customer->load($userid);
+        $customer->load($userId);
         return $customer;
     }
 
@@ -180,6 +185,7 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchasePaypal()
     {
+        return '';
     }
 
     /**
@@ -187,5 +193,6 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseApplePay()
     {
+        return '';
     }
 }

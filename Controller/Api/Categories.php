@@ -23,11 +23,11 @@ class Categories extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var CategoryRepositoryInterface
      */
-    private $_categoryRepository;
+    private $categoryRepository;
 
     /**
      * Categories constructor.
@@ -44,8 +44,8 @@ class Categories extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_categoryRepository = $categoryRepository;
+        $this->jsonResult = $json->create();
+        $this->categoryRepository = $categoryRepository;
         $helper->checkAuth();
     }
 
@@ -54,8 +54,8 @@ class Categories extends Action
      */
     public function execute()
     {
-        $result = $this->_categoryRepository->getCategories();
-        $this->_jsonResult->setData($result);
-        return $this->_jsonResult;
+        $result = $this->categoryRepository->getCategories();
+        $this->jsonResult->setData($result);
+        return $this->jsonResult;
     }
 }

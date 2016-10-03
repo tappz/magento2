@@ -23,11 +23,11 @@ class Countries extends Action
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var LocationRepository
      */
-    private $_locationRepository;
+    private $locationRepository;
 
     /**
      * Countries constructor.
@@ -44,8 +44,8 @@ class Countries extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_locationRepository = $locationRepository;
+        $this->jsonResult = $json->create();
+        $this->locationRepository = $locationRepository;
         $helper->checkAuth();
     }
 
@@ -54,8 +54,8 @@ class Countries extends Action
      */
     public function execute()
     {
-        $result = $this->_locationRepository->getCountries();
-        $this->_jsonResult->setData($result);
-        return $this->_jsonResult;
+        $result = $this->locationRepository->getCountries();
+        $this->jsonResult->setData($result);
+        return $this->jsonResult;
     }
 }

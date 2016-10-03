@@ -19,7 +19,7 @@ class PurchaseRepository implements PurchaseRepositoryInterface
     /**
      * @var PurchaseCollector
      */
-    private $_purchaseCollector;
+    private $purchaseCollector;
 
     /**
      * PurchaseRepository constructor.
@@ -29,6 +29,6 @@ class PurchaseRepository implements PurchaseRepositoryInterface
     public function __construct(
         PurchaseCollector $purchaseCollector
     ) {
-        $this->_purchaseCollector = $purchaseCollector;
+        $this->purchaseCollector = $purchaseCollector;
     }
 }

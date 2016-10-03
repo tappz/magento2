@@ -19,7 +19,7 @@ class AddressRepository implements AddressRepositoryInterface
     /**
      * @var AddressCollector
      */
-    private $_addressCollector;
+    private $addressCollector;
 
     /**
      * AddressRepository constructor.
@@ -29,7 +29,7 @@ class AddressRepository implements AddressRepositoryInterface
     public function __construct(
         AddressCollector $addressCollector
     ) {
-        $this->_addressCollector = $addressCollector;
+        $this->addressCollector = $addressCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class AddressRepository implements AddressRepositoryInterface
      */
     public function createAddress()
     {
-        $result = $this->_addressCollector->createAddress();
+        $result = $this->addressCollector->createAddress();
 
         return $result;
     }
@@ -47,7 +47,7 @@ class AddressRepository implements AddressRepositoryInterface
      */
     public function editAddress()
     {
-        $result = $this->_addressCollector->editAddress();
+        $result = $this->addressCollector->editAddress();
 
         return $result;
     }
@@ -57,7 +57,7 @@ class AddressRepository implements AddressRepositoryInterface
      */
     public function deleteAddress()
     {
-        $result = $this->_addressCollector->deleteAddress();
+        $result = $this->addressCollector->deleteAddress();
 
         return $result;
     }
@@ -69,7 +69,7 @@ class AddressRepository implements AddressRepositoryInterface
      */
     public function getAddress($addressId)
     {
-        $result = $this->_addressCollector->getAddressById($addressId);
+        $result = $this->addressCollector->getAddressById($addressId);
 
         return $result;
     }
