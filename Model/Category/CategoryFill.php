@@ -14,6 +14,8 @@ namespace TmobLabs\Tappz\Model\Category;
  */
 class CategoryFill extends Category
 {
+
+
     /**
      * @return array
      */

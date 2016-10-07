@@ -19,7 +19,7 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @var
      */
-    private $orderCollector;
+    private $_orderCollector;
 
     /**
      * OrderRepository constructor.
@@ -29,7 +29,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function __construct(
         OrderCollector $orderCollector
     ) {
-        $this->orderCollector = $orderCollector;
+        $this->_orderCollector = $orderCollector;
     }
 
     /**
@@ -39,7 +39,7 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function getOrderById($orderId)
     {
-        $result = $this->orderCollector->getOrderById($orderId);
+        $result = $this->_orderCollector->getOrderById($orderId);
 
         return $result;
     }
@@ -49,7 +49,7 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function getOrder()
     {
-        $result = $this->orderCollector->getOrder();
+        $result = $this->_orderCollector->getOrder();
 
         return $result;
     }

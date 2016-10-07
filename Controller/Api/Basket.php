@@ -23,11 +23,11 @@ class Basket extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var BasketRepositoryInterface
      */
-    private $basketRepository;
+    private $_basketRepository;
 
     /**
      * Basket constructor.
@@ -44,8 +44,8 @@ class Basket extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->basketRepository = $basketRepository;
+        $this->_jsonResult = $json->create();
+        $this->_basketRepository = $basketRepository;
         $helper->checkAuth();
     }
 
@@ -58,28 +58,29 @@ class Basket extends Action
         $result = [];
         if (count($params) > 0 && empty($params[key($params)])) {
             $basketId = key($params);
-            $result = $this->basketRepository->getByBasketById($basketId);
-        } else if (count($params) > 0 && !empty($params[key($params)])) {
+            $result = $this->_basketRepository->getByBasketById($basketId);
+        } elseif (count($params) > 0 && !empty($params[key($params)])) {
             $key = key($params);
             $param = ucfirst($params[key($params)]);
             $method = "get$param";
-            if (method_exists($this->basketRepository, $method)) {
+            if (method_exists($this->_basketRepository, $method)) {
                 $allKeys = array_keys($params);
-                if (count($allKeys) == 1) {
-                    $result = $this->basketRepository->{$method}($key);
+                if (sizeof($allKeys) == 1) {
+                    $result = $this->_basketRepository->{$method}($key);
                 } else {
                     $endArray = end($allKeys);
                     $lastKey = ($endArray);
-                    $result = $this->basketRepository->{$method}(
+                    $result = $this->_basketRepository->{$method}(
                         $key,
                         $lastKey
                     );
                 }
             }
         } else {
-            $result = $this->basketRepository->getUserBasket();
+            
+            $result = $this->_basketRepository->getUserBasket();
         }
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

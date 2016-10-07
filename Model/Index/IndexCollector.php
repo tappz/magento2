@@ -23,15 +23,15 @@ class IndexCollector extends IndexFill implements IndexInterface
     /**
      * @var CategoryRepository
      */
-    public $categoryRepository;
+    protected $_categoryRepository;
     /**
      * @var ProductCollector
      */
-    public $productCollector;
+    protected $_productCollector;
     /**
      * @var CategoryFactory
      */
-    private $categoryFactory;
+    private $_categoryFactory;
 
     /**
      * IndexCollector constructor.
@@ -48,9 +48,9 @@ class IndexCollector extends IndexFill implements IndexInterface
         CategoryFactory $categoryFactory
     ) {
         parent::__construct($storeManager);
-        $this->categoryRepository = $categoryRepository;
-        $this->productCollector = $productCollector;
-        $this->categoryFactory = $categoryFactory;
+        $this->_categoryRepository = $categoryRepository;
+        $this->_productCollector = $productCollector;
+        $this->_categoryFactory = $categoryFactory;
     }
 
     /**
@@ -58,7 +58,7 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getIndex()
     {
-        $categories = $this->categoryRepository->getCategories();
+        $categories = $this->_categoryRepository->getCategories();
         $items = [];
         $groups = [];
         foreach ($categories as $category) {
@@ -66,9 +66,9 @@ class IndexCollector extends IndexFill implements IndexInterface
             $name = $category['name'];
             $image = null;
             $collection = $this->getCategoryProducts($id);
-            foreach ($collection as $product) {
-                $items[] = $this->productCollector->getProduct(
-                    $product->getId()
+            foreach ($collection as $_product) {
+                $items[] = $this->_productCollector->getProduct(
+                    $_product->getId()
                 );
             }
             $groups[] = $this->fillGroups($name, $image, $items);
@@ -102,7 +102,7 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getCategory($categoryId)
     {
-        $category = $this->categoryFactory->create();
+        $category = $this->_categoryFactory->create();
         $category->load($categoryId);
 
         return $category;

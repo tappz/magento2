@@ -17,7 +17,7 @@ class LocationFill extends Location
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    public $storeManager;
+    protected $_storeManager;
 
     /**
      * LocationFill constructor.
@@ -27,7 +27,7 @@ class LocationFill extends Location
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        $this->storeManager = $storeManager;
+        $this->_storeManager = $storeManager;
     }
 
     /**

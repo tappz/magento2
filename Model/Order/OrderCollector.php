@@ -24,27 +24,27 @@ class OrderCollector extends OrderFill implements OrderInterface
     /**
      * @var
      */
-    public $objectManager;
+    protected $_objectManager;
     /**
      * @var AddressRepository
      */
-    public $addressRepository;
+    protected $_addressRepository;
     /**
      * @var BasketCollector
      */
-    public $basketCollector;
+    protected $_basketCollector;
     /**
      * @var ProductRepository
      */
-    public $productRepository;
+    protected $_productRepository;
     /**
      * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
      */
-    public $orderCollectionFactory;
+    protected $_orderCollectionFactory;
     /**
      * @var RequestHandler
      */
-    public $helper;
+    protected $_helper;
 
     public function __construct(
         AddressRepository $addressRepository,
@@ -53,13 +53,13 @@ class OrderCollector extends OrderFill implements OrderInterface
         RequestHandler $requestHandler,
         Collection $orderCollectionFactory
     ) {
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-        $this->addressRepository = $addressRepository;
-        $this->basketCollector = $basketCollector;
-        $this->productRepository = $productRepository;
-        $this->orderCollectionFactory = $orderCollectionFactory;
-        $this->helper = $requestHandler;
+        $this->_addressRepository = $addressRepository;
+        $this->_basketCollector = $basketCollector;
+        $this->_productRepository = $productRepository;
+        $this->_orderCollectionFactory = $orderCollectionFactory;
+        $this->_helper = $requestHandler;
     }
 
     /**
@@ -67,10 +67,8 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getOrder()
     {
-        $result=[];
-        $userId = $this->helper->getAuthorization();
-       
-        $orders = $this->orderCollectionFactory->create()->addFieldToSelect(
+        $userId = $this->_helper->getAuthorization();
+        $orders = $this->_orderCollectionFactory->create()->addFieldToSelect(
             '*'
         )->addFieldToFilter(
             'customer_id',
@@ -81,9 +79,11 @@ class OrderCollector extends OrderFill implements OrderInterface
         );
         if (count($orders) > 0) {
             foreach ($orders as $order) {
-                $result[] = self::setOrder($order->getId());
+                $orderLast = $order;
             }
+            $result[] = self::setOrder($orderLast->getId());
         }
+
         return $result;
     }
 
@@ -94,7 +94,7 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function setOrder($orderId)
     {
-        $order = $this->objectManager->get('Magento\Sales\Model\Order');
+        $order = $this->_objectManager->get('Magento\Sales\Model\Order');
         $order = $order->load($orderId);
         $this->setOrders((object)[]);
         $this->setOrderId($this->getOrderIdByOrder($order));
@@ -194,43 +194,40 @@ class OrderCollector extends OrderFill implements OrderInterface
      */
     public function getLinesByOrder($order)
     {
-        $result = [];
-        $this->basketCollector->setBasket((object)[]);
+        $this->_basketCollector->setBasket((object)[]);
         foreach ($order->getAllVisibleItems() as $item) {
-            $this->basketCollector->setProductId(
+            $this->_basketCollector->setProductId(
                 $item->getData('product_id')
             );
-            $this->basketCollector->setProduct(
-                $this->productRepository->getById(
+            $this->_basketCollector->setProduct(
+                $this->_productRepository->getById(
                     $item->getData('product_id')
                 )
             );
-            $this->basketCollector->setQuantity(
-                $item->getData('qty')
-            );
-            $this->basketCollector->setPlacedPrice(
+            $this->_basketCollector->setQuantity($item->getData('qty'));
+            $this->_basketCollector->setPlacedPrice(
                 number_format($item->getData('price'), 2)
             );
-            $this->basketCollector->setPlacedPriceTotal(
+            $this->_basketCollector->setPlacedPriceTotal(
                 number_format($item->getData('row_total'), 2)
             );
-            $this->basketCollector->setExtendedPrice(
+            $this->_basketCollector->setExtendedPrice(
                 number_format($item->getData('price'), 2)
             );
-            $this->basketCollector->setExtendedPriceValue(
+            $this->_basketCollector->setExtendedPriceValue(
                 number_format($item->getData('price'), 2)
             );
-            $this->basketCollector->setExtendedPriceTotal(
+            $this->_basketCollector->setExtendedPriceTotal(
                 number_format($item->getData('price'), 2)
             );
-            $this->basketCollector->setExtendedPriceTotalValue(
+            $this->_basketCollector->setExtendedPriceTotalValue(
                 number_format($item->getData('price'), 2)
             );
-            $this->basketCollector->setStatus(0);
-            $this->basketCollector->setAverageDeliveryDays('');
-            $this->basketCollector->setVariants([]);
-            $this->basketCollector->setStrikeoutPrice(null);
-            $result[] = $this->basketCollector->fillLines();
+            $this->_basketCollector->setStatus(0);
+            $this->_basketCollector->setAverageDeliveryDays('');
+            $this->_basketCollector->setVariants([]);
+            $this->_basketCollector->setStrikeoutPrice(null);
+            $result[] = $this->_basketCollector->fillLines();
         }
 
         return $result;
@@ -250,11 +247,11 @@ class OrderCollector extends OrderFill implements OrderInterface
 
         if ($billingAddressId) {
             $delivery['billingAddress'] =
-                $this->addressRepository->getAddress($billingAddressId);
+                $this->_addressRepository->getAddress($billingAddressId);
         }
         if ($shippingAddressId) {
             $delivery['shippingAddress'] =
-                $this->addressRepository->getAddress($shippingAddressId);
+                $this->_addressRepository->getAddress($shippingAddressId);
             $method = $order->getShippingMethod();
             if (!empty($method)) {
                 $delivery['shippingMethod'][0]['id'] = $method;

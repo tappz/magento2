@@ -19,7 +19,7 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * @var ProductCollector
      */
-    private $productCollector;
+    private $_productCollector;
 
     /**
      * @param ProductCollector $productCollector
@@ -27,7 +27,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function __construct(
         ProductCollector $productCollector
     ) {
-        $this->productCollector = $productCollector;
+        $this->_productCollector = $productCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getById($productId)
     {
-        $result = $this->productCollector->getProduct($productId);
+        $result = $this->_productCollector->getProduct($productId);
 
         return $result;
     }
@@ -49,7 +49,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getRelatedProduct($productId)
     {
-        $result = $this->productCollector->getRelatedProduct($productId);
+        $result = $this->_productCollector->getRelatedProduct($productId);
 
         return $result;
     }
@@ -61,7 +61,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getByBarcode($barcode)
     {
-        $result = $this->productCollector->getProductBySku($barcode);
+        $result = $this->_productCollector->getProductBySku($barcode);
 
         return $result;
     }
@@ -73,7 +73,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getProductSearch($params)
     {
-        $result = $this->productCollector->getProductSearch($params);
+        $result = $this->_productCollector->getProductSearch($params);
 
         return $result;
     }

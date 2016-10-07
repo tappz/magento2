@@ -19,7 +19,7 @@ class IndexRepository implements IndexRepositoryInterface
     /**
      * @var IndexCollector
      */
-    private $indexCollector;
+    private $_indexCollector;
 
     /**
      * IndexRepository constructor.
@@ -29,7 +29,7 @@ class IndexRepository implements IndexRepositoryInterface
     public function __construct(
         IndexCollector $indexCollector
     ) {
-        $this->indexCollector = $indexCollector;
+        $this->_indexCollector = $indexCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class IndexRepository implements IndexRepositoryInterface
      */
     public function getIndex()
     {
-        $result = $this->indexCollector->getIndex();
+        $result = $this->_indexCollector->getIndex();
         return $result;
     }
 }

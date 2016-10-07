@@ -22,16 +22,16 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     /**
      * @var
      */
-    public $category;
+    protected $_category;
     /**
      * @var CategoryHelper
      */
-    public $categoryHelper;
+    protected $_categoryHelper;
 
     /**
      * @var
      */
-    public $categoryRepository;
+    protected $_categoryRepository;
 
     /**
      * CategoryCollector constructor.
@@ -43,7 +43,7 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     public function __construct(
         CategoryHelper $categoryHelper
     ) {
-        $this->categoryHelper = $categoryHelper;
+        $this->_categoryHelper = $categoryHelper;
 
     }
 
@@ -55,7 +55,7 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
     public function getCategory($categoryId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->category =
+        $this->_category =
             $objectManager
                 ->get('Magento\Catalog\Model\Category')
                 ->load($categoryId);
@@ -70,7 +70,7 @@ class CategoryCollector extends CategoryFill implements CategoryInterface
         $result = [];
         $categories = $this->getStoreCategories(true, false, true);
         foreach ($categories as $category) {
-            $this->category = $category;
+            $this->_category = $category;
             $result[] = $this->fillCategory();
         }
         return $result;

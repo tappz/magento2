@@ -20,14 +20,14 @@ class Order extends AbstractExtensibleObject implements OrderInterface
     /**
      * @var
      */
-    public $order;
+    protected $_order;
 
     /**
      * @return mixed
      */
     public function getOrders()
     {
-        return $this->order;
+        return $this->_order;
     }
 
     /**
@@ -37,7 +37,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setOrders($data)
     {
-        $this->order = $data;
+        $this->_order = $data;
 
         return $this;
     }
@@ -47,7 +47,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getOrderId()
     {
-        return $this->order->orderId;
+        return $this->_order->orderId;
     }
 
     /**
@@ -57,7 +57,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setOrderId($data)
     {
-        $this->order->orderId = $data;
+        $this->_order->orderId = $data;
 
         return $this;
     }
@@ -67,7 +67,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getTrackingNumber()
     {
-        return $this->order->trackingNumber;
+        return $this->_order->trackingNumber;
     }
 
     /**
@@ -77,7 +77,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setTrackingNumber($data)
     {
-        $this->order->trackingNumber = $data;
+        $this->_order->trackingNumber = $data;
 
         return $this;
     }
@@ -87,7 +87,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getOrderDate()
     {
-        return $this->order->orderDate;
+        return $this->_order->orderDate;
     }
 
     /**
@@ -97,7 +97,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setOrderDate($data)
     {
-        $this->order->orderDate = $data;
+        $this->_order->orderDate = $data;
 
         return $this;
     }
@@ -107,7 +107,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getShippingStatus()
     {
-        return $this->order->shippingStatus;
+        return $this->_order->shippingStatus;
     }
 
     /**
@@ -117,7 +117,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setShippingStatus($data)
     {
-        $this->order->shippingStatus = $data;
+        $this->_order->shippingStatus = $data;
 
         return $this;
     }
@@ -127,7 +127,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getPaymentStatus()
     {
-        return $this->order->paymentStatus;
+        return $this->_order->paymentStatus;
     }
 
     /**
@@ -137,7 +137,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setPaymentStatus($data)
     {
-        $this->order->paymentStatus = $data;
+        $this->_order->paymentStatus = $data;
 
         return $this;
     }
@@ -149,7 +149,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setIpAddress($data)
     {
-        $this->order->ipAddress = $data;
+        $this->_order->ipAddress = $data;
 
         return $this;
     }
@@ -159,7 +159,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getIpAddress()
     {
-        return $this->order->ipAddress;
+        return $this->_order->ipAddress;
     }
 
     /**
@@ -169,7 +169,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setLines($data)
     {
-        $this->order->lines = $data;
+        $this->_order->lines = $data;
 
         return $this;
     }
@@ -179,7 +179,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getLines()
     {
-        return $this->order->lines;
+        return $this->_order->lines;
     }
 
     /**
@@ -189,7 +189,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setDelivery($data)
     {
-        $this->order->delivery = $data;
+        $this->_order->delivery = $data;
 
         return $this;
     }
@@ -199,7 +199,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getDelivery()
     {
-        return $this->order->delivery;
+        return $this->_order->delivery;
     }
 
     /**
@@ -209,7 +209,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setPayment($data)
     {
-        $this->order->payment = $data;
+        $this->_order->payment = $data;
 
         return $this;
     }
@@ -219,7 +219,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getPayment()
     {
-        return $this->order->payment;
+        return $this->_order->payment;
     }
 
     /**
@@ -229,7 +229,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setCurrency($data)
     {
-        $this->order->currency = $data;
+        $this->_order->currency = $data;
 
         return $this;
     }
@@ -239,7 +239,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getCurrency()
     {
-        return $this->order->currency;
+        return $this->_order->currency;
     }
 
     /**
@@ -249,7 +249,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setItemsPriceTotal($data)
     {
-        $this->order->priceTotal = $data;
+        $this->_order->priceTotal = $data;
 
         return $this;
     }
@@ -259,7 +259,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getItemsPriceTotal()
     {
-        return $this->order->priceTotal;
+        return $this->_order->priceTotal;
     }
 
     /**
@@ -269,7 +269,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setDiscountTotal($data)
     {
-        $this->order->discountTotal = $data;
+        $this->_order->discountTotal = $data;
 
         return $this;
     }
@@ -279,7 +279,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getDiscountTotal()
     {
-        return $this->order->discountTotal;
+        return $this->_order->discountTotal;
     }
 
     /**
@@ -289,7 +289,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setSubTotal($data)
     {
-        $this->order->subTotal = $data;
+        $this->_order->subTotal = $data;
 
         return $this;
     }
@@ -299,7 +299,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getSubTotal()
     {
-        return $this->order->subTotal;
+        return $this->_order->subTotal;
     }
 
     /**
@@ -309,7 +309,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setShippingTotal($data)
     {
-        $this->order->shippingTotal = $data;
+        $this->_order->shippingTotal = $data;
 
         return $this;
     }
@@ -319,7 +319,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getShippingTotal()
     {
-        return $this->order->shippingTotal;
+        return $this->_order->shippingTotal;
     }
 
     /**
@@ -329,7 +329,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setTotal($data)
     {
-        $this->order->total = $data;
+        $this->_order->total = $data;
 
         return $this;
     }
@@ -339,7 +339,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getTotal()
     {
-        return $this->order->total;
+        return $this->_order->total;
     }
 
     /**
@@ -349,7 +349,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setTaxTotalValue($data)
     {
-        $this->order->taxTotalValue = $data;
+        $this->_order->taxTotalValue = $data;
 
         return $this;
     }
@@ -359,7 +359,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getTaxTotalValue()
     {
-        return $this->order->taxTotalValue;
+        return $this->_order->taxTotalValue;
     }
 
     /**
@@ -369,7 +369,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setShippingTotalValue($data)
     {
-        $this->order->shippingTotalValue = $data;
+        $this->_order->shippingTotalValue = $data;
 
         return $this;
     }
@@ -379,7 +379,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getShippingTotalValue()
     {
-        return $this->order->shippingTotalValue;
+        return $this->_order->shippingTotalValue;
     }
 
     /**
@@ -389,7 +389,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setTotalValue($data)
     {
-        $this->order->totalValue = $data;
+        $this->_order->totalValue = $data;
 
         return $this;
     }
@@ -399,7 +399,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getTotalValue()
     {
-        return $this->order->totalValue;
+        return $this->_order->totalValue;
     }
 
     /**
@@ -409,7 +409,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setCanChangeAddress($data)
     {
-        $this->order->canChangeAddress = $data;
+        $this->_order->canChangeAddress = $data;
 
         return $this;
     }
@@ -419,7 +419,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getCanChangeAddress()
     {
-        return $this->order->canChangeAddress;
+        return $this->_order->canChangeAddress;
     }
 
     /**
@@ -429,7 +429,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setErrorCode($data)
     {
-        $this->order->errorCode = $data;
+        $this->_order->errorCode = $data;
 
         return $this;
     }
@@ -439,7 +439,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getErrorCode()
     {
-        return $this->order->errorCode;
+        return $this->_order->errorCode;
     }
 
     /**
@@ -449,7 +449,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setMessage($data)
     {
-        $this->order->message = $data;
+        $this->_order->message = $data;
 
         return $this;
     }
@@ -459,7 +459,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getMessage()
     {
-        return $this->order->message;
+        return $this->_order->message;
     }
 
     /**
@@ -469,7 +469,7 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function setUserFriendly($data)
     {
-        $this->order->userFriendly = $data;
+        $this->_order->userFriendly = $data;
 
         return $this;
     }
@@ -479,6 +479,6 @@ class Order extends AbstractExtensibleObject implements OrderInterface
      */
     public function getUserFriendly()
     {
-        return $this->order->userFriendly;
+        return $this->_order->userFriendly;
     }
 }

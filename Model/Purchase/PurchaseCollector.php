@@ -21,23 +21,23 @@ class PurchaseCollector extends PurchaseFill
     /**
      * @var RequestHandler
      */
-    public $helper;
+    protected $_helper;
     /**
      * @var
      */
-    public $addressRepository;
+    protected $_addressRepository;
     /**
      * @var Basket
      */
-    public $basketRepository;
+    protected $_basketRepository;
     /**
      * @var
      */
-    public $objectManager;
+    protected $_objectManager;
     /**
      * @var OrderCollectorß
      */
-    public $orderCollector;
+    protected $_orderCollector;
 
     /**
      * PurchaseCollector constructor.
@@ -51,11 +51,11 @@ class PurchaseCollector extends PurchaseFill
         Basket $basketRepository,
         OrderCollector $orderCollector
     ) {
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-        $this->helper = $requestHandler;
-        $this->basketRepository = $basketRepository;
-        $this->orderCollector = $orderCollector;
+        $this->_helper = $requestHandler;
+        $this->_basketRepository = $basketRepository;
+        $this->_orderCollector = $orderCollector;
     }
 
     /**
@@ -66,23 +66,24 @@ class PurchaseCollector extends PurchaseFill
      */
     public function getPurchase($quoteId, $method)
     {
+        $method= ucfirst($method);
         switch ($method) {
-            case 'card':
+            case 'Card':
                 $result = $this->purchaseCreditCards($quoteId);
                 break;
-            case 'threeD':
+            case 'ThreeD':
                 $result = $this->purchaseThreeD($quoteId);
                 break;
-            case 'moneyTransfer':
+            case 'MoneyTransfer':
                 $result = $this->purchaseMoneyTransfer($quoteId);
                 break;
-            case 'cashOnDelivery':
+            case 'CashOnDelivery':
                 $result = $this->purchaseCashOnDelivery($quoteId);
                 break;
-            case 'paypal':
+            case 'Paypal':
                 $result = $this->purchasePaypal();
                 break;
-            case 'applepay':
+            case 'Applepay':
                 $result = $this->purchaseApplePay();
                 break;
             default:
@@ -98,8 +99,6 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseCreditCards($quoteId)
     {
-        $quoteId;
-        return "";
     }
 
     /**
@@ -107,8 +106,6 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseThreeD($quoteId)
     {
-        $quoteId;
-        return "";
     }
 
     /**
@@ -116,8 +113,6 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseMoneyTransfer($quoteId)
     {
-        $quoteId;
-        return "";
     }
 
     /**
@@ -127,9 +122,10 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseCashOnDelivery($quoteId)
     {
-        $this->helper->getHeaderJson();
-        $userId = $this->helper->getAuthorization();
-        $quote = $this->basketRepository->getBasketQuoteById($quoteId);
+
+        $this->_helper->getHeaderJson();
+        $userId = $this->_helper->getAuthorization();
+        $quote = $this->_basketRepository->getBasketQuoteById($quoteId);
         if ($quote->getCustomerEmail() == null) {
             $customerModel = $this->getUserViaUserId($userId);
             $quote->setCustomerId($userId)
@@ -139,9 +135,13 @@ class PurchaseCollector extends PurchaseFill
                 ->setCustomerLastname($customerModel->getLastname())
                 ->setCustomerIsGuest(false);
         }
+        
         $shippingQuote = $quote->getShippingAddress();
-        $shipmentMethod = $shippingQuote->getData('shipping_method');
+        
+        $shipmentMethod = "taxrate";
+    
         $quote->setShippingMethod($shipmentMethod);
+        
         $shippingQuote->setCollectShippingRates(true)
             ->collectShippingRates()
             ->setShippingMethod($shipmentMethod);
@@ -151,16 +151,23 @@ class PurchaseCollector extends PurchaseFill
             ->collectTotals()
             ->save();
         $quote->getShippingMethod();
-        $rate = $this->objectManager->
+  
+        $rate = $this->_objectManager->
         get('Magento\Quote\Model\Quote\Address\Rate');
         $rate->setCode($shipmentMethod);
+           
         $quote->getShippingAddress()->addShippingRate($rate);
-        $quoteManagement = $this->objectManager
+   
+        $quoteManagement = $this->_objectManager
             ->create('\Magento\Quote\Model\QuoteManagement');
+           
         $order = $quoteManagement->submit($quote);
+       
+
         if ($order) {
             $order->setCustomerIsGuest(false);
-            $result = $this->orderCollector->getOrderById($order->getID());
+            $result = $this->_orderCollector->getOrderById($order->getID());
+
             return $result;
         }
     }
@@ -170,13 +177,13 @@ class PurchaseCollector extends PurchaseFill
      *
      * @return mixed
      */
-    public function getUserViaUserId($userId)
+    public function getUserViaUserId($userid)
     {
-        $store = $this->objectManager->
+        $store = $this->_objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->objectManager->
+        $customer = $this->_objectManager->
         get('Magento\Customer\Model\Customer')->setStore($store);
-        $customer->load($userId);
+        $customer->load($userid);
         return $customer;
     }
 
@@ -185,7 +192,6 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchasePaypal()
     {
-        return '';
     }
 
     /**
@@ -193,6 +199,5 @@ class PurchaseCollector extends PurchaseFill
      */
     public function purchaseApplePay()
     {
-        return '';
     }
 }

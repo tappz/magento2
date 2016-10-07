@@ -17,7 +17,7 @@ class Product implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var \Magento\Payment\Helper\Data
      */
-    private $storeHelper;
+    private $_storeHelper;
 
     /**
      * Product constructor.
@@ -27,7 +27,7 @@ class Product implements \Magento\Framework\Option\ArrayInterface
     public function __construct(
         \Magento\Payment\Helper\Data $storeHelper
     ) {
-        $this->storeHelper = $storeHelper;
+        $this->_storeHelper = $storeHelper;
     }
 
     /**

@@ -17,7 +17,7 @@ class ProfileFill extends Profile
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    public $storeManager;
+    protected $_storeManager;
 
     /**
      * ProfileFill constructor.
@@ -27,7 +27,7 @@ class ProfileFill extends Profile
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        $this->storeManager = $storeManager;
+        $this->_storeManager = $storeManager;
     }
 
     /**
@@ -75,7 +75,7 @@ class ProfileFill extends Profile
      *
      * @return array
      */
-    public function fillRegisterCustomerData($data)
+    protected function fillRegisterCustomerData($data)
     {
         $data = (array)$data;
         return [

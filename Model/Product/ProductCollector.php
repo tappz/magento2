@@ -14,14 +14,14 @@ use TmobLabs\Tappz\API\Data\ProductInterface;
 
 class ProductCollector extends ProductFill implements ProductInterface
 {
-    public $product;
-    public $objectManager;
+    protected $_product;
+    protected $_objectManager;
 
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         parent::__construct($storeManager);
-        $this->objectManager =
+        $this->_objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
     }
 
@@ -30,7 +30,7 @@ class ProductCollector extends ProductFill implements ProductInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $productId = $objectManager->
         get('Magento\Catalog\Model\Product')->getIdBySku($barcode);
-        $this->product = $product = $objectManager->
+        $this->_product = $product = $objectManager->
         get('Magento\Catalog\Model\Product')->load($productId);
 
         return $this->fillProduct();
@@ -39,12 +39,12 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getRelatedProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->get('Magento\Catalog\Model\Product')->
+        $this->_product = $objectManager->get('Magento\Catalog\Model\Product')->
         load($productId);
         $result = [];
-        if ($this->product->hasRelatedProductIds()) {
-            foreach ($this->product->getRelatedProducts() as $product) {
-                $this->product = $this->getProduct($product->getID());
+        if ($this->_product->hasRelatedProductIds()) {
+            foreach ($this->_product->getRelatedProducts() as $product) {
+                $this->_product = $this->getProduct($product->getID());
                 $result[] = $this->fillProduct();
             }
         }
@@ -55,7 +55,7 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProduct($productId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->product = $objectManager->
+        $this->_product = $objectManager->
         get('Magento\Catalog\Model\Product')->
         load($productId);
 
@@ -65,10 +65,10 @@ class ProductCollector extends ProductFill implements ProductInterface
     public function getProductSearch($params)
     {
         if (isset($params['category']) && !empty($params['category'])) {
-            $layer = $this->objectManager->
+            $layer = $this->_objectManager->
             get('Magento\Catalog\Model\CategoryFactory')->
             create()->load($params['category']);
-            $category = $this->objectManager->
+            $category = $this->_objectManager->
             get('Magento\Catalog\Model\Category')->
             load($params['category']);
             $layer->setCurrentCategory($category);
@@ -84,7 +84,7 @@ class ProductCollector extends ProductFill implements ProductInterface
         }
         if (!isset($params['pageSize'])
             || empty($params['pageSize'])
-            || (int)($params['pageSize']) < 1
+            || intval($params['pageSize']) < 1
         ) {
             $pageSize = 6;
         } else {
@@ -92,15 +92,14 @@ class ProductCollector extends ProductFill implements ProductInterface
         }
         if (!isset($params['pageNumber'])
             || empty($params['pageNumber'])
-            || (int)($params['pageNumber']) < 1
+            || intval($params['pageNumber']) < 1
         ) {
             $pageNumber = 1;
         } else {
             $pageNumber = $params['pageNumber'] + 1;
         }
         if (isset($params['phrase']) && !empty($params['phrase'])) {
-            $productCollection->addFieldToFilter(
-                'name',
+            $productCollection->addFieldToFilter('name',
                 ['like' => '%' . $params['phrase'] . '%']
             );
         }
@@ -126,14 +125,12 @@ class ProductCollector extends ProductFill implements ProductInterface
             $products[] = $this->getProduct($product->getId());
         }
         $totalResultCount = $productCollection->getSize();
-        $result = $this->fillProductSearch(
-            $totalResultCount,
+        $result = $this->fillProductSearch($totalResultCount,
             $pageNumber,
             $pageSize,
             $products,
             [],
-            $this->fillShortList()
-        );
+            $this->fillShortList());
         return $result;
     }
 }

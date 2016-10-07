@@ -19,14 +19,14 @@ class Product extends AbstractExtensibleObject
     /**
      * @var string
      */
-    public $product;
+    protected $_product;
 
     /**
      * @return string
      */
     public function getId()
     {
-        return $this->product->getId();
+        return $this->_product->getId();
     }
 
     /**
@@ -34,7 +34,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getProductName()
     {
-        return $this->product->getName();
+        return $this->_product->getName();
     }
 
     /**
@@ -42,10 +42,10 @@ class Product extends AbstractExtensibleObject
      */
     public function getListPrice()
     {
-        $specialPrice = (double)$this->product->getData('specialPrice');
-        $listPrice = (double)$this->product->getData('price');
+        $specialPrice = (double)$this->_product->getData('specialPrice');
+        $listPrice = (double)$this->_product->getData('price');
         $amount = ($specialPrice) > 0 ? $specialPrice : $listPrice;
-        $currency = $this->storeManager
+        $currency = $this->_storeManager
             ->getStore()
             ->getCurrentCurrency()
             ->getCode();
@@ -92,9 +92,9 @@ class Product extends AbstractExtensibleObject
      */
     public function getStrikeOutPrice()
     {
-        $specialPrice = $this->product->getData('specialPrice');
+        $specialPrice = $this->_product->getData('specialPrice');
         $amount = ($specialPrice) > 0 ? $specialPrice : 0;
-        $currency = $this->storeManager->
+        $currency = $this->_storeManager->
         getStore()->
         getCurrentCurrency()->
         getCode();
@@ -178,13 +178,13 @@ class Product extends AbstractExtensibleObject
     public function getVariants()
     {
         $result = [];
-        $productType = $this->product->getTypeId();
+        $productType = $this->_product->getTypeId();
         if ($productType == 'configurable') {
-            $instanceConf = $this->product->getTypeInstance();
+            $instanceConf = $this->_product->getTypeInstance();
 
             $configurableAttributesData = $instanceConf
                 ->getConfigurableAttributesAsArray(
-                    $this->product
+                    $this->_product
                 );
             foreach ($configurableAttributesData as $dt => $val) {
                 $group = [];
@@ -210,9 +210,9 @@ class Product extends AbstractExtensibleObject
      */
     public function getInStock()
     {
-        $quantity = $this->product->getQuantityAndStockStatus();
+        $quantity = $this->_product->getQuantityAndStockStatus();
         $result = isset($quantity['is_in_stock']) ?
-            $this->product->getQuantityAndStockStatus()['is_in_stock'] :
+            $this->_product->getQuantityAndStockStatus()['is_in_stock'] :
             false;
 
         return $result;
@@ -231,10 +231,10 @@ class Product extends AbstractExtensibleObject
      */
     public function getPicture()
     {
-        $store = $this->storeManager->getStore();
+        $store = $this->_storeManager->getStore();
         $urlMedia = \Magento\Framework\UrlInterface::URL_TYPE_MEDIA;
         $baseUrl = $store->getBaseUrl($urlMedia);
-        $result = $this->product->getImage();
+        $result = $this->_product->getImage();
 
         return $baseUrl . 'catalog/product' . $result;
     }
@@ -244,7 +244,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getPictures()
     {
-        $images = $this->product->getMediaGalleryImages();
+        $images = $this->_product->getMediaGalleryImages();
         $result = [];
         if (isset($images)) {
             if (count($images) > 0) {
@@ -252,8 +252,8 @@ class Product extends AbstractExtensibleObject
                     $result[]['url'] = $image->getUrl();
                 }
             } else {
-                $result[0]['url'] = $this->product->
-                getImageUrl($this->product);
+                $result[0]['url'] = $this->_product->
+                getImageUrl($this->_product);
             }
         }
 
@@ -265,7 +265,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getProductDetailUrl()
     {
-        return $this->product->getDescription();
+        return $this->_product->getDescription();
     }
 
     /**
@@ -273,7 +273,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getProductUrl()
     {
-        return $this->product->getProductUrl();
+        return $this->_product->getProductUrl();
     }
 
     /**
@@ -289,9 +289,9 @@ class Product extends AbstractExtensibleObject
      */
     public function getUnit()
     {
-        $quantity = $this->product->getQuantityAndStockStatus();
+        $quantity = $this->_product->getQuantityAndStockStatus();
         $result = isset($quantity['is_in_stock']) ?
-            $this->product->getQuantityAndStockStatus()['is_in_stock'] :
+            $this->_product->getQuantityAndStockStatus()['is_in_stock'] :
             false;
 
         return $result;
@@ -412,6 +412,8 @@ class Product extends AbstractExtensibleObject
         ];
     }
 
+
+
     /**
      * @return array
      */
@@ -432,10 +434,11 @@ class Product extends AbstractExtensibleObject
      */
     public function setProduct($product)
     {
-        $this->product = $product;
+        $this->_product = $product;
 
         return $this;
     }
+
 
     /**
      * @param $parentProductId
@@ -454,13 +457,13 @@ class Product extends AbstractExtensibleObject
             $attributeValueIndex = $attribute->values[0]->id;
             $subProducts->addAttributeToFilter(
                 $attributeCode,
-                $attributeValueIndex
-            );
+                $attributeValueIndex);
         }
         $product = null;
         if ($subProducts->getSize() > 0) {
             $product = $subProducts->getFirstItem();
         }
+
         return $product == null ? 0 : $product->getId();
     }
 }
