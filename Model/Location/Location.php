@@ -20,15 +20,15 @@ class Location extends AbstractExtensibleObject implements LocationInterface
     /**
      * @var
      */
-    protected $_location;
+    public $location;
 
     /**
      */
     public function getErrorCode()
     {
 
-        $result = isset($this->_location->errorCode) ?
-            $this->_location->errorCode : null;
+        $result = isset($this->location->errorCode) ?
+            $this->location->errorCode : null;
         return $result;
     }
 
@@ -37,8 +37,8 @@ class Location extends AbstractExtensibleObject implements LocationInterface
     public function getMessage()
     {
 
-        $result = isset($this->_location->message) ?
-            $this->_location->message : null;
+        $result = isset($this->location->message) ?
+            $this->location->message : null;
         return $result;
     }
 
@@ -48,8 +48,8 @@ class Location extends AbstractExtensibleObject implements LocationInterface
     public function getUserFriendly()
     {
 
-        $result = isset($this->_location->userFriendly) ?
-            $this->_location->userFriendly : false;
+        $result = isset($this->location->userFriendly) ?
+            $this->location->userFriendly : false;
         return $result;
     }
 
@@ -58,7 +58,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setErrorCode()
     {
-        $this->_location->errorCode;
+        $this->location->errorCode;
 
         return $this;
     }
@@ -70,7 +70,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setMessage($setMessage)
     {
-        $this->_location->message = $setMessage;
+        $this->location->message = $setMessage;
 
         return $this;
     }
@@ -82,7 +82,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setUserFriendly($userFriendly)
     {
-        $this->_location->userFriendly = $userFriendly;
+        $this->location->userFriendly = $userFriendly;
 
         return $this;
     }
@@ -92,7 +92,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getCode()
     {
-        return $this->_location->code;
+        return $this->location->code;
     }
 
     /**
@@ -102,7 +102,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setCode($code)
     {
-        $this->_location->code = $code;
+        $this->location->code = $code;
 
         return $this;
     }
@@ -112,7 +112,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getName()
     {
-        return $this->_location->name;
+        return $this->location->name;
     }
 
     /**
@@ -122,7 +122,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setName($name)
     {
-        $this->_location->name = $name;
+        $this->location->name = $name;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getCodeAndName()
     {
-        return $this->_location->codeAndName;
+        return $this->location->codeAndName;
     }
 
     /**
@@ -142,7 +142,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setCodeAndName($name)
     {
-        $this->_location->codeAndName = $name;
+        $this->location->codeAndName = $name;
 
         return $this;
     }
@@ -152,7 +152,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getDefaultName()
     {
-        return $this->_location->name;
+        return $this->location->name;
     }
 
     /**
@@ -162,7 +162,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setDefaultName($name)
     {
-        $this->_location->name = $name;
+        $this->location->name = $name;
 
         return $this;
     }
@@ -172,7 +172,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function getDefaultCode()
     {
-        return $this->_location->code;
+        return $this->location->code;
     }
 
     /**
@@ -182,7 +182,7 @@ class Location extends AbstractExtensibleObject implements LocationInterface
      */
     public function setDefaultCode($code)
     {
-        $this->_location->code = $code;
+        $this->location->code = $code;
 
         return $this;
     }

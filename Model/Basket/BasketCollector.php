@@ -15,7 +15,7 @@ use Magento\Shipping\Model\Config as CarrierConfig;
 use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 use TmobLabs\Tappz\Model\Address\AddressRepository as AddressRepository;
 use TmobLabs\Tappz\Model\Product\ProductRepository as ProductRepository;
-
+use Magento\Payment\Model\Config;
 /**
  * Class BasketCollector.
  */
@@ -24,36 +24,41 @@ class BasketCollector extends BasketFill
     /**
      * @var
      */
-    protected $_objectManager;
+    public $objectManager;
     /**
      * @var
      */
-    protected $_store;
+    public $store;
     /**
      * @var ProductRepository
      */
-    protected $_productRepository;
+    public $productRepository;
     /**
      * @var AddressRepository
      */
-    protected $_addressRepository;
+    public $addressRepository;
     /**
      * @var \Magento\Payment\Model\MethodList
      */
-    protected $_methodList;
+    public $methodList;
     /**
      * @var ScopeConfig
      */
-    protected $_configBasket;
+    public $configBasket;
 
     /**
      * @var CarrierConfig
      */
-    protected $_carrierConfig;
+    public $carrierConfig;
     /**
      * @var AddressRepositoryInterface
      */
-    private $_addressRepositoryInterface;
+    private $addressRepositoryInterface;
+    /**
+     * @var helper
+     */
+    private $helper;
+    protected $_paymentModelConfig;
 
     /**
      * BasketCollector constructor.
@@ -64,7 +69,7 @@ class BasketCollector extends BasketFill
      * @param \Magento\Payment\Model\MethodList $methodList
      * @param ScopeConfig $configBasket
      * @param CarrierConfig $carrierConfig
-     * @param AddressRepositoryInterface $_addressRepositoryInterface
+     * @param AddressRepositoryInterface $addressRepositoryInterface
      */
     public function __construct(
         RequestHandler $requestHandler,
@@ -73,19 +78,21 @@ class BasketCollector extends BasketFill
         \Magento\Payment\Model\MethodList $methodList,
         ScopeConfig $configBasket,
         CarrierConfig $carrierConfig,
-        AddressRepositoryInterface $addressRepositoryInterface
+        AddressRepositoryInterface $addressRepositoryInterface,
+        Config $paymentModelConfig
     ) {
         $this->helper = $requestHandler;
-        $this->_objectManager =
+        $this->objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_store = $this->_objectManager->
+        $this->store = $this->objectManager->
         get('Magento\Store\Model\StoreManagerInterface');
-        $this->_productRepository = $productRepository;
-        $this->_addressRepository = $addressRepository;
-        $this->_methodList = $methodList;
-        $this->_configBasket = $configBasket;
-        $this->_carrierConfig = $carrierConfig;
-        $this->_addressRepositoryInterface = $addressRepositoryInterface;
+        $this->productRepository = $productRepository;
+        $this->addressRepository = $addressRepository;
+        $this->methodList = $methodList;
+        $this->configBasket = $configBasket;
+        $this->carrierConfig = $carrierConfig;
+        $this->addressRepositoryInterface = $addressRepositoryInterface;
+        $this->_paymentModelConfig = $paymentModelConfig;
     }
 
     /**
@@ -99,31 +106,17 @@ class BasketCollector extends BasketFill
             $anonymousBasketId = $result->basketId;
         }
         $userId = $this->helper->getAuthorization();
-        $store = $this->_store->getStore();
+        $store = $this->store->getStore();
         if ($anonymousBasketId == 'null' || empty($anonymousBasketId)) {
             return $this->getUserBasket();
-            /**
-            if (is_numeric($userId)) {
-            $customer = $this->_objectManager
-                ->get('Magento\Customer\Model\Customer')
-                ->setStore($store)
-                ->load($userId);
-            echo $customer->getID();
-            exit;
-            $quote = $quoteObject->loadByCustomer($customer);
-        } else {
-            $quote = $quoteObject->save();
         }
-             */
-        }
-
-        $anonymousQuote = $this->_objectManager
+        $anonymousQuote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($anonymousBasketId);
-        $quoteObject = $this->_objectManager->
+        $quoteObject = $this->objectManager->
         get('Magento\Quote\Model\Quote')->setStore($store);
-        $customer = $this->_objectManager
+        $customer = $this->objectManager
             ->get('Magento\Customer\Model\Customer')
             ->setStore($store)
             ->load($userId);
@@ -137,22 +130,28 @@ class BasketCollector extends BasketFill
         }
         $quote = $quote->merge($anonymousQuote);
         $quote = $quote->collectTotals()->save();
-
         return $this->getBasketById($quote->getId());
     }
-    
+
     /**
      * @return array
      */
     public function getUserBasket()
     {
         $userId = $this->helper->getAuthorization();
-        $store = $this->_store->getStore();
-        $quoteObject = $this->_objectManager->get('Magento\Quote\Model\Quote')
-            ->setStore($store);
-  
-                    $quote = $quoteObject->save();
+        $store = $this->store->getStore();
 
+        $quoteObject = $this->objectManager->get('Magento\Quote\Model\Quote')
+            ->setStore($store);
+        if (is_numeric($userId)) {
+            $customer = $this->objectManager
+                ->get('Magento\Customer\Model\Customer')
+                ->setStore($store)
+                ->load($userId);
+            $quote = $quoteObject->loadByCustomer($customer);
+        } else {
+            $quote = $quoteObject->save();
+        }
         if (($quote->getId()) == null || empty(($quote->getId()))) {
             if (isset($userId) && $userId !== '') {
                 $quote = $quoteObject->setCustomerId($userId);
@@ -160,7 +159,15 @@ class BasketCollector extends BasketFill
             $quote = $quote->save();
         }
 
-        return $this->setBasketByQuote($quote);
+        $result =  $this->setBasketByQuote($quote);
+        $price = $this->getBasketRealPrice($result);
+        $result['itemsPriceTotal'] = $price;
+        $result['subTotal'] = $price;
+        $result['total'] = $price;
+        $result['beforeTaxTotal'] = $price;
+        $result['taxTotal'] = $price;
+
+        return $result;
     }
 
     /**
@@ -175,7 +182,7 @@ class BasketCollector extends BasketFill
             ->setShippingMethods($this->getShippingsMethodByBasket())
             ->setShippingMethod($this->getShippingByBasket($quote))
             ->setCurrency(
-                $this->_store->getStore()->getCurrentCurrency()->getCode()
+                $this->store->getStore()->getCurrentCurrency()->getCode()
             )
             ->setLine($this->getLinesByBasket($quote))
             ->setDelivery($this->getDeliveryByBasket($quote))
@@ -191,7 +198,7 @@ class BasketCollector extends BasketFill
             ->setErrors($this->getErrorsByBasket())
             ->setGiftCheques($this->getGiftChequesByBasket())
             ->setSpentGiftChequeTotal($this->getSpentGiftChequeByBasket($quote))
-            //->setDiscounts($this->getDiscountsByBasket($quote))
+            ->setDiscounts($this->getDiscountsByBasket($quote))
             ->setUsedPoints($this->getUsedPointsBasket())
             ->setUsedPointsAmount($this->getUsedPointsAmountByBasket())
             ->setRewardPoints($this->getRewardPointsByBasket())
@@ -212,14 +219,14 @@ class BasketCollector extends BasketFill
      */
     public function getShippingsMethodByBasket()
     {
-        $carriers = $this->_carrierConfig->getActiveCarriers();
+        $carriers = $this->carrierConfig->getActiveCarriers();
         $shippingMethods = [];
         foreach ($carriers as $carrierCode => $carrierModel) {
-            $carrierTitle = $this->_configBasket->getValue(
+            $carrierTitle = $this->configBasket->getValue(
                 'carriers/' . $carrierCode . '/title',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             );
-            $carrierPrice = $this->_configBasket->getValue(
+            $carrierPrice = $this->configBasket->getValue(
                 'carriers/' . $carrierCode . '/price',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             );
@@ -232,8 +239,8 @@ class BasketCollector extends BasketFill
             $rateItem['imageUrl'] = null;
             $shippingMethods[] = $rateItem;
         }
-          
-        return compact("shippingMethods");
+
+        return $shippingMethods;
     }
 
     /**
@@ -272,32 +279,39 @@ class BasketCollector extends BasketFill
      */
     public function getLinesByBasket($quote)
     {
-      
         $lines = [];
 
         foreach ($quote->getAllVisibleItems() as $item) {
+            $product= $this->productRepository->getById(
+                $item->getData('product_id')
+            );
+            $quantity = $item->getData('qty');
+
+            $amount = $product['listPrice']['amount'];
+            $price = $quantity * $amount;
+
             $this->setProductId($item->getData('product_id'));
             $this->setProduct(
-                $this->_productRepository->getById(
-                    $item->getData('product_id')
-                )
+                $product
             );
             $this->setQuantity($item->getData('qty'));
             $this->setPlacedPrice(
-                number_format($item->getData('price'), 2)
+                number_format($price, 2)
             );
             $this->setPlacedPriceTotal(
-                number_format($item->getData('row_total'), 2));
-            $this->setExtendedPrice(number_format($item->getData('price'), 2)
+                number_format($price, 2)
+            );
+            $this->setExtendedPrice(
+                number_format($price, 2)
             );
             $this->setExtendedPriceValue(
-                number_format($item->getData('price'), 2)
+                number_format($price, 2)
             );
             $this->setExtendedPriceTotal(
-                number_format($item->getData('price'), 2)
+                number_format($price, 2)
             );
-            $this->setExtendedPriceTotalValue(number_format(
-                    $item->getData('price'), 2)
+            $this->setExtendedPriceTotalValue(
+                number_format($price, 2)
             );
             $this->setStatus(0);
             $this->setStrikeoutPrice($this->getProduct()['strikeoutPrice']);
@@ -309,7 +323,6 @@ class BasketCollector extends BasketFill
         return $lines;
     }
 
-
     /**
      * @param $quote
      *
@@ -319,14 +332,13 @@ class BasketCollector extends BasketFill
     {
         $quoteBillingAddress = $quote->getBillingAddress();
         $quoteShippingAddress = $quote->getShippingAddress();
-     
         if ($quoteBillingAddress) {
-            $delivery['billingAddress'] = $this->_addressRepository->getAddress(
+            $delivery['billingAddress'] = $this->addressRepository->getAddress(
                 $quoteBillingAddress->getData('customer_address_id')
             );
         }
         if ($quoteShippingAddress) {
-            $delivery['shippingAddress'] = $this->_addressRepository
+            $delivery['shippingAddress'] = $this->addressRepository
                 ->getAddress(
                     $quoteShippingAddress->getData('customer_address_id')
                 );
@@ -348,7 +360,7 @@ class BasketCollector extends BasketFill
         if (empty($delivery['shippingAddress']['id'])) {
             $delivery = (object)[];
         }
-     
+
         return $delivery;
     }
 
@@ -386,12 +398,11 @@ class BasketCollector extends BasketFill
     public function getPaymentMethodsByBasket($quote)
     {
         $paymentOptions = [];
-        $methods = $this->_methodList->getAvailableMethods($quote);
+        $methods = $this->methodList->getAvailableMethods($quote);
+        $creditCardMethod =  $this->getChosenCreditCardMethod();
         foreach ($methods as $method) {
-            $code = $method->getCode();
-
-
-            if (($code == 'creditCard')) {
+                $code = $method->getCode();
+            if ($code == $creditCardMethod) {
                 $paymentOptions['creditCard'] = [];
                 $paymentOptions['creditCard'][0]['image'] = null;
                 $paymentOptions['creditCard'][0]['displayName'] =
@@ -399,7 +410,7 @@ class BasketCollector extends BasketFill
                 $paymentOptions['creditCard'][0]['type'] = 'creditcards';
                 $paymentOptions['creditCard'][0]['installmentNumber'] = 0;
                 $paymentOptions['creditCard'][0]['installments'] = [];
-            } elseif ($code == 'checkmo') {
+            } else if ($code == 'checkmo') {
                 $paymentOptions['moneyTransfer'] = [];
                 $paymentOptions['moneyTransfer'][0]['id'] = $code;
                 $paymentOptions['moneyTransfer'][0]['displayName'] =
@@ -409,7 +420,7 @@ class BasketCollector extends BasketFill
                 $paymentOptions['moneyTransfer'][0]['accountNumber'] = ' ';
                 $paymentOptions['moneyTransfer'][0]['iban'] = ' ';
                 $paymentOptions['moneyTransfer'][0]['imageUrl'] = '';
-            } elseif ($code == 'cashondelivery') {
+            } else if ($code == 'cashondelivery') {
                 $paymentOptions['cashOnDelivery'][0]['type'] = null;
                 $paymentOptions['cashOnDelivery'][0]['displayName'] = null;
                 $paymentOptions['cashOnDelivery'][0]['additionalFee'] = null;
@@ -428,7 +439,7 @@ class BasketCollector extends BasketFill
                     false;
                 $paymentOptions['cashOnDelivery'][0]['SMSCode'] = null;
                 $paymentOptions['cashOnDelivery'][0]['PhoneNumber'] = null;
-            } elseif ($code == 'paypal_express') {
+            } else if ($code == 'paypal_express') {
                 $paymentOptions['paypal'] = [];
                 $paymentOptions['paypal']['clientId'] = null;
                 $paymentOptions['paypal']['displayName'] = null;
@@ -437,11 +448,10 @@ class BasketCollector extends BasketFill
                 $paymentOptions['paypal']['displayName'] =
                     $method->getTitle();
                 $paymentOptions['paypal']['isSandbox'] =
-                    (bool)$this->_configBasket->
+                    (bool)$this->configBasket->
                     getValue('tappzpaypal/tappzpaypalmethod/paypalSandbox/');
             }
         }
-
         return $paymentOptions;
     }
 
@@ -453,7 +463,8 @@ class BasketCollector extends BasketFill
     public function getPaymentByBasket($quote)
     {
         $result = null;
-        $payment = $quote->getPayment();
+        $payment = $quote->getPayment()?$quote->getPayment():false;
+        $creditCardMethod =  $this->getChosenCreditCardMethod();
         $paymentData = [];
         if (isset($payment)) {
             $paymentData['cashOnDelivery'] = null;
@@ -472,7 +483,7 @@ class BasketCollector extends BasketFill
                 $paymentData['accountNumber'] = '123456';
                 $paymentData['branch'] = '321';
                 $paymentData['iban'] = 'TR12 3456 7890 1234 5678 9012 00';
-            } else if ($method == 'creditcard') {
+            } else if ($method == $creditCardMethod) {
                 $paymentData['methodType'] = 'CreditCard';
                 $paymentData['type'] = $payment->getData('cc_type');
                 $paymentData['displayName'] = 'Credit Card';
@@ -491,6 +502,7 @@ class BasketCollector extends BasketFill
                 $paymentData['creditCard']['cvv'] = null;
                 $paymentData['creditCard']['type'] =
                     $payment->getData('cc_type');
+                $paymentData['creditCard']['installment'] = "";
             } else if ($method == 'cashondelivery') {
                 $paymentData['methodType'] = 'CashOnDelivery';
                 $paymentData['type'] = $method;
@@ -520,7 +532,7 @@ class BasketCollector extends BasketFill
                 $paymentData['accountNumber'] = null;
                 $paymentData['branch'] = null;
                 $paymentData['iban'] = null;
-            } elseif ($method == 'stripe') {
+            } else if ($method == 'stripe') {
                 $paymentData['methodType'] = 'ApplePay';
                 $paymentData['type'] = $method;
                 $paymentData['displayName'] = 'Apple Pay';
@@ -530,11 +542,14 @@ class BasketCollector extends BasketFill
                 $paymentData['branch'] = null;
                 $paymentData['iban'] = null;
             }
-
         }
-
-
         return $paymentData;
+    }
+    public function getPaymentTypeByBasket($quote)
+    {
+        $payment = $quote->getPayment();
+        $method = $payment->getData('method');
+        return $method;
     }
     /**
      * @param $quote
@@ -631,29 +646,16 @@ class BasketCollector extends BasketFill
      */
     public function getDiscountsByBasket($quote)
     {
-       $json = $this->helper->convertJson(
-            $this->helper->getHeaderJson()
-        );
-       
         $result = [];
-      
-        $discount['displayName'] = "";
-        $discount['discountTotal'] = "0.00";
-        $discount['promoCode'] = "";
-        $discount['ErrorCode'] = "401";
-        $discount['Message'] = "İndirim bulunamadı"; 
-        $discount['UserFriendly'] = true;
-        
-        if ($json->promoCode == "deneme") {
-         $discount['displayName'] = "Deneme indirimi";
-         $discount['discountTotal'] = number_format(10, 2);;
-         $discount['promoCode'] = $json->promoCode;
-         $discount['ErrorCode'] = "200";
-         $discount['Message'] = "İndirim tanımlandı"; 
-         $discount['UserFriendly'] = FALSE; 
+        $amountDiscount = $this->getDiscountAmountByBasket($quote);
+        if ($amountDiscount > 0) {
+            $this->setDiscountDisplayName(null);
+            $this->setDiscountTotal($this->getDiscountAmountByBasket($quote));
+            $this->setDiscountPromoCode($amountDiscount);
+            $result[] = ($this->fillDiscounts());
         }
 
-        return $discount;
+        return $result;
     }
 
     /**
@@ -673,6 +675,14 @@ class BasketCollector extends BasketFill
         return number_format($result, 2);
     }
 
+    public function getGiftWrappingByBasket(){
+        $this->setGiftWrappingIsSelected(true);
+        $this->setGiftWrappingCharacter(1);
+        $this->setGiftWrappingMessage("deneme");
+        $this->setGiftWrappingFee(1);
+        $result = ($this->fillGiftWrapping());
+        return  $result;
+    }
     /**
      * @param int $points
      *
@@ -728,13 +738,22 @@ class BasketCollector extends BasketFill
      */
     public function getBasketById($basketId)
     {
-        $store = $this->_store->getStore();
-        $quote = $this->_objectManager
+
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
 
-        return $this->setBasketByQuote($quote);
+        $result =  $this->setBasketByQuote($quote);
+
+        $price = $this->getBasketRealPrice($result);
+        $result['itemsPriceTotal'] = $price;
+        $result['subTotal'] = $price;
+        $result['total'] = $price;
+        $result['beforeTaxTotal'] = $price;
+        $result['taxTotal'] = $price;
+        return $result;
     }
 
     /**
@@ -744,112 +763,75 @@ class BasketCollector extends BasketFill
      */
     public function getLines($basketId)
     {
-          
+        
         $updateList = $this->helper->convertJson(
             $this->helper->getHeaderJson()
         );
-        $store = $this->_store->getStore();
-        $quote = $this->_objectManager
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
-  
+
         foreach ($updateList->product as $item) {
-     
-            
             $productId = $item->productId;
-    
-          
+            $qty = $item->newQuantity;
+            $products[] = $qty;
             $product = $this->getProductByProductId($productId);
             $quoteItem = $quote->getItemByProduct($product);
-            $qty= $item->previousQuantity + $item->quantity;
-          
-            if (!$quoteItem && $qty > 0) {
-                $quote->addProduct($product, $qty);
-            } elseif ($qty < 1) {
-              
+            if(isset($item->variants[0]->features[0]->value)){
+                $options = [
+                    'product' => $product->getId(),
+                    'options' => [
+                        $item->variants[0]->groupId => $item->variants[0]->features[0]->value
+                    ],
+                    "qty" => $qty
+                ];
+            }else{
+                $options = [
+                    "qty" => $qty,
+                    'product' => $product->getId()
+                ];
+            }
+            $buyRequest = new \Magento\Framework\DataObject($options);
+            if (!$quoteItem) {
+                $quote->addProduct($product, $buyRequest);
+                $quote->setIsActive(1);
+            } else if ($qty == 0) {
                 $quote->removeItem($quoteItem->getId());
             } else {
-                
-                $buyRequest =
-                    new \Magento\Framework\DataObject(['qty' => $qty]);
-                $quote->updateItem($quoteItem->getId(), $buyRequest);
+
+                $quote->updateItem(
+                    $quoteItem->getId(), $buyRequest
+                );
             }
         }
-        
-        $this->setAddressByQuoteId($quote->getID());
-          
         $quote = $quote->setTotalsCollectedFlag(false)->collectTotals()->save();
+        $result = $this->getBasketById($quote->getID());
+        $price = $this->getBasketRealPrice($result);
+        $result['itemsPriceTotal'] = $price;
+        $result['subTotal'] = $price;
+        $result['total'] = $price;
+        $result['beforeTaxTotal'] = $price;
+        $result['taxTotal'] = $price;
+        return $result;
 
-        return $this->getBasketById($quote->getID());
+    }
+
+    public function getBasketRealPrice ($lines){
+        $price = 0;
+        foreach ($lines["lines"] as $row){
+            $price += $row["placedPrice"];
+        }
+        return $price;
     }
 
     public function getProductByProductId($productId)
     {
-        return $this->_objectManager->
+        return $this->objectManager->
         get('Magento\Catalog\Model\Product')->load($productId);
     }
-     public function setAddressByQuoteId($quoteId){
-                $userId = $this->helper->getAuthorization();
-        $result = $this->helper->convertJson($this->helper->getHeaderJson());
-        $shippingAddressId = isset($result->shippingAddress->id) ?
-            $result->shippingAddress->id : null;
-        $billingAddressId = isset($result->billingAddress->id) ?
-            $result->billingAddress->id : null;
-        $shippingMethodId = isset($result->shippingMethod[0]->id) ?
-            $result->shippingMethod[0]->id : null;
 
-        $store = $this->_store->getStore();
-        $quote = $this->_objectManager
-            ->get('Magento\Quote\Model\Quote')
-            ->setStore($store)
-            ->load($quoteId);
-
-        if ($billingAddressId !== null && !empty($billingAddressId)) {
-            $userAddress = $this->_objectManager->
-            get('Magento\Customer\Model\Address')->load($billingAddressId);
-            $address = $this->_objectManager->
-            get('Magento\Quote\Model\Quote\Address')
-                ->setCustomerAddressData($userAddress);
-            $billingAddress = $this->_addressRepositoryInterface->
-            getById($billingAddressId);
-            $this->_objectManager->get('Magento\Quote\Model\Quote\Address')->
-            importCustomerAddressData($billingAddress);
-            $quote->setBillingAddress($address)
-                ->setCollectShippingRates(true);
-        }
-        if ($shippingAddressId !== null && !empty($shippingAddressId)) {
-            $userAddress = $this->_objectManager->
-            get('Magento\Customer\Model\Address')->
-            load($shippingAddressId);
-            $address = $this->_objectManager->
-            get('Magento\Quote\Model\Quote\Address')->
-            setCustomerAddressData($userAddress);
-            $shippingAddres = $this->_addressRepositoryInterface->
-            getById($shippingAddressId);
-            $this->_objectManager->
-            get('Magento\Quote\Model\Quote\Address')->
-            importCustomerAddressData($shippingAddres);
-            $quote->setShippingAddress($address)
-                ->setCollectShippingRates(true);
-            $quote->getShippingAddress()->setCollectShippingRates(true);
-        }
-        if ($shippingMethodId !== null && !empty($shippingMethodId)) {
-            $quoteShippingAddress = $quote->getShippingAddress();
-            $quoteShippingAddress->collectShippingRates()->
-            getShippingRateByCode($shippingMethodId);
-            $rate = $this->_objectManager->
-            get('Magento\Quote\Model\Quote\Address\Rate');
-            $rate->setCode($shippingMethodId)->getPrice(1);
-            $quote->getShippingAddress()->setShippingMethod($shippingMethodId);
-            $quote->setShippingMethod($shippingMethodId);
-        }
-        $quote->collectTotals()->save();
-        
-       
-        return $this->getBasketById($quoteId);
-       
-     }
     /**
      * @param $quoteId
      *
@@ -866,58 +848,72 @@ class BasketCollector extends BasketFill
         $shippingMethodId = isset($result->shippingMethod[0]->id) ?
             $result->shippingMethod[0]->id : null;
 
-        $store = $this->_store->getStore();
-        $quote = $this->_objectManager
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($quoteId);
 
         if ($billingAddressId !== null && !empty($billingAddressId)) {
-            $userAddress = $this->_objectManager->
+            $userAddress = $this->objectManager->
             get('Magento\Customer\Model\Address')->load($billingAddressId);
-            $address = $this->_objectManager->
+            $address = $this->objectManager->
             get('Magento\Quote\Model\Quote\Address')
                 ->setCustomerAddressData($userAddress);
-            $billingAddress = $this->_addressRepositoryInterface->
+            $billingAddress = $this->addressRepositoryInterface->
             getById($billingAddressId);
-            $this->_objectManager->get('Magento\Quote\Model\Quote\Address')->
+            $this->objectManager->get('Magento\Quote\Model\Quote\Address')->
             importCustomerAddressData($billingAddress);
             $quote->setBillingAddress($address)
-                ->setCollectShippingRates(true);
+                ->setCollectShippingRates(true)->save();
         }
         if ($shippingAddressId !== null && !empty($shippingAddressId)) {
-            $userAddress = $this->_objectManager->
+            $userAddress = $this->objectManager->
             get('Magento\Customer\Model\Address')->
             load($shippingAddressId);
-            $address = $this->_objectManager->
+            $address = $this->objectManager->
             get('Magento\Quote\Model\Quote\Address')->
             setCustomerAddressData($userAddress);
-            $shippingAddres = $this->_addressRepositoryInterface->
+            $shippingAddres = $this->addressRepositoryInterface->
             getById($shippingAddressId);
-            $this->_objectManager->
+            $this->objectManager->
             get('Magento\Quote\Model\Quote\Address')->
             importCustomerAddressData($shippingAddres);
             $quote->setShippingAddress($address)
                 ->setCollectShippingRates(true);
-            $quote->getShippingAddress()->setCollectShippingRates(true);
+            $quote->getShippingAddress()->setCollectShippingRates(true)->save();
         }
         if ($shippingMethodId !== null && !empty($shippingMethodId)) {
             $quoteShippingAddress = $quote->getShippingAddress();
             $quoteShippingAddress->collectShippingRates()->
             getShippingRateByCode($shippingMethodId);
-            $rate = $this->_objectManager->
+            $rate = $this->objectManager->
             get('Magento\Quote\Model\Quote\Address\Rate');
             $rate->setCode($shippingMethodId)->getPrice(1);
             $quote->getShippingAddress()->setShippingMethod($shippingMethodId);
-            $quote->setShippingMethod($shippingMethodId);
+            $quote->setShippingMethod($shippingMethodId)->save();
         }
-        $quote->collectTotals()->save();
-      
- 
-        $response['delivery'] = $this->getDeliveryByBasket($quote);
-   
-        $basket=  $this->getBasketById($quoteId);
-        return array_merge($basket,$response);
+        $quote = $quote->setIsActive(true)
+            ->collectTotals()
+            ->save();
+        $delivery = $this->getDeliveryByBasket($quote);
+        $result =  $this->getBasketById($quoteId);
+        $result['delivery'] = $delivery;
+        $result['shippingMethods'] = $this->getShippingsMethodByBasket();
+        $result['delivery']['shippingMethod'] = $this->getShippingMethod();
+        $result['paymentOptions'] = $this->getPaymentMethodsByBasket($quote);
+        $result['payment'] = $this->getPaymentByBasket($quote);
+        $result['giftCheques'] = $this->getGiftChequesByBasket();
+        $result['discounts'] = $this->getDiscountsByBasket($quote);
+        $result['giftWrapping'] = $this->getGiftWrapping(null);
+        $result['isGiftWrappingEnabled'] = $this->getIsGiftWrappingEnabled(false);
+        $result['spentGiftChequeTotal'] = 0 ;
+        $result['discountTotal'] = 0;
+        $result['usedPoints'] = 0;
+        $result['rewardPoints'] = 0;
+        $result['paymentFee'] = 0;
+        return $result;
+
     }
 
     /**
@@ -927,8 +923,8 @@ class BasketCollector extends BasketFill
      */
     public function getBasketQuoteById($basketId)
     {
-        $store = $this->_store->getStore();
-        $quote = $this->_objectManager
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($basketId);
@@ -963,134 +959,203 @@ class BasketCollector extends BasketFill
 
         return $this->fillContract();
     }
-    public function getBasketShipment($quoteId){
-        $response = $this->getShippingsMethodByBasket();
-         if($_SERVER['REQUEST_METHOD'] == "GET"){
-                return $response;
-             
-         }
-         else{
-         $quote =   $this->getBasketQuoteById($quoteId);
-         $result['delivery'] = $this->getDeliveryByBasket($quote);
-         $responseShipping = "";
-             $json = $this->helper->convertJson(
-            $this->helper->getHeaderJson()
-        );
-           foreach ($response as   $rows){
-             foreach ($rows as $row ){
-              if($row["id"]== $json->id){
-                  $result['delivery']['shippingMethod'][0]= $row;
-                  $quote->setShippingMethod($json->id);
-              }
-             }
-         }
-       
-       
-        $basket=  $this->getBasketById($quoteId);
-        return array_merge($basket,$result);
-         }
-    
-        
-       
-     exit;
-    } 
-    public function getBasketDiscount($basketId){
-      
-         $store = $this->_store->getStore();
-         $quote = $this->_objectManager
-            ->get('Magento\Quote\Model\Quote')
-            ->setStore($store)
-            ->load($basketId);
-           
-         
-           $basket=  $this->getBasketById($basketId);
-           
-             if($_SERVER['REQUEST_METHOD'] == "DELETE"){
-                  $result['discounts'] = [];
-         }else{
-            $result['discounts'][0] = $this->getDiscountsByBasket($quote);
-               if($result['discounts'][0]['ErrorCode']!==200){
-                   $basket['ErrorCode']=$result['discounts'][0]['ErrorCode'];
-                   $basket['Message']=$result['discounts'][0]['Message'];
-                   $basket['UserFriendly']=$result['discounts'][0]['UserFriendly'];
-               }
-         }
-          
-        return array_merge($basket,$result);
-  
-    }
-    public function getBasketPayment($basketId){
-    
-            $store = $this->_store->getStore();
-         $quote = $this->_objectManager
-            ->get('Magento\Quote\Model\Quote')
-            ->setStore($store)
-            ->load($basketId);
-         if($_SERVER['REQUEST_METHOD'] == "GET"){
-             return $this->getPaymentMethodsByBasket($quote);
-             
-         }
-        $response =   $this->setBasketPayment($basketId);
-        
-        return $response;
-      
-  
-    }
 
-    /**
-     * @param $quoteId
-     *
-     * @return array
-     */
-    public function setBasketPayment($quoteId)
+    public function setBasketPay($quoteId)
     {
-        
         $result = $this->helper->convertJson($this->helper->getHeaderJson());
-        $store = $this->_store->getStore();
-
-        $quote = $this->_objectManager
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
             ->get('Magento\Quote\Model\Quote')
             ->setStore($store)
             ->load($quoteId);
         $paymentMethod = '';
-        
+        $creditCardMethod =  $this->getChosenCreditCardMethod();
         switch ($result->methodType) {
-            case 'CreditCards':
-                $paymentMethod = 'cards';
+            case 'CreditCard':
+                $paymentMethod = $creditCardMethod;
                 break;
             case 'CashOnDelivery':
                 $paymentMethod = 'cashondelivery';
                 break;
-
             case 'PayPal':
                 $paymentMethod = 'paypal_express';
                 break;
             case 'MoneyTransfer':
                 $paymentMethod = 'checkmo';
                 break;
-
             case 'ApplePay':
                 $paymentMethod = 'stripe';
                 break;
         }
-        
         $quote->getPayment()->setMethod($paymentMethod);
-        
         $payment = $quote->getPayment();
-        
         $method = ['method' => $paymentMethod];
         $payment->importData($method);
-    
         $quote = $quote->setIsActive(true)
             ->setTotalsCollectedFlag(false)
             ->collectTotals()
             ->save();
-        
-        
-        $response['payment']=  $this->getPaymentByBasket($quote);
-      
-        $basket = $this->getBasketById($quote->getID());
-       
-        return array_merge($basket,$response);
+        $delivery = $this->getDeliveryByBasket($quote);
+        $result =  $this->getBasketById($quoteId);
+        $result['delivery'] = $delivery;
+        $result['shippingMethods'] = $this->getShippingsMethodByBasket();
+        $result['delivery']['shippingMethod'] = $this->getShippingMethod();
+        $result['paymentOptions'] = $this->getPaymentMethodsByBasket($quote);
+        $result['payment'] = $this->getPaymentByBasket($quote);
+        $result['giftCheques'] = $this->getGiftChequesByBasket();
+        $result['discounts'] = $this->getDiscountsByBasket($quote);
+        $result['giftWrapping'] = $this->getGiftWrapping(null);
+        $result['isGiftWrappingEnabled'] = $this->getIsGiftWrappingEnabled(false);
+        $result['spentGiftChequeTotal'] = 0 ;
+        $result['discountTotal'] = 0;
+        $result['usedPoints'] = 0;
+        $result['rewardPoints'] = 0;
+        $result['paymentFee'] = 0;
+        return $result;
+    }
+
+    public function setBasketPayment($quoteId)
+    {
+     
+        $result = $this->helper->convertJson($this->helper->getHeaderJson());
+        $store = $this->store->getStore();
+        $creditCardMethod =  $this->getChosenCreditCardMethod();
+        $quote = $this->objectManager
+            ->get('Magento\Quote\Model\Quote')
+            ->setStore($store)
+            ->load($quoteId);
+        $paymentMethod = '';
+        switch ($result->methodType) {
+            case 'CreditCard':
+                $paymentMethod = $creditCardMethod;
+                break;
+            case 'CashOnDelivery':
+                $paymentMethod = 'cashondelivery';
+                break;
+            case 'PayPal':
+                $paymentMethod = 'paypal_express';
+                break;
+            case 'MoneyTransfer':
+                $paymentMethod = 'checkmo';
+                break;
+            case 'ApplePay':
+                $paymentMethod = 'stripe';
+                break;
+        }
+        $quote->getPayment()->setMethod($paymentMethod);
+        $payment = $quote->getPayment();
+        $method = ['method' => $paymentMethod];
+        $payment->importData($method);
+        $quote = $quote->setIsActive(true)
+            ->setTotalsCollectedFlag(false)
+            ->collectTotals()
+            ->save();
+        $delivery = $this->getDeliveryByBasket($quote);
+        $result =  $this->getBasketById($quoteId);
+        $result['delivery'] = $delivery;
+        $result['shippingMethods'] = $this->getShippingsMethodByBasket();
+        $result['delivery']['shippingMethod'] = $this->getShippingMethod();
+        $result['paymentOptions'] = $this->getPaymentMethodsByBasket($quote);
+        $result['payment'] = $this->getPaymentByBasket($quote);
+        $result['giftCheques'] = $this->getGiftChequesByBasket();
+        $result['discounts'] = $this->getDiscountsByBasket($quote);
+        $result['giftWrapping'] = $this->getGiftWrapping(null);
+        $result['isGiftWrappingEnabled'] = $this->getIsGiftWrappingEnabled(false);
+        $result['spentGiftChequeTotal'] = 0 ;
+        $result['discountTotal'] = 0;
+        $result['usedPoints'] = 0;
+        $result['rewardPoints'] = 0;
+        $result['paymentFee'] = 0;
+        return $result;
+    }
+    /**
+     * @param $quoteId
+     *
+     * @return array
+     */
+    public function getBasketPayment($quoteId)
+    {
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
+            ->get('Magento\Quote\Model\Quote')
+            ->setStore($store)
+            ->load($quoteId);
+        $result = $this->getPaymentMethodsByBasket($quote);
+        return $result;
+
+    }
+    public function getQuoteById($quoteId){
+        $store = $this->store->getStore();
+        $quote = $this->objectManager
+            ->get('Magento\Quote\Model\Quote')
+            ->setStore($store)
+            ->load($quoteId);
+
+        return $quote;
+    }
+
+    public function setAddressToBasket($quoteId){
+        $userId = $this->helper->getAuthorization();
+        $store = $this->store->getStore();
+        $result = $this->helper->convertJson($this->helper->getHeaderJson());
+        if(isset($result->id )){
+            $shippingMethodId = $result->id;
+        }else{
+            $shippingMethodId = null ;
+        }
+        $quote = $this->objectManager
+            ->get('Magento\Quote\Model\Quote')
+            ->setStore($store)
+            ->load($quoteId);
+            $quoteShippingAddress = $quote->getShippingAddress();
+            $quoteShippingAddress->collectShippingRates()->
+            getShippingRateByCode($shippingMethodId);
+            $rate = $this->objectManager->
+            get('Magento\Quote\Model\Quote\Address\Rate');
+            $rate->setCode($shippingMethodId)->getPrice(1);
+            $quote->getShippingAddress()->setShippingMethod($shippingMethodId);
+            $quote->setShippingMethod($shippingMethodId)->save();
+
+        $delivery = $this->getDeliveryByBasket($quote);
+        $result =  $this->getBasketById($quoteId);
+        $result['delivery'] = $delivery;
+        $result['shippingMethods'] = $this->getShippingsMethodByBasket();
+        $result['delivery']['shippingMethod'] = $this->getShippingMethod();
+        $result['paymentOptions'] = $this->getPaymentMethodsByBasket($quote);
+        $result['payment'] = $this->getPaymentByBasket($quote);
+        $result['giftCheques'] = $this->getGiftChequesByBasket();
+        $result['discounts'] = $this->getDiscountsByBasket($quote);
+        $result['giftWrapping'] = $this->getGiftWrapping(null);
+        $result['isGiftWrappingEnabled'] = $this->getIsGiftWrappingEnabled(false);
+        $result['spentGiftChequeTotal'] = 0 ;
+        $result['discountTotal'] = 0;
+        $result['usedPoints'] = 0;
+        $result['rewardPoints'] = 0;
+        $result['paymentFee'] = 0;
+    
+        return $result;
+    }
+    public function getPaymentOptionsAll()
+    {
+        $payments = $this->_paymentModelConfig->getActiveMethods();
+        $methods = array();
+        foreach ($payments as $paymentCode=>$paymentModel)
+        {
+
+            $paymentTitle = $this->configBasket->getValue('payment/'.$paymentCode.'/title');
+            $methods[$paymentCode] = array(
+                'label' => $paymentTitle,
+                'value' => $paymentCode
+            );
+        }
+        return $methods;
+    }
+    private function getChosenCreditCardMethod()
+    {
+        $scopeConfig = $this->objectManager
+            ->create('\Magento\Framework\App\Config\ScopeConfigInterface');
+        return $scopeConfig->
+        getValue('tappzpayment/tappzcreditcard/tappzcreditcardmethod');
+
     }
 }

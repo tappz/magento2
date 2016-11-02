@@ -17,7 +17,7 @@ class ProductFill extends Product
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $_storeManager;
+    public $storeManager;
 
     /**
      * ProductFill constructor.
@@ -27,7 +27,7 @@ class ProductFill extends Product
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        $this->_storeManager = $storeManager;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -35,29 +35,30 @@ class ProductFill extends Product
      */
     public function fillProduct()
     {
+
         return [
             'id' => $this->getId(),
             'productName' => $this->getProductName(),
             'listPrice' => $this->getListPrice(),
-            //'noImageUrl' => $this->getNoImageUrl(),
-            //'headline' => $this->getHeadline(),
+            'noImageUrl' => $this->getNoImageUrl(),
+            'headline' => $this->getHeadline(),
             'strikeoutPrice' => $this->getStrikeOutPrice(),
-            //'IsCampaign' => $this->getIsCampaign(),
-            //'creditCardInstallments' => $this->getCreditCardInstallments(),
+            'IsCampaign' => $this->getIsCampaign(),
+            'creditCardInstallments' => $this->getCreditCardInstallments(),
             'inStock' => $this->getInStock(),
-            //'shipmentInformation' => $this->getShipmentInformation(),
-            //'isShipmentFree' => $this->getIsShipmentFree(),
-            //'features' => $this->getFeatures(),
+            'shipmentInformation' => $this->getShipmentInformation(),
+            'isShipmentFree' => $this->getIsShipmentFree(),
+            'features' => $this->getFeatures(),
             'variants' => $this->getVariants(),
-            //'shoutOutTexts' => $this->getShoutOutTexts(),
-            //'actions' => $this->getActions(),
+            'shoutOutTexts' => $this->getShoutOutTexts(),
+            'actions' => $this->getActions(),
             'picture' => $this->getPicture(),
             'pictures' => $this->getPictures(),
             'productDetailUrl' => '<p>'.$this->getProductDetailUrl().'</p>',
             'productUrl' => $this->getProductUrl(),
-            //'points' => $this->getPoints(),
-            //'unit' => $this->getUnit(),
-            //'isFavorite' => $this->getIsFavorite(),
+            'points' => $this->getPoints(),
+            'unit' => $this->getUnit(),
+            'isFavorite' => $this->getIsFavorite(),
             'UserFriendly' => $this->getUserFriendly(),
             'ErrorCode' => $this->getErrorCode(),
             'Message' => $this->getMessage(),

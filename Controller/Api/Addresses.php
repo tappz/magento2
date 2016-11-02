@@ -23,15 +23,15 @@ class Addresses extends Action
     /**
      * @var RequestHandler
      */
-    protected $_helper;
+    public $helper;
     /**
      * @var
      */
-    private $_jsonResult;
+    private $jsonResult;
     /**
      * @var AddressRepositoryInterface
      */
-    private $_addressRepository;
+    private $addressRepository;
 
     /**
      * Addresses constructor.
@@ -48,10 +48,10 @@ class Addresses extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->_jsonResult = $json->create();
-        $this->_helper = $helper;
-        $this->_addressRepository = $addressRepository;
-        $this->_helper->checkAuth();
+        $this->jsonResult = $json->create();
+        $this->helper = $helper;
+        $this->addressRepository = $addressRepository;
+        $this->helper->checkAuth();
     }
 
     /**
@@ -59,22 +59,23 @@ class Addresses extends Action
      */
     public function execute()
     {
-        $method = $this->_helper->getRequestMethod();
+        $method = $this->helper->getRequestMethod();
+        $result = [];
         switch ($method) {
             case 'POST':
-                $result = $this->_addressRepository->createAddress();
+                $result = $this->addressRepository->createAddress();
                 break;
             case 'PUT':
-                $result = $this->_addressRepository->editAddress();
+                $result = $this->addressRepository->editAddress();
                 break;
             case 'DELETE':
-                $result = $this->_addressRepository->deleteAddress();
+                $result = $this->addressRepository->deleteAddress();
                 break;
             default:
                 break;
         }
-        $this->_jsonResult->setData($result);
+        $this->jsonResult->setData($result);
 
-        return $this->_jsonResult;
+        return $this->jsonResult;
     }
 }

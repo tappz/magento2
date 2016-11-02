@@ -20,14 +20,14 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
     /**
      * @var
      */
-    protected $_purchase;
+    public $purchase;
 
     /**
      * @return mixed
      */
     public function getPurchases()
     {
-        return $this->_purchase;
+        return $this->purchase;
     }
 
     /**
@@ -37,7 +37,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setPurchases($data)
     {
-        $this->_purchase = $data;
+        $this->purchase = $data;
 
         return $this;
     }
@@ -47,7 +47,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getPurchaseId()
     {
-        return $this->_purchase->purchaseId;
+        return $this->purchase->purchaseId;
     }
 
     /**
@@ -57,7 +57,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setPurchaseId($data)
     {
-        $this->_purchase->purchaseId = $data;
+        $this->purchase->purchaseId = $data;
 
         return $this;
     }
@@ -67,7 +67,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getTrackingNumber()
     {
-        return $this->_purchase->trackingNumber;
+        return $this->purchase->trackingNumber;
     }
 
     /**
@@ -77,7 +77,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setTrackingNumber($data)
     {
-        $this->_purchase->trackingNumber = $data;
+        $this->purchase->trackingNumber = $data;
 
         return $this;
     }
@@ -87,7 +87,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getOrderDate()
     {
-        return $this->_purchase->orderDate;
+        return $this->purchase->orderDate;
     }
 
     /**
@@ -97,7 +97,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setOrderDate($data)
     {
-        $this->_purchase->orderDate = $data;
+        $this->purchase->orderDate = $data;
 
         return $this;
     }
@@ -107,7 +107,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getShippingStatus()
     {
-        return $this->_purchase->shippingStatus;
+        return $this->purchase->shippingStatus;
     }
 
     /**
@@ -117,7 +117,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setShippingStatus($data)
     {
-        $this->_purchase->shippingStatus = $data;
+        $this->purchase->shippingStatus = $data;
 
         return $this;
     }
@@ -127,7 +127,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getPaymentStatus()
     {
-        return $this->_purchase->paymentStatus;
+        return $this->purchase->paymentStatus;
     }
 
     /**
@@ -137,7 +137,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setPaymentStatus($data)
     {
-        $this->_purchase->paymentStatus = $data;
+        $this->purchase->paymentStatus = $data;
 
         return $this;
     }
@@ -149,7 +149,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setIpAddress($data)
     {
-        $this->_purchase->ipAddress = $data;
+        $this->purchase->ipAddress = $data;
 
         return $this;
     }
@@ -159,7 +159,8 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getIpAddress()
     {
-        return $this->_purchase->ipAddress;
+        return !empty($_SERVER['HTTP_CLIENT_IP']) ?
+            $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
     }
 
     /**
@@ -169,7 +170,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setLines($data)
     {
-        $this->_purchase->lines = $data;
+        $this->purchase->lines = $data;
 
         return $this;
     }
@@ -179,7 +180,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getLines()
     {
-        return $this->_purchase->lines;
+        return $this->purchase->lines;
     }
 
     /**
@@ -189,7 +190,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setDelivery($data)
     {
-        $this->_purchase->delivery = $data;
+        $this->purchase->delivery = $data;
 
         return $this;
     }
@@ -199,7 +200,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getDelivery()
     {
-        return $this->_purchase->delivery;
+        return $this->purchase->delivery;
     }
 
     /**
@@ -209,7 +210,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setPayment($data)
     {
-        $this->_purchase->payment = $data;
+        $this->purchase->payment = $data;
 
         return $this;
     }
@@ -219,7 +220,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getPayment()
     {
-        return $this->_purchase->payment;
+        return $this->purchase->payment;
     }
 
     /**
@@ -229,7 +230,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setCurrency($data)
     {
-        $this->_purchase->currency = $data;
+        $this->purchase->currency = $data;
 
         return $this;
     }
@@ -239,7 +240,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getCurrency()
     {
-        return $this->_purchase->currency;
+        return $this->purchase->currency;
     }
 
     /**
@@ -249,7 +250,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setItemsPriceTotal($data)
     {
-        $this->_purchase->priceTotal = $data;
+        $this->purchase->priceTotal = $data;
 
         return $this;
     }
@@ -259,7 +260,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getItemsPriceTotal()
     {
-        return $this->_purchase->priceTotal;
+        return $this->purchase->priceTotal;
     }
 
     /**
@@ -269,7 +270,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setDiscountTotal($data)
     {
-        $this->_purchase->discountTotal = $data;
+        $this->purchase->discountTotal = $data;
 
         return $this;
     }
@@ -279,7 +280,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getDiscountTotal()
     {
-        return $this->_purchase->discountTotal;
+        return $this->purchase->discountTotal;
     }
 
     /**
@@ -289,7 +290,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setSubTotal($data)
     {
-        $this->_purchase->subTotal = $data;
+        $this->purchase->subTotal = $data;
 
         return $this;
     }
@@ -299,7 +300,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getSubTotal()
     {
-        return $this->_purchase->subTotal;
+        return $this->purchase->subTotal;
     }
 
     /**
@@ -309,7 +310,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setShippingTotal($data)
     {
-        $this->_purchase->shippingTotal = $data;
+        $this->purchase->shippingTotal = $data;
 
         return $this;
     }
@@ -319,7 +320,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getShippingTotal()
     {
-        return $this->_purchase->shippingTotal;
+        return $this->purchase->shippingTotal;
     }
 
     /**
@@ -329,7 +330,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setTotal($data)
     {
-        $this->_purchase->total = $data;
+        $this->purchase->total = $data;
 
         return $this;
     }
@@ -339,7 +340,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getTotal()
     {
-        return $this->_purchase->total;
+        return $this->purchase->total;
     }
 
     /**
@@ -349,7 +350,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setTaxTotalValue($data)
     {
-        $this->_purchase->taxTotalValue = $data;
+        $this->purchase->taxTotalValue = $data;
 
         return $this;
     }
@@ -359,7 +360,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getTaxTotalValue()
     {
-        return $this->_purchase->taxTotalValue;
+        return $this->purchase->taxTotalValue;
     }
 
     /**
@@ -369,7 +370,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setShippingTotalValue($data)
     {
-        $this->_purchase->shippingTotalValue = $data;
+        $this->purchase->shippingTotalValue = $data;
 
         return $this;
     }
@@ -379,7 +380,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getShippingTotalValue()
     {
-        return $this->_purchase->shippingTotalValue;
+        return $this->purchase->shippingTotalValue;
     }
 
     /**
@@ -389,7 +390,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setTotalValue($data)
     {
-        $this->_purchase->totalValue = $data;
+        $this->purchase->totalValue = $data;
 
         return $this;
     }
@@ -399,7 +400,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getTotalValue()
     {
-        return $this->_purchase->totalValue;
+        return $this->purchase->totalValue;
     }
 
     /**
@@ -409,7 +410,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setCanChangeAddress($data)
     {
-        $this->_purchase->canChangeAddress = $data;
+        $this->purchase->canChangeAddress = $data;
 
         return $this;
     }
@@ -419,7 +420,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getCanChangeAddress()
     {
-        return $this->_purchase->canChangeAddress;
+        return $this->purchase->canChangeAddress;
     }
 
     /**
@@ -429,7 +430,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setErrorCode($data)
     {
-        $this->_purchase->errorCode = $data;
+        $this->purchase->errorCode = $data;
 
         return $this;
     }
@@ -439,7 +440,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getErrorCode()
     {
-        return $this->_purchase->errorCode;
+        return $this->purchase->errorCode;
     }
 
     /**
@@ -449,7 +450,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setMessage($data)
     {
-        $this->_purchase->message = $data;
+        $this->purchase->message = $data;
 
         return $this;
     }
@@ -459,7 +460,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getMessage()
     {
-        return $this->_purchase->message;
+        return $this->purchase->message;
     }
 
     /**
@@ -469,7 +470,7 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function setUserFriendly($data)
     {
-        $this->_purchase->userFriendly = $data;
+        $this->purchase->userFriendly = $data;
 
         return $this;
     }
@@ -479,6 +480,6 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getUserFriendly()
     {
-        return $this->_purchase->userFriendly;
+        return $this->purchase->userFriendly;
     }
 }

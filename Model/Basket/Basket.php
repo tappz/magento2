@@ -20,19 +20,19 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     /**
      * @var
      */
-    protected $_basket;
+    public $basket;
     /**
      * @var
      */
-    protected $_payment;
+    public $payment;
     /**
      * @var
      */
-    protected $_contract;
+    public $contract;
     /**
      * @var
      */
-    protected $_purchase;
+    public $purchase;
 
     /**
      * @return mixed
@@ -49,7 +49,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setBasket($data)
     {
-        $this->_basket = $data;
+        $this->basket = $data;
 
         return $this;
     }
@@ -59,7 +59,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getAverageDeliveryDays()
     {
-        return $this->_basket->averageDeliveryDays;
+        return $this->basket->averageDeliveryDays;
     }
 
     /**
@@ -67,7 +67,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getBeforeTaxTotal()
     {
-        return $this->_basket->beforeTaxTotal;
+        return $this->basket->beforeTaxTotal;
     }
 
     /**
@@ -75,7 +75,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCurrency()
     {
-        return $this->_basket->currency;
+        return $this->basket->currency;
     }
 
     /**
@@ -83,7 +83,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDelivery()
     {
-        return $this->_basket->delivery;
+        return $this->basket->delivery;
     }
 
     /**
@@ -91,7 +91,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDiscounts()
     {
-        return $this->_basket->discounts;
+        return $this->basket->discounts;
     }
 
     /**
@@ -99,7 +99,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDiscountTotal()
     {
-        return $this->_basket->discountTotal;
+        return $this->basket->discountTotal;
     }
 
     /**
@@ -107,7 +107,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDiscountDisplayName()
     {
-        return $this->_basket->discountDisplayName;
+        return $this->basket->discountDisplayName;
     }
 
     /**
@@ -115,7 +115,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDiscountPromoCode()
     {
-        return $this->_basket->discountPromoCode;
+        return $this->basket->discountPromoCode;
     }
 
     /**
@@ -123,7 +123,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getErrorCode()
     {
-        return $this->_basket->errorCode;
+        return $this->basket->errorCode;
     }
 
     /**
@@ -131,7 +131,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getErrors()
     {
-        return $this->_basket->errors;
+        return $this->basket->errors;
     }
 
     /**
@@ -139,7 +139,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getEstimatedSupplyDate()
     {
-        return $this->_basket->estimatedSupplyDate;
+        return $this->basket->estimatedSupplyDate;
     }
 
     /**
@@ -147,7 +147,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getExpirationTime()
     {
-        return $this->_basket->expirationTime;
+        return $this->basket->expirationTime;
     }
 
     /**
@@ -155,7 +155,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getExtendedPrice()
     {
-        return $this->_basket->extendedPrice;
+        return $this->basket->extendedPrice;
     }
 
     /**
@@ -163,7 +163,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getExtendedPriceTotal()
     {
-        return $this->_basket->extendedPriceTotal;
+        return $this->basket->extendedPriceTotal;
     }
 
     /**
@@ -171,7 +171,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getExtendedPriceTotalValue()
     {
-        return $this->_basket->extendedPriceTotalValue;
+        return $this->basket->extendedPriceTotalValue;
     }
 
     /**
@@ -179,7 +179,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getExtendedPriceValue()
     {
-        return $this->_basket->extendedPriceValue;
+        return $this->basket->extendedPriceValue;
     }
 
     /**
@@ -187,7 +187,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getGiftCheques()
     {
-        return $this->_basket->giftCheques;
+        return $this->basket->giftCheques;
     }
 
     /**
@@ -195,7 +195,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getGiftWrapping()
     {
-        return $this->_basket->giftWrapping;
+        return $this->basket->giftWrapping;
     }
 
     /**
@@ -203,7 +203,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getId()
     {
-        return $this->_basket->id;
+        return $this->basket->id;
     }
 
     /**
@@ -211,7 +211,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getIsGiftWrappingEnabled()
     {
-        return $this->_basket->isGiftWrappingEnabled;
+        return $this->basket->isGiftWrappingEnabled;
     }
 
     /**
@@ -219,7 +219,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getItemsPriceTotal()
     {
-        return $this->_basket->itemsPriceTotal;
+        return $this->basket->itemsPriceTotal;
     }
 
     /**
@@ -227,7 +227,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getLine()
     {
-        return $this->_basket->lines;
+        return $this->basket->lines;
     }
 
     /**
@@ -235,7 +235,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getMessage()
     {
-        return $this->_basket->message;
+        return $this->basket->message;
     }
 
     /**
@@ -243,7 +243,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPayment()
     {
-        return $this->_basket->payment;
+        return $this->basket->payment;
     }
 
     /**
@@ -253,7 +253,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setPayment($data)
     {
-        $this->_basket->payment = $data;
+        $this->basket->payment = $data;
 
         return $this;
     }
@@ -263,7 +263,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPaymentFee()
     {
-        return $this->_basket->paymentFee;
+        return $this->basket->paymentFee;
     }
 
     /**
@@ -271,7 +271,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPaymentOptions()
     {
-        return $this->_basket->paymentOptions;
+        return $this->basket->paymentOptions;
     }
 
     /**
@@ -279,7 +279,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPlacedPrice()
     {
-        return $this->_basket->placedPrice;
+        return $this->basket->placedPrice;
     }
 
     /**
@@ -287,7 +287,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPlacedPriceTotal()
     {
-        return $this->_basket->placedPriceTotal;
+        return $this->basket->placedPriceTotal;
     }
 
     /**
@@ -295,7 +295,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getProduct()
     {
-        return $this->_basket->product;
+        return $this->basket->product;
     }
 
     /**
@@ -303,7 +303,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getProductId()
     {
-        return $this->_basket->productId;
+        return $this->basket->productId;
     }
 
     /**
@@ -311,7 +311,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getQuantity()
     {
-        $quantity = $this->_basket->quantity;
+        $quantity = $this->basket->quantity;
         $result = empty($quantity) ? 0 : $quantity;
         return $result;
     }
@@ -321,7 +321,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getRewardPoints()
     {
-        return $this->_basket->rewardPoints;
+        return $this->basket->rewardPoints;
     }
 
     /**
@@ -329,7 +329,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getShippingMethods()
     {
-        return $this->_basket->shippingMethods;
+        return $this->basket->shippingMethods;
     }
 
     /**
@@ -337,7 +337,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getShippingMethod()
     {
-        return $this->_basket->shippingMethod;
+        return $this->basket->shippingMethod;
     }
 
     /**
@@ -345,7 +345,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getShippingTotal()
     {
-        return $this->_basket->shippingTotal;
+        return $this->basket->shippingTotal;
     }
 
     /**
@@ -353,7 +353,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getSpentGiftChequeTotal()
     {
-        return $this->_basket->spentGiftChequeTotal;
+        return $this->basket->spentGiftChequeTotal;
     }
 
     /**
@@ -361,7 +361,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getStatus()
     {
-        return $this->_basket->status;
+        return $this->basket->status;
     }
 
     /**
@@ -369,7 +369,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getStrikeoutPrice()
     {
-        return $this->_basket->strikeoutPrice;
+        return $this->basket->strikeoutPrice;
     }
 
     /**
@@ -377,7 +377,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getSubTotal()
     {
-        return $this->_basket->subtotal;
+        return $this->basket->subtotal;
     }
 
     /**
@@ -385,7 +385,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getTaxTotal()
     {
-        return $this->_basket->taxTotal;
+        return $this->basket->taxTotal;
     }
 
     /**
@@ -393,7 +393,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getTotal()
     {
-        return $this->_basket->total;
+        return $this->basket->total;
     }
 
     /**
@@ -401,7 +401,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getUsedPoints()
     {
-        return $this->_basket->usedPoints;
+        return $this->basket->usedPoints;
     }
 
     /**
@@ -409,7 +409,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getUsedPointsAmount()
     {
-        return $this->_basket->usedPointsAmount;
+        return $this->basket->usedPointsAmount;
     }
 
     /**
@@ -417,7 +417,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getUserFriendly()
     {
-        return $this->_basket->userFriendly;
+        return $this->basket->userFriendly;
     }
 
     /**
@@ -428,7 +428,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     public function getLines($id)
     {
         $id;
-        return $this->_basket->lines;
+        return $this->basket->lines;
     }
 
     /**
@@ -438,7 +438,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setAverageDeliveryDays($data)
     {
-        $this->_basket->averageDeliveryDays = $data;
+        $this->basket->averageDeliveryDays = $data;
 
         return $this;
     }
@@ -450,7 +450,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setBeforeTaxTotal($data)
     {
-        $this->_basket->beforeTaxTotal = $data;
+        $this->basket->beforeTaxTotal = $data;
 
         return $this;
     }
@@ -462,7 +462,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCurrency($data)
     {
-        $this->_basket->currency = $data;
+        $this->basket->currency = $data;
 
         return $this;
     }
@@ -474,7 +474,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDelivery($data)
     {
-        $this->_basket->delivery = $data;
+        $this->basket->delivery = $data;
 
         return $this;
     }
@@ -486,7 +486,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDiscounts($data)
     {
-        $this->_basket->discounts = $data;
+        $this->basket->discounts = $data;
 
         return $this;
     }
@@ -498,7 +498,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setErrorCode($data)
     {
-        $this->_basket->errorCode = $data;
+        $this->basket->errorCode = $data;
 
         return $this;
     }
@@ -510,7 +510,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setErrors($data)
     {
-        $this->_basket->errors = $data;
+        $this->basket->errors = $data;
 
         return $this;
     }
@@ -522,7 +522,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setEstimatedSupplyDate($data)
     {
-        $this->_basket->estimatedSupplyDate = $data;
+        $this->basket->estimatedSupplyDate = $data;
 
         return $this;
     }
@@ -534,7 +534,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setExpirationTime($data)
     {
-        $this->_basket->expirationTime = $data;
+        $this->basket->expirationTime = $data;
 
         return $this;
     }
@@ -546,7 +546,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setExtendedPrice($data = '')
     {
-        $this->_basket->extendedPrice = $data;
+        $this->basket->extendedPrice = $data;
 
         return $this;
     }
@@ -558,7 +558,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setExtendedPriceTotal($data)
     {
-        $this->_basket->extendedPriceTotal = $data;
+        $this->basket->extendedPriceTotal = $data;
 
         return $this;
     }
@@ -570,7 +570,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setExtendedPriceTotalValue($data)
     {
-        $this->_basket->extendedPriceTotalValue = $data;
+        $this->basket->extendedPriceTotalValue = $data;
 
         return $this;
     }
@@ -582,7 +582,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setExtendedPriceValue($data)
     {
-        $this->_basket->extendedPriceValue = $data;
+        $this->basket->extendedPriceValue = $data;
 
         return $this;
     }
@@ -594,7 +594,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setGiftCheques($data)
     {
-        $this->_basket->giftCheques = $data;
+        $this->basket->giftCheques = $data;
 
         return $this;
     }
@@ -606,7 +606,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setGiftWrapping($data)
     {
-        $this->_basket->giftWrapping = $data;
+        $this->basket->giftWrapping = $data;
 
         return $this;
     }
@@ -618,7 +618,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setId($data)
     {
-        $this->_basket->id = $data;
+        $this->basket->id = $data;
 
         return $this;
     }
@@ -630,7 +630,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setIsGiftWrappingEnabled($data)
     {
-        $this->_basket->isGiftWrappingEnabled = $data;
+        $this->basket->isGiftWrappingEnabled = $data;
 
         return $this;
     }
@@ -642,7 +642,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setItemsPriceTotal($data)
     {
-        $this->_basket->itemsPriceTotal = $data;
+        $this->basket->itemsPriceTotal = $data;
 
         return $this;
     }
@@ -654,7 +654,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setLine($data)
     {
-        $this->_basket->lines = $data;
+        $this->basket->lines = $data;
 
         return $this;
     }
@@ -666,7 +666,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setMessage($data)
     {
-        $this->_basket->message = $data;
+        $this->basket->message = $data;
 
         return $this;
     }
@@ -678,7 +678,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setPaymentFee($data)
     {
-        $this->_basket->paymentFee = $data;
+        $this->basket->paymentFee = $data;
 
         return $this;
     }
@@ -690,7 +690,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setPaymentOptions($data)
     {
-        $this->_basket->paymentOptions = $data;
+        $this->basket->paymentOptions = $data;
 
         return $this;
     }
@@ -702,7 +702,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setPlacedPrice($data)
     {
-        $this->_basket->placedPrice = $data;
+        $this->basket->placedPrice = $data;
 
         return $this;
     }
@@ -714,7 +714,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setPlacedPriceTotal($data)
     {
-        $this->_basket->placedPriceTotal = $data;
+        $this->basket->placedPriceTotal = $data;
 
         return $this;
     }
@@ -726,7 +726,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setProduct($data)
     {
-        $this->_basket->product = $data;
+        $this->basket->product = $data;
 
         return $this;
     }
@@ -738,7 +738,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setProductId($data)
     {
-        $this->_basket->productId = $data;
+        $this->basket->productId = $data;
 
         return $this;
     }
@@ -750,7 +750,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setQuantity($data)
     {
-        $this->_basket->quantity = $data;
+        $this->basket->quantity = $data;
 
         return $this;
     }
@@ -762,7 +762,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setRewardPoints($data)
     {
-        $this->_basket->rewardPoints = $data;
+        $this->basket->rewardPoints = $data;
 
         return $this;
     }
@@ -774,7 +774,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setShippingMethods($data)
     {
-        $this->_basket->shippingMethods = $data;
+        $this->basket->shippingMethods = $data;
 
         return $this;
     }
@@ -786,7 +786,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setShippingMethod($data)
     {
-        $this->_basket->shippingMethod = $data;
+        $this->basket->shippingMethod = $data;
 
         return $this;
     }
@@ -798,7 +798,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setShippingTotal($data)
     {
-        $this->_basket->shippingTotal = $data;
+        $this->basket->shippingTotal = $data;
 
         return $this;
     }
@@ -810,7 +810,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setSpentGiftChequeTotal($data)
     {
-        $this->_basket->spentGiftChequeTotal = $data;
+        $this->basket->spentGiftChequeTotal = $data;
 
         return $this;
     }
@@ -822,7 +822,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setStatus($data)
     {
-        $this->_basket->status = $data;
+        $this->basket->status = $data;
 
         return $this;
     }
@@ -832,7 +832,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setStrikeoutPrice($data)
     {
-        $this->_basket->strikeoutPrice = $data;
+        $this->basket->strikeoutPrice = $data;
     }
 
     /**
@@ -842,7 +842,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setSubTotal($data)
     {
-        $this->_basket->subtotal = $data;
+        $this->basket->subtotal = $data;
 
         return $this;
     }
@@ -854,7 +854,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setTaxTotal($data)
     {
-        $this->_basket->taxTotal = $data;
+        $this->basket->taxTotal = $data;
 
         return $this;
     }
@@ -866,7 +866,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setTotal($data)
     {
-        $this->_basket->total = $data;
+        $this->basket->total = $data;
 
         return $this;
     }
@@ -878,7 +878,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setUsedPoints($data)
     {
-        $this->_basket->usedPoints = $data;
+        $this->basket->usedPoints = $data;
 
         return $this;
     }
@@ -890,7 +890,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setUsedPointsAmount($data)
     {
-        $this->_basket->usedPointsAmount = $data;
+        $this->basket->usedPointsAmount = $data;
 
         return $this;
     }
@@ -902,7 +902,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setUserFriendly($data)
     {
-        $this->_basket->userFriendly = $data;
+        $this->basket->userFriendly = $data;
 
         return $this;
     }
@@ -914,7 +914,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setLines($lines)
     {
-        $this->_basket->lines = $lines;
+        $this->basket->lines = $lines;
 
         return $this;
     }
@@ -926,7 +926,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDiscountTotal($discountTotal)
     {
-        $this->_basket->discountTotal = $discountTotal;
+        $this->basket->discountTotal = $discountTotal;
 
         return $this;
     }
@@ -938,7 +938,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDiscountDisplayName($displayName)
     {
-        $this->_basket->discountDisplayName = $displayName;
+        $this->basket->discountDisplayName = $displayName;
 
         return $this;
     }
@@ -950,7 +950,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDiscountPromoCode($promeCode)
     {
-        $this->_basket->discountPromoCode = $promeCode;
+        $this->basket->discountPromoCode = $promeCode;
 
         return $this;
     }
@@ -960,7 +960,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getVariants()
     {
-        return $this->_basket->variants;
+        return $this->basket->variants;
     }
 
     /**
@@ -970,7 +970,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setVariants($data)
     {
-        $this->_basket->variants = $data;
+        $this->basket->variants = $data;
 
         return $this;
     }
@@ -983,7 +983,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setMethodType($data)
     {
-        $this->_payment->methodType = $data;
+        $this->payment->methodType = $data;
 
         return $this;
     }
@@ -995,7 +995,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setType($data)
     {
-        $this->_payment->type = $data;
+        $this->payment->type = $data;
 
         return $this;
     }
@@ -1007,7 +1007,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setDisplayName($data)
     {
-        $this->_payment->displayName = $data;
+        $this->payment->displayName = $data;
 
         return $this;
     }
@@ -1019,7 +1019,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setBankCode($data)
     {
-        $this->_payment->bankCode = $data;
+        $this->payment->bankCode = $data;
 
         return $this;
     }
@@ -1031,7 +1031,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setInstallment($data)
     {
-        $this->_payment->installment = $data;
+        $this->payment->installment = $data;
 
         return $this;
     }
@@ -1043,7 +1043,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setAccountNumber($data)
     {
-        $this->_payment->accountNumber = $data;
+        $this->payment->accountNumber = $data;
 
         return $this;
     }
@@ -1055,7 +1055,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setBranch($data)
     {
-        $this->_payment->branch = $data;
+        $this->payment->branch = $data;
 
         return $this;
     }
@@ -1067,7 +1067,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setIban($data)
     {
-        $this->_payment->iban = $data;
+        $this->payment->iban = $data;
 
         return $this;
     }
@@ -1079,7 +1079,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCard($data)
     {
-        $this->_payment->creditCard = $data;
+        $this->payment->creditCard = $data;
 
         return $this;
     }
@@ -1091,7 +1091,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardOwner($data)
     {
-        $this->_basket->creditCard->owner = $data;
+        $this->basket->creditCard->owner = $data;
 
         return $this;
     }
@@ -1103,7 +1103,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardNumber($data)
     {
-        $this->_basket->creditCard->number = $data;
+        $this->basket->creditCard->number = $data;
 
         return $this;
     }
@@ -1115,7 +1115,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardMonth($data)
     {
-        $this->_basket->creditCard->month = $data;
+        $this->basket->creditCard->month = $data;
 
         return $this;
     }
@@ -1127,7 +1127,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardYear($data)
     {
-        $this->_basket->creditCard->year = $data;
+        $this->basket->creditCard->year = $data;
 
         return $this;
     }
@@ -1139,7 +1139,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardCvv($data)
     {
-        $this->_basket->creditCard->ccv = $data;
+        $this->basket->creditCard->ccv = $data;
 
         return $this;
     }
@@ -1151,7 +1151,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCreditCardCvvType($data)
     {
-        $this->_basket->creditCard->ccvType = $data;
+        $this->basket->creditCard->ccvType = $data;
 
         return $this;
     }
@@ -1163,7 +1163,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDelivery($data)
     {
-        $this->_basket->cashOnDelivery = $data;
+        $this->basket->cashOnDelivery = $data;
 
         return $this;
     }
@@ -1175,7 +1175,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryType($data)
     {
-        $this->_basket->cashOnDelivery->type = $data;
+        $this->basket->cashOnDelivery->type = $data;
 
         return $this;
     }
@@ -1187,7 +1187,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryDisplayName($data)
     {
-        $this->_basket->cashOnDelivery->displayName = $data;
+        $this->basket->cashOnDelivery->displayName = $data;
 
         return $this;
     }
@@ -1199,7 +1199,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryAdditionalFee($data)
     {
-        $this->_basket->cashOnDelivery->additionalFee = $data;
+        $this->basket->cashOnDelivery->additionalFee = $data;
 
         return $this;
     }
@@ -1211,7 +1211,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryDescription($data)
     {
-        $this->_basket->cashOnDelivery->description = $data;
+        $this->basket->cashOnDelivery->description = $data;
 
         return $this;
     }
@@ -1223,7 +1223,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryIsSMSVerification($data)
     {
-        $this->_basket->cashOnDelivery->isSMSVerification = $data;
+        $this->basket->cashOnDelivery->isSMSVerification = $data;
 
         return $this;
     }
@@ -1235,7 +1235,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliverySMSCode($data)
     {
-        $this->_basket->cashOnDelivery->SMSCode = $data;
+        $this->basket->cashOnDelivery->SMSCode = $data;
 
         return $this;
     }
@@ -1247,7 +1247,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setCashOnDeliveryPhoneNumber($data)
     {
-        $this->_basket->cashOnDelivery->phoneNumber = $data;
+        $this->basket->cashOnDelivery->phoneNumber = $data;
 
         return $this;
     }
@@ -1259,7 +1259,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setClientId($data)
     {
-        $this->_basket->cashOnDelivery->phoneNumber = $data;
+        $this->basket->cashOnDelivery->phoneNumber = $data;
 
         return $this;
     }
@@ -1269,7 +1269,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getMethodType()
     {
-        return $this->_payment->methodType;
+        return $this->payment->methodType;
     }
 
     /**
@@ -1277,7 +1277,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getType()
     {
-        return $this->_payment->type;
+        return $this->payment->type;
     }
 
     /**
@@ -1285,7 +1285,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getDisplayName()
     {
-        return $this->_payment->displayName;
+        return $this->payment->displayName;
     }
 
     /**
@@ -1293,7 +1293,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getBankCode()
     {
-        return $this->_payment->bankCode;
+        return $this->payment->bankCode;
     }
 
     /**
@@ -1301,7 +1301,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getInstallment()
     {
-        return $this->_payment->installment;
+        return $this->payment->installment;
     }
 
     /**
@@ -1309,7 +1309,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getAccountNumber()
     {
-        return $this->_payment->accountNumber;
+        return $this->payment->accountNumber;
     }
 
     /**
@@ -1317,7 +1317,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getBranch()
     {
-        return $this->_payment->branch;
+        return $this->payment->branch;
     }
 
     /**
@@ -1325,7 +1325,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getIban()
     {
-        return $this->_payment->iban;
+        return $this->payment->iban;
     }
 
     /**
@@ -1333,7 +1333,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCard()
     {
-        return $this->_payment->creditCard;
+        return $this->payment->creditCard;
     }
 
     /**
@@ -1341,7 +1341,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardOwner()
     {
-        return $this->_basket->creditCard->owner;
+        return $this->basket->creditCard->owner;
     }
 
     /**
@@ -1349,7 +1349,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardNumber()
     {
-        return $this->_payment->creditCard->number;
+        return $this->payment->creditCard->number;
     }
 
     /**
@@ -1357,7 +1357,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardMonth()
     {
-        return $this->_payment->creditCard->month;
+        return $this->payment->creditCard->month;
     }
 
     /**
@@ -1365,7 +1365,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardYear()
     {
-        return $this->_payment->creditCard->year;
+        return $this->payment->creditCard->year;
     }
 
     /**
@@ -1373,7 +1373,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardCvv()
     {
-        return $this->_payment->creditCard->ccv;
+        return $this->payment->creditCard->ccv;
     }
 
     /**
@@ -1381,7 +1381,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCreditCardCvvType()
     {
-        return $this->_payment->creditCard->ccvType;
+        return $this->payment->creditCard->ccvType;
     }
 
     /**
@@ -1389,7 +1389,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDelivery()
     {
-        return $this->_payment->cashOnDelivery;
+        return $this->payment->cashOnDelivery;
     }
 
     /**
@@ -1397,7 +1397,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryType()
     {
-        return $this->_payment->cashOnDelivery->type;
+        return $this->payment->cashOnDelivery->type;
     }
 
     /**
@@ -1405,7 +1405,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryDisplayName()
     {
-        return $this->_payment->cashOnDelivery->displayName;
+        return $this->payment->cashOnDelivery->displayName;
     }
 
     /**
@@ -1413,7 +1413,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryAdditionalFee()
     {
-        return $this->_payment->cashOnDelivery->additionalFee;
+        return $this->payment->cashOnDelivery->additionalFee;
     }
 
     /**
@@ -1421,7 +1421,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryDescription()
     {
-        return $this->_payment->cashOnDelivery->description;
+        return $this->payment->cashOnDelivery->description;
     }
 
     /**
@@ -1429,7 +1429,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryIsSMSVerification()
     {
-        return $this->_payment->cashOnDelivery->isSMSVerification;
+        return $this->payment->cashOnDelivery->isSMSVerification;
     }
 
     /**
@@ -1437,7 +1437,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliverySMSCode()
     {
-        return $this->_payment->cashOnDelivery->SMSCode;
+        return $this->payment->cashOnDelivery->SMSCode;
     }
 
     /**
@@ -1445,7 +1445,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getCashOnDeliveryPhoneNumber()
     {
-        return $this->_payment->cashOnDelivery->phoneNumber;
+        return $this->payment->cashOnDelivery->phoneNumber;
     }
 
     /**
@@ -1453,7 +1453,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getPaypal()
     {
-        return $this->_payment->paypal;
+        return $this->payment->paypal;
     }
 
     /**
@@ -1461,7 +1461,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getClientId()
     {
-        return $this->_payment->clienId;
+        return $this->payment->clienId;
     }
 
     /**
@@ -1469,7 +1469,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getContract()
     {
-        return $this->_contract;
+        return $this->contract;
     }
 
     /**
@@ -1480,7 +1480,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
     public function setContract($data)
     {
         $data;
-        $result = $this->_contract = (object)[];
+        $result = $this->contract = (object)[];
 
         return $result;
     }
@@ -1490,7 +1490,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getContractData()
     {
-        return $this->_contract->data;
+        return $this->contract->data;
     }
 
     /**
@@ -1498,7 +1498,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function getShippingContract()
     {
-        return $this->_contract->shippingContract;
+        return $this->contract->shippingContract;
     }
 
     /**
@@ -1508,7 +1508,7 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setContractData($data)
     {
-        $result = $this->_contract->data = $data;
+        $result = $this->contract->data = $data;
 
         return $result;
     }
@@ -1520,8 +1520,70 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
      */
     public function setShippingContract($data)
     {
-        $result = $this->_contract->shippingContract = $data;
+        $result = $this->contract->shippingContract = $data;
 
         return $result;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingIsSelected()
+    {
+        return $this->basket->giftWrappingIsSelected;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingFee()
+    {
+        return $this->basket->giftWrappingFee;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingCharacter()
+    {
+        return $this->basket->giftWrappingCharacter;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingMessage()
+    {
+        return $this->basket->giftWrappingMessage;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingIsSelected($data)
+    {
+        $result = $this->basket->giftWrappingIsSelected = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingFee($data)
+    {
+        $result = $this->basket->giftWrappingFee = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingCharacter($data)
+    {
+        $result =  $this->basket->giftWrappingCharacter = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingMessage($data)
+    {
+        $result =  $this->basket->giftWrappingMessage = $data;
+        return $result;
+    }
+
 }

@@ -21,23 +21,23 @@ class AddressCollector extends AddressFill implements AddressInterface
     /**
      * @var RequestHandler
      */
-    protected $_helper;
+    public $helper;
     /**
      * @var \Magento\Customer\Model\Url
      */
-    protected $_customerUrl;
+    public $customerUrl;
     /**
      * @var
      */
-    protected $_objectManager;
+    public $objectManager;
     /**
      * @var
      */
-    protected $_scopeInterface;
+    public $scopeInterface;
     /**
      * @var ScopeConfig
      */
-    protected $_configAddress;
+    public $configAddress;
 
     /**
      * AddressCollector constructor.
@@ -52,12 +52,12 @@ class AddressCollector extends AddressFill implements AddressInterface
         \Magento\Customer\Model\Url $customerUrl,
         ScopeConfig $configAddress
     ) {
-        $this->_helper = $requestHandler;
-        $this->_customerUrl = $customerUrl;
-        $this->_configAddress = $configAddress;
-        $this->_scopeInterface =
+        $this->helper = $requestHandler;
+        $this->customerUrl = $customerUrl;
+        $this->configAddress = $configAddress;
+        $this->scopeInterface =
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        $this->_objectManager =
+        $this->objectManager =
             \Magento\Framework\App\ObjectManager::getInstance();
     }
 
@@ -76,22 +76,25 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function createOrUpdateAddress($update = false)
     {
-        $userId = $this->_helper->convertJson(
-            $this->_helper->getAuthorization()
+
+
+        $userId = $this->helper->convertJson(
+            $this->helper->getAuthorization()
         );
         $addressResponse = $this->
-        _helper->
-        convertJson($this->_helper->getHeaderJson());
+        helper->
+        convertJson($this->helper->getHeaderJson());
         $store = $this->
-        _objectManager->
+        objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        $customer = $this->_objectManager->
+        $customer = $this->objectManager->
         get('Magento\Customer\Model\Customer')
             ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
-        $address = $this->_objectManager->get('Magento\Customer\Model\Address');
+
+        $address = $this->objectManager->get('Magento\Customer\Model\Address');
         if ($update) {
             $address->load($addressResponse->id);
         }
@@ -102,7 +105,11 @@ class AddressCollector extends AddressFill implements AddressInterface
 
         $valid = $address->validate();
         if (is_array($valid)) {
-            return $valid;
+            $result =  $this->getAddressById(0);
+            $result['ErrorCode'] = "403";
+            $result['Message'] =  implode(",",$valid);
+            $result['UserFriendly'] = true;
+            return $result;
         }
         if ($address->save()) {
             return $this->getAddressById($address->getID());
@@ -118,14 +125,15 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function addressBeforeSave($response, $address)
     {
         if (empty($response->cityCode)) {
-            $response->cityCode = $response->city;
+            $response->cityCode = $response->usCheckoutCity;
         }
         if (empty($response->state)) {
-            $response->state = $response->city;
+            $response->state = $response->usCheckoutCity;
         }
         if (empty($response->stateCode)) {
-            $response->stateCode = $response->cityCode;
+            $response->stateCode = $response->usCheckoutCity;
         }
+
         $address->setData(
             $this->getAttr('tappzaddressname'),
             $response->addressName
@@ -138,10 +146,14 @@ class AddressCollector extends AddressFill implements AddressInterface
             $this->getAttr('tappzaddresslastname'),
             $response->surname
         );
-        $address->setData(
-            $this->getAttr('tappzaddressemail'),
-            $response->email
-        );
+        if(isset($response->email))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddressemail'),
+                $response->email
+            );
+        }
+
         $address->setData(
             $this->getAttr('tappzaddressstreet'),
             $response->addressLine
@@ -156,34 +168,48 @@ class AddressCollector extends AddressFill implements AddressInterface
         );
         $address->setData(
             $this->getAttr('tappzaddressregion'),
-            $response->state);
+            $response->state
+        );
         $address->setData(
             $this->getAttr('tappzaddressregionid'),
             $response->stateCode
         );
         $address->setData(
             $this->getAttr('tappzaddresscity'),
-            $response->city
+            $response->usCheckoutCity
         );
         $address->setData(
             $this->getAttr('tappzaddresscityid'),
             $response->cityCode
         );
-        $address->setData(
-            $this->getAttr('tappzaddressdistrict'),
-            $response->district
-        );
+        if(isset($response->district))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddressdistrict'),
+                $response->district
+            );
+        }
+        if(isset($response->districtCode))
+        {
         $address->setData(
             $this->getAttr('tappzaddressdistrictid'),
             $response->districtCode
         );
-        $address->setData(
-            $this->getAttr('tappzaddresstown'),
-            $response->town);
-        $address->setData(
-            $this->getAttr('tappzaddresstownid'),
-            $response->townCode
-        );
+        }
+        if(isset($response->tappzaddresstown))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddresstown'),
+                $response->town
+            );
+        }
+        if(isset($response->tappzaddresstownid))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddresstownid'),
+                $response->townCode
+            );
+        }
         $address->setData(
             $this->getAttr('tappzaddresscompany'),
             $response->companyTitle
@@ -204,10 +230,14 @@ class AddressCollector extends AddressFill implements AddressInterface
             $this->getAttr('tappzphone'),
             $response->phoneNumber
         );
+        if(isset($response->identityNo)){
+
+
         $address->setData(
             $this->getAttr('tappzidno'),
             $response->identityNo
         );
+        }
         $address->setData(
             $this->getAttr('tappzpostcode'),
             $response->zipCode
@@ -224,7 +254,7 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function getAttr($attr)
     {
         return $this->
-        _configAddress->
+        configAddress->
         getValue('tappzaddress/tappzaddressesform/' . $attr);
     }
 
@@ -235,7 +265,7 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function getAddressById($addressId)
     {
-        $address = $this->_objectManager->get('Magento\Customer\Model\Address');
+        $address = $this->objectManager->get('Magento\Customer\Model\Address');
         $this->setAddress($address->load($addressId));
 
         return $this->fillAddress();
@@ -295,7 +325,9 @@ class AddressCollector extends AddressFill implements AddressInterface
             ->setTownCode(
                 $address->getData($this->getAttr('tappzaddresstownid'))
             )
-            ->setCorporate(false)
+            ->setCorporate(
+                false
+            )
             ->setCorporateTitle(
                 $address->getData($this->getAttr('tappzaddresscompany'))
             )
@@ -335,22 +367,22 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function deleteAddress()
     {
-        $json = $this->_helper->getHeaderJson();
-        $userId = $this->_helper->convertJson(
-            $this->_helper->getAuthorization()
+        $json = $this->helper->getHeaderJson();
+        $userId = $this->helper->convertJson(
+            $this->helper->getAuthorization()
         );
-        $addressResponse = $this->_helper->convertJson($json);
+        $addressResponse = $this->helper->convertJson($json);
         $store = $this->
-        _objectManager->
+        objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
         $customer =
-            $this->_objectManager->get('Magento\Customer\Model\Customer')
+            $this->objectManager->get('Magento\Customer\Model\Customer')
                 ->setStore($store)->load($userId);
         if (!$customer->getID()) {
             return 'Error';
         }
         $address =
-            $this->_objectManager->get('Magento\Customer\Model\Address');
+            $this->objectManager->get('Magento\Customer\Model\Address');
         $address->load($addressResponse->id);
         $result = $this->getAddressById($address->getID());
         $address->delete();

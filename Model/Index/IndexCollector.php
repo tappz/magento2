@@ -23,15 +23,15 @@ class IndexCollector extends IndexFill implements IndexInterface
     /**
      * @var CategoryRepository
      */
-    protected $_categoryRepository;
+    public $categoryRepository;
     /**
      * @var ProductCollector
      */
-    protected $_productCollector;
+    public $productCollector;
     /**
      * @var CategoryFactory
      */
-    private $_categoryFactory;
+    private $categoryFactory;
 
     /**
      * IndexCollector constructor.
@@ -48,9 +48,9 @@ class IndexCollector extends IndexFill implements IndexInterface
         CategoryFactory $categoryFactory
     ) {
         parent::__construct($storeManager);
-        $this->_categoryRepository = $categoryRepository;
-        $this->_productCollector = $productCollector;
-        $this->_categoryFactory = $categoryFactory;
+        $this->categoryRepository = $categoryRepository;
+        $this->productCollector = $productCollector;
+        $this->categoryFactory = $categoryFactory;
     }
 
     /**
@@ -58,21 +58,33 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getIndex()
     {
-        $categories = $this->_categoryRepository->getCategories();
+
+        $categories = $this->categoryRepository->getCategories();
         $items = [];
         $groups = [];
-        foreach ($categories as $category) {
-            $id = $category['id'];
-            $name = $category['name'];
-            $image = null;
-            $collection = $this->getCategoryProducts($id);
-            foreach ($collection as $_product) {
-                $items[] = $this->_productCollector->getProduct(
-                    $_product->getId()
-                );
-            }
-            $groups[] = $this->fillGroups($name, $image, $items);
+        $cat = 0  ;
+        $count = 0 ;
+        if($cat <2 &&  $count < 1){
+            foreach ($categories as $category) {
+                if($category['id'] == 7 ||$category['id'] == 3){
+                    $id = $category['id'];
+                    $name = $category['name'];
+                    $image = null;
+                    $collection = $this->getCategoryProducts($id);
+                    foreach ($collection as $product) {
+                        if($count < 4)
+                        {
+                            $items[] = $this->productCollector->getProduct(
+                                $product->getId()
+                            );
+                        }
+                        $count++;
+                    }
+                    $groups[] = $this->fillGroups($name, $image, $items);
+                    $cat ++  ;
+                }
 
+            }
         }
         $this->setGroups($groups);
         $action = $this->fillActions();
@@ -102,7 +114,7 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getCategory($categoryId)
     {
-        $category = $this->_categoryFactory->create();
+        $category = $this->categoryFactory->create();
         $category->load($categoryId);
 
         return $category;

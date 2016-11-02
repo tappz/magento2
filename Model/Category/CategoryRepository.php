@@ -19,7 +19,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @var CategoryCollector
      */
-    private $_categoryCollector;
+    private $categoryCollector ;
 
     /**
      * CategoryRepository constructor.
@@ -29,7 +29,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function __construct(
         CategoryCollector $categoryCollector
     ) {
-        $this->_categoryCollector = $categoryCollector;
+        $this->categoryCollector  = $categoryCollector;
     }
 
     /**
@@ -37,7 +37,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getCategories()
     {
-        $result = $this->_categoryCollector->getCategories();
+        $result = $this->categoryCollector ->getCategories();
         return $result;
     }
 
@@ -48,7 +48,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getByCategoryById($categoryId)
     {
-        $result = $this->_categoryCollector->getCategory($categoryId);
+        $result = $this->categoryCollector ->getCategory($categoryId);
         return $result;
     }
 }

@@ -17,7 +17,7 @@ class ProfileFill extends Profile
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $_storeManager;
+    public $storeManager;
 
     /**
      * ProfileFill constructor.
@@ -27,7 +27,7 @@ class ProfileFill extends Profile
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        $this->_storeManager = $storeManager;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -41,7 +41,7 @@ class ProfileFill extends Profile
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
             'gender' => $this->getGender(),
-            'IsSubscribe' => $this->getIsSubscribe(),
+            'IsSubscribe' => true,
             'isSMSSubscribe' => $this->getIsSMSSubscribe(),
             'birthDate' => $this->getbirthDate(),
             'accept' => $this->getAccept(),
@@ -75,17 +75,23 @@ class ProfileFill extends Profile
      *
      * @return array
      */
-    protected function fillRegisterCustomerData($data)
+    public function fillRegisterCustomerData($data)
     {
         $data = (array)$data;
-        return [
+
+        $result =    [
             'firstname' => $data['firstName'],
             'lastname' => $data['lastName'],
-            'password' => $data['password'],
             'gender' => $data['gender'],
             'isSubscribed' => $data['IsSubscribe'],
             'email' => $data['email'],
             'phone' => $data['phone'] ,
         ];
+        if( isset($data['password'])){
+            $result['password'] = $data['password'];
+
+        }
+        
+        return $result;
     }
 }
