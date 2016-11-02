@@ -100,4 +100,13 @@ class BasketFill extends Basket
             'promoCode' => $this->getDiscountPromoCode(),
         ];
     }
+    public function fillGiftWrapping()
+    {
+        return [
+            'isSelected' => $this->getGiftWrappingIsSelected(),
+            'giftWrappingFee' => $this->getGiftWrappingFee(),
+            'maxCharackter' => $this->getGiftWrappingCharacter(),
+            'message' => $this->getGiftWrappingMessage(),
+        ];
+    }
 }

@@ -22,7 +22,9 @@ class Branchescitylist extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
+
+
     /**
      * Branchescitylist constructor.
      *
@@ -35,7 +37,7 @@ class Branchescitylist extends Action
         JSON $json
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
+        $this->_jsonResult = $json->create();
     }
 
     /**
@@ -54,8 +56,8 @@ class Branchescitylist extends Action
                 'UserFriendly' => true,
             ],
         ];
-        $this->jsonResult->setData($arr);
+        $this->_jsonResult->setData($arr);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

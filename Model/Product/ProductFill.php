@@ -35,6 +35,7 @@ class ProductFill extends Product
      */
     public function fillProduct()
     {
+
         return [
             'id' => $this->getId(),
             'productName' => $this->getProductName(),

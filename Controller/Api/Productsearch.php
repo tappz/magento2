@@ -23,11 +23,11 @@ class Productsearch extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    private $_productRepository;
 
     /**
      * Productsearch constructor.
@@ -44,8 +44,8 @@ class Productsearch extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->productRepository = $productRepository;
+        $this->_jsonResult = $json->create();
+        $this->_productRepository = $productRepository;
         $helper->checkAuth();
     }
 
@@ -55,9 +55,9 @@ class Productsearch extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $result = $this->productRepository->getProductSearch($params);
-        $this->jsonResult->setData($result);
+        $result = $this->_productRepository->getProductSearch($params);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

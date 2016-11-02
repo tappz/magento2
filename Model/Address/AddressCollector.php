@@ -76,6 +76,8 @@ class AddressCollector extends AddressFill implements AddressInterface
      */
     public function createOrUpdateAddress($update = false)
     {
+
+
         $userId = $this->helper->convertJson(
             $this->helper->getAuthorization()
         );
@@ -91,6 +93,7 @@ class AddressCollector extends AddressFill implements AddressInterface
         if (!$customer->getID()) {
             return 'Error';
         }
+
         $address = $this->objectManager->get('Magento\Customer\Model\Address');
         if ($update) {
             $address->load($addressResponse->id);
@@ -102,7 +105,11 @@ class AddressCollector extends AddressFill implements AddressInterface
 
         $valid = $address->validate();
         if (is_array($valid)) {
-            return $valid;
+            $result =  $this->getAddressById(0);
+            $result['ErrorCode'] = "403";
+            $result['Message'] =  implode(",",$valid);
+            $result['UserFriendly'] = true;
+            return $result;
         }
         if ($address->save()) {
             return $this->getAddressById($address->getID());
@@ -118,14 +125,15 @@ class AddressCollector extends AddressFill implements AddressInterface
     public function addressBeforeSave($response, $address)
     {
         if (empty($response->cityCode)) {
-            $response->cityCode = $response->city;
+            $response->cityCode = $response->usCheckoutCity;
         }
         if (empty($response->state)) {
-            $response->state = $response->city;
+            $response->state = $response->usCheckoutCity;
         }
         if (empty($response->stateCode)) {
-            $response->stateCode = $response->cityCode;
+            $response->stateCode = $response->usCheckoutCity;
         }
+
         $address->setData(
             $this->getAttr('tappzaddressname'),
             $response->addressName
@@ -138,10 +146,14 @@ class AddressCollector extends AddressFill implements AddressInterface
             $this->getAttr('tappzaddresslastname'),
             $response->surname
         );
-        $address->setData(
-            $this->getAttr('tappzaddressemail'),
-            $response->email
-        );
+        if(isset($response->email))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddressemail'),
+                $response->email
+            );
+        }
+
         $address->setData(
             $this->getAttr('tappzaddressstreet'),
             $response->addressLine
@@ -164,28 +176,40 @@ class AddressCollector extends AddressFill implements AddressInterface
         );
         $address->setData(
             $this->getAttr('tappzaddresscity'),
-            $response->city
+            $response->usCheckoutCity
         );
         $address->setData(
             $this->getAttr('tappzaddresscityid'),
             $response->cityCode
         );
-        $address->setData(
-            $this->getAttr('tappzaddressdistrict'),
-            $response->district
-        );
+        if(isset($response->district))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddressdistrict'),
+                $response->district
+            );
+        }
+        if(isset($response->districtCode))
+        {
         $address->setData(
             $this->getAttr('tappzaddressdistrictid'),
             $response->districtCode
         );
-        $address->setData(
-            $this->getAttr('tappzaddresstown'),
-            $response->town
-        );
-        $address->setData(
-            $this->getAttr('tappzaddresstownid'),
-            $response->townCode
-        );
+        }
+        if(isset($response->tappzaddresstown))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddresstown'),
+                $response->town
+            );
+        }
+        if(isset($response->tappzaddresstownid))
+        {
+            $address->setData(
+                $this->getAttr('tappzaddresstownid'),
+                $response->townCode
+            );
+        }
         $address->setData(
             $this->getAttr('tappzaddresscompany'),
             $response->companyTitle
@@ -206,10 +230,14 @@ class AddressCollector extends AddressFill implements AddressInterface
             $this->getAttr('tappzphone'),
             $response->phoneNumber
         );
+        if(isset($response->identityNo)){
+
+
         $address->setData(
             $this->getAttr('tappzidno'),
             $response->identityNo
         );
+        }
         $address->setData(
             $this->getAttr('tappzpostcode'),
             $response->zipCode

@@ -23,11 +23,11 @@ class Towns extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var LocationRepositoryI
      */
-    private $locationRepository;
+    private $_locationRepository;
 
     /**
      * Towns constructor.
@@ -44,8 +44,8 @@ class Towns extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->locationRepository = $locationRepository;
+        $this->_jsonResult = $json->create();
+        $this->_locationRepository = $locationRepository;
         $helper->checkAuth();
     }
 
@@ -56,9 +56,9 @@ class Towns extends Action
     {
         $params = ($this->getRequest()->getParams());
         $cityId = key($params);
-        $result = $this->locationRepository->getTowns($cityId);
-        $this->jsonResult->setData($result);
+        $result = $this->_locationRepository->getTowns($cityId);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }

@@ -33,6 +33,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->request = $httpRequest;
+
     }
 
     /**
@@ -49,20 +50,7 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function checkAuth()
     {
-        $server = $this->request->getServerValue();
-
-        if (!isset($server['HTTP_AUTHORIZATION']) ||
-            empty($server['HTTP_AUTHORIZATION'])
-        ) {
-            $error = "Couldn't find AUTHORIZATION !Please "
-                . "check your  .htaccess  ";
-            throw new
-            \Magento\Framework\Exception\AuthenticationException(__($error));
-        }
-
-        $header = (isset($server['HTTP_AUTHORIZATION'])
-            && $server['HTTP_AUTHORIZATION'] != '')
-            ? $server['HTTP_AUTHORIZATION'] : '';
+        $header = $this->getAuthorizationFull();
         $auth = (explode(' ', $header));
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $baseUrl = $objectManager
@@ -88,10 +76,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
             $er = __(' 403 - Access denied.Please check your tokens');
             throw new \Magento\Framework\Exception\AuthenticationException($er);
         }
-
         return $auth;
     }
-
     /**
      * @param $url
      *
@@ -100,10 +86,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     public function getRealUrl($url)
     {
         $server = $this->request->getServerValue();
-
         return urldecode($url . $server['REQUEST_URI']);
     }
-
     /**
      * @return array|string
      */
@@ -115,10 +99,8 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
             $result = $putData;
         }
         fclose($resource);
-
         return $result;
     }
-
     /**
      * @return string
      */
@@ -126,36 +108,24 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $server = $this->request->getServerValue();
         $authorization = $server['HTTP_AUTHORIZATION'];
-        $header = (isset($authorization) && $authorization != '') ?
-            $authorization : '';
+        if (isset($authorization) && $authorization != '') {
+            $header= $_SERVER['HTTP_AUTHORIZATION'];
+        } else {
+            $header = apache_request_headers()["Authorization"];
+        }
 
         return $header;
     }
-
     /**
      * @return mixed
      */
     public function getAuthorization()
     {
-        $server = $this->request->getServerValue();
-
-        if (!isset($server['HTTP_AUTHORIZATION']) ||
-            empty($server['HTTP_AUTHORIZATION'])
-        ) {
-            $error = "Couldn't find AUTHORIZATION !Please "
-                . "check your  .htaccess  ";
-            throw new
-            \Magento\Framework\Exception\AuthenticationException(__($error));
-        }
-        $authorization = $server['HTTP_AUTHORIZATION'];
-        $header = (isset($authorization) && $authorization != '') ?
-            $authorization : '';
+        $header = $this->getAuthorizationFull();
         $auth = (explode(' ', $header));
         $result = (int)end($auth);
-
         return $result;
     }
-
     /**
      * @param $data
      *
@@ -165,7 +135,6 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return json_decode($data);
     }
-
     /**
      * @param $array
      * @param $oldKey
@@ -180,7 +149,6 @@ class RequestHandler extends \Magento\Framework\App\Helper\AbstractHelper
         }
         $keys = array_keys($array);
         $keys[array_search($oldKey, $keys)] = $newKey;
-
         return array_combine($keys, $array);
     }
 }

@@ -11,7 +11,7 @@ namespace TmobLabs\Tappz\Model\Basket;
 
 use TmobLabs\Tappz\API\BasketRepositoryInterface;
 use TmobLabs\Tappz\Model\Purchase\PurchaseCollector;
-
+use TmobLabs\Tappz\Helper\RequestHandler as RequestHandler;
 /**
  * Class BasketRepository.
  */
@@ -34,10 +34,12 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function __construct(
         BasketCollector $basketCollector,
-        PurchaseCollector $purchaseCollector
+        PurchaseCollector $purchaseCollector,
+        RequestHandler $helper
     ) {
         $this->basketCollector = $basketCollector;
         $this->purchaseCollector = $purchaseCollector;
+        $this->helper = $helper;
     }
 
     /**
@@ -47,6 +49,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getByBasketById($basketId)
     {
+
         $result = $this->basketCollector->getBasketById($basketId);
 
         return $result;
@@ -59,6 +62,8 @@ class BasketRepository implements BasketRepositoryInterface
     {
         $result = $this->basketCollector->getUserBasket();
 
+
+
         return $result;
     }
 
@@ -69,11 +74,44 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getPayment($quoteId)
     {
-        $result = $this->basketCollector->getBasketPayment($quoteId);
-
+        $result = [];
+        $method = $this->helper->getRequestMethod();
+        switch ($method) {
+            case 'GET':
+                $result = $this->basketCollector->getBasketPayment($quoteId);
+                break;
+            case 'POST':
+                $result = $this->basketCollector->setBasketPayment($quoteId);
+                break;
+            default:
+                break;
+        }
         return $result;
     }
+    /**
+     * @param $quoteId
+     *
+     * @return array
+     */
+    public function getPay($quoteId)
+    {
+        $result = $this->helper->convertJson($this->helper->getHeaderJson());
 
+        $result = [];
+        $method = $this->helper->getRequestMethod();
+        switch ($method) {
+            case 'GET':
+                $result = $this->basketCollector->getBasketPayment($quoteId);
+                break;
+            case 'POST':
+                $result = $this->getPurchase($quoteId);
+                // $result = $this->basketCollector->setBasketPay($quoteId);
+                break;
+            default:
+                break;
+        }
+        return $result;
+    }
     /**
      * @param null $quoteId
      *
@@ -81,6 +119,7 @@ class BasketRepository implements BasketRepositoryInterface
      */
     public function getLines($quoteId = null)
     {
+
         $result = $this->basketCollector->getLines($quoteId);
 
         return $result;
@@ -109,17 +148,27 @@ class BasketRepository implements BasketRepositoryInterface
 
         return $result;
     }
+    public function getGiftWrapping($basketId){
+        $result = $this->basketCollector->getBasketById($basketId);
 
+        return $result;
+
+
+    }
     /**
      * @param $quoteId
      * @param $method
      *
      * @return array|void
      */
-    public function getPurchase($quoteId, $method)
+    public function getPurchase($quoteId)
     {
-        $result = $this->purchaseCollector->getPurchase($quoteId, $method);
 
+        $quote = $this->basketCollector->getQuoteById($quoteId);
+        $methodTypes = $this->basketCollector->getPaymentByBasket($quote);
+        $method  = $methodTypes['methodType'];
+
+        $result = $this->purchaseCollector->getPurchase($quoteId, $method);
         return $result;
     }
 
@@ -130,6 +179,21 @@ class BasketRepository implements BasketRepositoryInterface
     {
         $result = $this->basketCollector->merge();
 
+        return $result;
+    }
+    public function getShipment($quoteId = null){
+        $method = $this->helper->getRequestMethod();
+        $result = [];
+        switch ($method) {
+            case 'GET':
+                $result['shippingMethods']  = $this->basketCollector->getShippingsMethodByBasket();
+                break;
+            case 'POST':
+                $result = $this->basketCollector->setAddressToBasket($quoteId);
+                break;
+            default:
+                break;
+        }
         return $result;
     }
 }

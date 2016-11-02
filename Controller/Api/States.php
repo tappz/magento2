@@ -23,11 +23,11 @@ class States extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var LocationRepositoryI
      */
-    private $locationRepository;
+    private $_locationRepository;
 
     /**
      * States constructor.
@@ -44,8 +44,8 @@ class States extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->locationRepository = $locationRepository;
+        $this->_jsonResult = $json->create();
+        $this->_locationRepository = $locationRepository;
         $helper->checkAuth();
     }
 
@@ -56,8 +56,8 @@ class States extends Action
     {
         $params = ($this->getRequest()->getParams());
         $countryId = key($params);
-        $result = $this->locationRepository->getStates($countryId);
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
+        $result = $this->_locationRepository->getStates($countryId);
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

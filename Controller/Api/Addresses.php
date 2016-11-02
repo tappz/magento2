@@ -60,6 +60,7 @@ class Addresses extends Action
     public function execute()
     {
         $method = $this->helper->getRequestMethod();
+        $result = [];
         switch ($method) {
             case 'POST':
                 $result = $this->addressRepository->createAddress();

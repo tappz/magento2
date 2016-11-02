@@ -58,21 +58,33 @@ class IndexCollector extends IndexFill implements IndexInterface
      */
     public function getIndex()
     {
+
         $categories = $this->categoryRepository->getCategories();
         $items = [];
         $groups = [];
-        foreach ($categories as $category) {
-            $id = $category['id'];
-            $name = $category['name'];
-            $image = null;
-            $collection = $this->getCategoryProducts($id);
-            foreach ($collection as $product) {
-                $items[] = $this->productCollector->getProduct(
-                    $product->getId()
-                );
-            }
-            $groups[] = $this->fillGroups($name, $image, $items);
+        $cat = 0  ;
+        $count = 0 ;
+        if($cat <2 &&  $count < 1){
+            foreach ($categories as $category) {
+                if($category['id'] == 7 ||$category['id'] == 3){
+                    $id = $category['id'];
+                    $name = $category['name'];
+                    $image = null;
+                    $collection = $this->getCategoryProducts($id);
+                    foreach ($collection as $product) {
+                        if($count < 4)
+                        {
+                            $items[] = $this->productCollector->getProduct(
+                                $product->getId()
+                            );
+                        }
+                        $count++;
+                    }
+                    $groups[] = $this->fillGroups($name, $image, $items);
+                    $cat ++  ;
+                }
 
+            }
         }
         $this->setGroups($groups);
         $action = $this->fillActions();
