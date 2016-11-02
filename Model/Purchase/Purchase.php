@@ -159,7 +159,8 @@ class Purchase extends AbstractExtensibleObject implements PurchaseInterface
      */
     public function getIpAddress()
     {
-        return $this->purchase->ipAddress;
+        return !empty($_SERVER['HTTP_CLIENT_IP']) ?
+            $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
     }
 
     /**

@@ -41,7 +41,7 @@ class ProfileFill extends Profile
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
             'gender' => $this->getGender(),
-            'IsSubscribe' => $this->getIsSubscribe(),
+            'IsSubscribe' => true,
             'isSMSSubscribe' => $this->getIsSMSSubscribe(),
             'birthDate' => $this->getbirthDate(),
             'accept' => $this->getAccept(),
@@ -78,14 +78,20 @@ class ProfileFill extends Profile
     public function fillRegisterCustomerData($data)
     {
         $data = (array)$data;
-        return [
+
+        $result =    [
             'firstname' => $data['firstName'],
             'lastname' => $data['lastName'],
-            'password' => $data['password'],
             'gender' => $data['gender'],
             'isSubscribed' => $data['IsSubscribe'],
             'email' => $data['email'],
             'phone' => $data['phone'] ,
         ];
+        if( isset($data['password'])){
+            $result['password'] = $data['password'];
+
+        }
+        
+        return $result;
     }
 }

@@ -23,15 +23,15 @@ class PurchaseOrder extends Action
     /**
      * @var RequestHandler
      */
-    public $helper;
+    protected $_helper;
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var OrderRepositoryInterface
      */
-    private $orderRepository;
+    private $_orderRepository;
 
     /**
      * PurchaseOrder constructor.
@@ -48,9 +48,9 @@ class PurchaseOrder extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->helper = $helper;
-        $this->orderRepository = $orderRepository;
+        $this->_jsonResult = $json->create();
+        $this->_helper = $helper;
+        $this->_orderRepository = $orderRepository;
         $helper->checkAuth();
     }
 
@@ -60,23 +60,23 @@ class PurchaseOrder extends Action
     public function execute()
     {
         $params = ($this->getRequest()->getParams());
-        $method = $this->helper->getRequestMethod();
+        $method = $this->_helper->getRequestMethod();
 
         $result = [];
         switch ($method) {
             case 'GET':
                 if (count($params) > 0) {
                     $orderId = key($params);
-                    $result = $this->orderRepository->getOrderById($orderId);
+                    $result = $this->_orderRepository->getOrderById($orderId);
                 } else {
-                    $result = $this->orderRepository->getOrder();
+                    $result = $this->_orderRepository->getOrder();
                 }
                 break;
             default:
                 break;
         }
-        $this->jsonResult->setData($result);
+        $this->_jsonResult->setData($result);
 
-        return $this->jsonResult;
+        return $this->_jsonResult;
     }
 }
