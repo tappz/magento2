@@ -23,11 +23,11 @@ class PasswordRecovery extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var ProfileRepositoryInterface
      */
-    private $profileRepository;
+    private $_profileRepository;
 
     /**
      * PasswordRecovery constructor.
@@ -44,8 +44,8 @@ class PasswordRecovery extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->profileRepository = $profileRepository;
+        $this->_jsonResult = $json->create();
+        $this->_profileRepository = $profileRepository;
         $helper->checkAuth();
     }
 
@@ -54,8 +54,8 @@ class PasswordRecovery extends Action
      */
     public function execute()
     {
-        $result = $this->profileRepository->getUserAgreement();
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
+        $result = $this->_profileRepository->getUserAgreement();
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

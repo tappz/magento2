@@ -16,11 +16,17 @@ use Magento\Framework\Api\AbstractExtensibleObject;
  */
 class Product extends AbstractExtensibleObject
 {
+
     /**
      * @var string
      */
     public $product;
+    public $_storeManager;
 
+    public function __construct(\Magento\Store\Model\StoreManagerInterface $storeManager)
+    {
+        $this->_storeManager = $storeManager;
+    }
     /**
      * @return string
      */
@@ -45,10 +51,12 @@ class Product extends AbstractExtensibleObject
         $specialPrice = (double)$this->product->getData('specialPrice');
         $listPrice = (double)$this->product->getData('price');
         $amount = ($specialPrice) > 0 ? $specialPrice : $listPrice;
-        $currency = $this->storeManager
+        $currency =   $this->objectManager->
+             get('Magento\Store\Model\StoreManagerInterface')
             ->getStore()
             ->getCurrentCurrency()
             ->getCode();
+
         return $this->fillProductPrice($amount, $currency, $currency);
     }
 
@@ -94,7 +102,8 @@ class Product extends AbstractExtensibleObject
     {
         $specialPrice = $this->product->getData('specialPrice');
         $amount = ($specialPrice) > 0 ? $specialPrice : 0;
-        $currency = $this->storeManager->
+        $currency =  $this->objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->
         getStore()->
         getCurrentCurrency()->
         getCode();
@@ -115,7 +124,7 @@ class Product extends AbstractExtensibleObject
      */
     public function getCreditCardInstallments()
     {
-        return [];
+        return null;
     }
 
     /**
@@ -181,19 +190,16 @@ class Product extends AbstractExtensibleObject
         $productType = $this->product->getTypeId();
         if ($productType == 'configurable') {
             $instanceConf = $this->product->getTypeInstance();
-
             $configurableAttributesData = $instanceConf
                 ->getConfigurableAttributesAsArray(
                     $this->product
                 );
             foreach ($configurableAttributesData as $dt => $val) {
                 $group = [];
-
                 $group['groupId'] = $val['attribute_code'];
                 $group['groupName'] = $val['label'];
                 foreach ($val['values'] as $vv) {
                     $groupValue = [];
-
                     $groupValue['displayName'] = $vv['label'];
                     $groupValue['value'] = $vv['value_index'];
                     $group['features'][] = $groupValue;
@@ -201,7 +207,22 @@ class Product extends AbstractExtensibleObject
                 $result[] = $group;
             }
         }
-
+        if(count($result)  ==  0 ){
+            $group = [];
+            foreach ($this->product->getOptions() as $o) {
+                foreach ($o->getValues() as $value) {
+                    $groupResult = $value->getData();
+                    $groupId = $groupResult['option_id'];
+                    $groupValue = [];
+                    $groupValue['displayName'] = $groupResult['title'];
+                    $groupValue['value'] = $groupResult['option_type_id'];
+                    $group['features'][] = $groupValue;
+                }
+                $group['groupId'] = $groupId;
+                $group['groupName'] = "Select";
+                $result[] = $group;
+            }
+        }
         return $result;
     }
 
@@ -231,7 +252,10 @@ class Product extends AbstractExtensibleObject
      */
     public function getPicture()
     {
-        $store = $this->storeManager->getStore();
+        $store =
+        $this->objectManager->
+        get('Magento\Store\Model\StoreManagerInterface')->
+        getStore();
         $urlMedia = \Magento\Framework\UrlInterface::URL_TYPE_MEDIA;
         $baseUrl = $store->getBaseUrl($urlMedia);
         $result = $this->product->getImage();

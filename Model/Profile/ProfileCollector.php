@@ -162,7 +162,7 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $email = $customer->getEmail();
         $subscriber = $this->objectManager->
         get('Magento\Newsletter\Model\Subscriber')->loadByEmail($email);
-        $this->setIsSubscribe((bool)$subscriber->getId());
+        $this->setIsSubscribe((int)$subscriber->getId());
         $shipping['shipping'] = [];
         foreach ($customer->getAddresses() as $address) {
             $shipping['shipping'][] = $this->addressRepository->
@@ -181,17 +181,54 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
      */
     public function createProfile()
     {
+
         $data = $this->helper->convertJson($this->helper->getHeaderJson());
+        
         $customerData = $this->fillRegisterCustomerData($data);
         $store = $this->objectManager->
         get('Magento\Store\Model\StoreManagerInterface')->getStore();
         $customer = $this->objectManager->
         get('Magento\Customer\Model\Customer')->setStore($store);
-        $customer->setData($customerData)
-            ->setPassword($customerData['password'])
-            ->save();
+        $checkUser = $customer->loadByEmail($customerData['email']);
+        if (empty(trim($customerData['firstname'])) ) {
+            $result =   $this->getProfileByUserId(0);
+            $result["ErrorCode"] = 403;
+            $result["Message"] = "Name required";
+            $result["UserFriendly"] = true ;
+        }elseif (empty(trim($customerData['lastname'])) ) {
+            $result =   $this->getProfileByUserId(0);
+            $result["ErrorCode"] = 403;
+            $result["Message"] = "Surname required";
+            $result["UserFriendly"] = true ;
+         }  elseif (!filter_var($customerData['email'], FILTER_VALIDATE_EMAIL)) {
+            $result =   $this->getProfileByUserId(0);
+            $result["ErrorCode"] = 403;
+            $result["Message"] = "Invalid email format";
+            $result["UserFriendly"] = true ;
+        }
+        elseif( strlen(trim($customerData['password'])) < 6 ){
+            $result =   $this->getProfileByUserId(0);
+            $result["ErrorCode"] = 403;
+            $result["Message"] = "password must be at least 6 characters ";
+            $result["UserFriendly"] = true ;
+        } elseif($checkUser->getID()!=NULL){
 
-        return $this->getProfileByUserId($customer->getId());
+           $result =   $this->getProfileByUserId($checkUser->getID());
+            $result["ErrorCode"] = 403;
+            $result["Message"] = "User already registered";
+            $result["UserFriendly"] = true ;
+        } else{
+            $customer->setData($customerData)
+                ->setPassword($customerData['password'])
+                ->save();
+            $result =  $this->getProfileByUserId($customer->getId());
+            $result["ErrorCode"] = 200;
+            $result["Message"] = "Login Successful";
+            $result["UserFriendly"] = true ;
+        }
+
+        return $result;
+
     }
 
     /**
@@ -202,7 +239,10 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         $userId = $this->helper->convertJson(
             $this->helper->getAuthorization()
         );
+
         $data = $this->helper->convertJson($this->helper->getHeaderJson());
+
+
         $customerData = $this->fillRegisterCustomerData($data);
         $store = $this->objectManager
             ->get('Magento\Store\Model\StoreManagerInterface')->getStore();
@@ -221,7 +261,9 @@ class ProfileCollector extends ProfileFill implements ProfileInterface
         }
         $customer->save();
 
-        return $this->getProfileByUserId($customer->getId());
+        $result = $this->getProfileByUserId($customer->getId());
+
+        return $result ;
     }
 
     /**

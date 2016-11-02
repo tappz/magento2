@@ -23,11 +23,11 @@ class Districts extends Action
     /**
      * @var
      */
-    private $jsonResult;
+    private $_jsonResult;
     /**
      * @var LocationRepositoryI
      */
-    private $locationRepository;
+    private $_locationRepository;
 
     /**
      * Districts constructor.
@@ -44,8 +44,8 @@ class Districts extends Action
         RequestHandler $helper
     ) {
         parent::__construct($context);
-        $this->jsonResult = $json->create();
-        $this->locationRepository = $locationRepository;
+        $this->_jsonResult = $json->create();
+        $this->_locationRepository = $locationRepository;
         $helper->checkAuth();
     }
 
@@ -56,8 +56,8 @@ class Districts extends Action
     {
         $params = ($this->getRequest()->getParams());
         $cityId = key($params);
-        $result = $this->locationRepository->getDistricts($cityId);
-        $this->jsonResult->setData($result);
-        return $this->jsonResult;
+        $result = $this->_locationRepository->getDistricts($cityId);
+        $this->_jsonResult->setData($result);
+        return $this->_jsonResult;
     }
 }

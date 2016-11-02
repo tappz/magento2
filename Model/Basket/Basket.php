@@ -1524,4 +1524,66 @@ class Basket extends AbstractExtensibleObject implements BasketInterface
 
         return $result;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingIsSelected()
+    {
+        return $this->basket->giftWrappingIsSelected;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingFee()
+    {
+        return $this->basket->giftWrappingFee;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingCharacter()
+    {
+        return $this->basket->giftWrappingCharacter;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGiftWrappingMessage()
+    {
+        return $this->basket->giftWrappingMessage;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingIsSelected($data)
+    {
+        $result = $this->basket->giftWrappingIsSelected = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingFee($data)
+    {
+        $result = $this->basket->giftWrappingFee = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingCharacter($data)
+    {
+        $result =  $this->basket->giftWrappingCharacter = $data;
+        return $result;
+    }
+    /**
+     * @return mixed
+     */
+    public function setGiftWrappingMessage($data)
+    {
+        $result =  $this->basket->giftWrappingMessage = $data;
+        return $result;
+    }
+
 }
